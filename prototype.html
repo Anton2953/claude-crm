@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performula CRM</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ocean:    #292D3F;
+  --ocean2:   #363b52;
+  --white:    #F9F9F9;
+  --grey:     #E7E7E7;
+  --grey2:    #d4d4d4;
+  --spark:    #CCD9E1;
+  --sand:     #D4C6BA;
+  --sand2:    #c2b0a4;
+  --text:     #1a1c26;
+  --muted:    #6b7080;
+  --border:   #dde1e8;
+  --green:    #3a8f62;
+  --red:      #b84040;
+  --yellow:   #b07a20;
+  --blue:     #4a7a9b;
+  --green-bg: #eaf5ef;
+  --red-bg:   #faeaea;
+  --yellow-bg:#fdf3e0;
+  --blue-bg:  #e5eff6;
+  --panel:    400px;
+}
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--white); color: var(--text); display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
+
+/* SIDEBAR */
+.sidebar { width: 220px; background: var(--ocean); display: flex; flex-direction: column; flex-shrink: 0; }
+.logo { padding: 26px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.logo h1 { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 3px; margin-bottom: 3px; }
+.logo span { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase; }
+.nav { padding: 12px 0; flex: 1; }
+.nav-group { padding: 16px 18px 6px; font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; cursor: pointer; color: rgba(255,255,255,0.5); transition: all 0.15s; font-size: 12.5px; }
+.nav-item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.05); }
+.nav-item.active { color: #fff; background: rgba(255,255,255,0.1); border-left: 2px solid var(--spark); padding-left: 18px; }
+.nav-item svg { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.8; }
+.nav-badge { margin-left: auto; background: var(--red); color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 10px; font-weight: 600; }
+.sidebar-user { padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--spark); color: var(--ocean); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.user-name { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 500; }
+.user-role { font-size: 10px; color: rgba(255,255,255,0.3); }
+
+/* LAYOUT */
+.app-body { flex: 1; display: flex; overflow: hidden; }
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar { padding: 14px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: #fff; flex-shrink: 0; }
+.topbar h2 { font-size: 15px; font-weight: 600; color: var(--text); }
+.topbar-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.topbar-actions { display: flex; gap: 8px; align-items: center; }
+.content { flex: 1; overflow-y: auto; padding: 22px 24px; }
+
+/* BUTTONS */
+.btn { padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 12.5px; font-weight: 500; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary { background: var(--ocean); color: #fff; }
+.btn-primary:hover { background: var(--ocean2); }
+.btn-ghost { background: #fff; color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--ocean); color: var(--ocean); }
+.btn-sm { padding: 5px 10px; font-size: 11.5px; }
+.btn-sand { background: var(--sand); color: var(--ocean); }
+.btn-sand:hover { background: var(--sand2); }
+
+/* STATS */
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 22px; }
+.stat-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.stat-card.highlight { border-color: var(--spark); background: #f4f8fb; }
+.stat-card.warn { border-color: #f5ddb0; background: #fffaf0; }
+.stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 600; }
+.stat-value { font-size: 26px; font-weight: 700; color: var(--ocean); margin-bottom: 3px; }
+.stat-value.warn { color: var(--yellow); }
+.stat-value.red { color: var(--red); }
+.stat-sub { font-size: 11px; color: var(--muted); }
+
+/* SECTION TITLE */
+.section-title { font-size: 10.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+
+/* MINI PIPELINE */
+.pipeline { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 22px; }
+.pipeline-col { min-width: 170px; background: #fff; border: 1px solid var(--border); border-radius: 9px; padding: 12px; flex-shrink: 0; }
+.pipeline-col-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.pipeline-col-title { font-size: 10.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.pipeline-count { background: var(--grey); color: var(--muted); border-radius: 10px; padding: 2px 7px; font-size: 10.5px; font-weight: 600; }
+.pipeline-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 9px 10px; margin-bottom: 6px; cursor: pointer; transition: all 0.15s; }
+.pipeline-card:hover { border-color: var(--ocean); box-shadow: 0 1px 5px rgba(41,45,63,0.08); }
+.pipeline-card-name { font-size: 12.5px; font-weight: 500; margin-bottom: 3px; }
+.pipeline-card-meta { font-size: 10.5px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+.pdot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.pipeline-more { font-size: 10.5px; color: var(--muted); padding: 2px 2px 0; cursor: default; }
+.pipeline-empty { font-size: 10.5px; color: var(--muted); font-style: italic; padding: 2px; }
+
+/* TABLE */
+.table-wrap { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.table-header { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); gap: 10px; flex-wrap: wrap; }
+.search { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 6px 11px; color: var(--text); font-size: 12.5px; width: 210px; outline: none; }
+.search:focus { border-color: var(--ocean); }
+.filter-tabs { display: flex; gap: 3px; }
+.filter-tab { padding: 5px 11px; border-radius: 5px; font-size: 11.5px; cursor: pointer; color: var(--muted); border: 1px solid transparent; transition: all 0.15s; }
+.filter-tab.active { background: var(--white); border-color: var(--border); color: var(--ocean); font-weight: 500; }
+table { width: 100%; border-collapse: collapse; }
+th { padding: 9px 14px; text-align: left; font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); font-weight: 600; white-space: nowrap; }
+td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12.5px; }
+tr:last-child td { border-bottom: none; }
+tbody tr { cursor: pointer; transition: background 0.1s; }
+tbody tr:hover td { background: #fafbfc; }
+
+/* BADGES */
+.badge { display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+.badge-green  { background: var(--green-bg);  color: var(--green); }
+.badge-red    { background: var(--red-bg);    color: var(--red); }
+.badge-yellow { background: var(--yellow-bg); color: var(--yellow); }
+.badge-blue   { background: var(--blue-bg);   color: var(--blue); }
+.badge-muted  { background: var(--grey);      color: var(--muted); }
+.badge-ocean  { background: var(--ocean);     color: #fff; }
+.badge-sand   { background: var(--sand);      color: var(--ocean); }
+
+/* PHASE BAR */
+.phase-bar { display: flex; gap: 2px; min-width: 90px; }
+.phase-step { height: 4px; flex: 1; border-radius: 3px; }
+.phase-step.done    { background: var(--ocean); }
+.phase-step.active  { background: var(--spark); }
+.phase-step.pending { background: var(--grey); }
+
+/* DETAIL PANEL */
+.detail-panel { width: var(--panel); background: #fff; border-left: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; transition: width 0.2s; }
+.detail-panel.hidden { width: 0; border: none; overflow: hidden; }
+.detail-header { padding: 20px 22px 16px; border-bottom: 1px solid var(--border); background: var(--ocean); flex-shrink: 0; }
+.detail-header-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+.detail-name { font-size: 17px; font-weight: 600; color: #fff; }
+.detail-kdnr { font-size: 10.5px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.close-btn { background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 13px; padding: 5px 8px; border-radius: 5px; line-height: 1; }
+.close-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+.detail-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.detail-tabs { display: flex; border-bottom: 1px solid var(--border); background: #fff; flex-shrink: 0; overflow-x: auto; }
+.detail-tab { padding: 10px 14px; font-size: 11.5px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.15s; font-weight: 500; }
+.detail-tab.active { color: var(--ocean); border-bottom-color: var(--ocean); font-weight: 600; }
+.detail-tab:hover:not(.active) { color: var(--text); }
+.detail-body { flex: 1; overflow-y: auto; }
+.tab-content { display: none; padding: 18px 20px; }
+.tab-content.active { display: block; }
+
+/* DETAIL SECTIONS */
+.ds { margin-bottom: 20px; }
+.ds-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.field-grid.full { grid-template-columns: 1fr; }
+.field { display: flex; flex-direction: column; gap: 3px; }
+.field-label { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.field-value { font-size: 12.5px; color: var(--text); font-weight: 400; }
+.field-value.empty { color: var(--grey2); font-style: italic; }
+.field-value a { color: var(--blue); text-decoration: none; }
+.field-value a:hover { text-decoration: underline; }
+textarea.field-input { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 12.5px; color: var(--text); font-family: inherit; resize: vertical; min-height: 80px; outline: none; background: var(--white); }
+textarea.field-input:focus { border-color: var(--ocean); }
+
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; }
+.tl-item { display: flex; gap: 10px; padding-bottom: 16px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-line { display: flex; flex-direction: column; align-items: center; }
+.tl-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.tl-connector { width: 2px; flex: 1; margin-top: 4px; background: var(--grey); }
+.tl-item:last-child .tl-connector { display: none; }
+.tl-content { flex: 1; }
+.tl-title { font-size: 12.5px; font-weight: 500; margin-bottom: 2px; }
+.tl-date { font-size: 11px; color: var(--muted); }
+.tl-note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 2px; }
+/* Prozess-Tab */
+.proc-current { background: #f4f8fb; border: 1px solid var(--spark); border-radius: 9px; padding: 13px 15px; }
+.proc-phase-badge { font-size: 15px; font-weight: 600; color: var(--ocean); }
+.proc-phase-sub { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+.ptask { display: flex; align-items: flex-start; gap: 9px; padding: 9px 11px; background: var(--white); border: 1px solid var(--border); border-radius: 7px; margin-bottom: 6px; cursor: pointer; transition: all 0.15s; }
+.ptask:hover { border-color: var(--ocean); }
+.ptask-label { font-size: 12.5px; line-height: 1.4; padding-top: 1px; }
+.ptask.done .ptask-label { text-decoration: line-through; color: var(--muted); }
+.proc-msg { background: #fff; border-left: 3px solid var(--spark); border-radius: 0 7px 7px 0; padding: 10px 13px; }
+.proc-msg-date { font-size: 10.5px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+.proc-msg-text { font-size: 12.5px; line-height: 1.5; color: var(--text); }
+.tl-dot.done    { background: var(--green); }
+.tl-dot.active  { background: var(--ocean); box-shadow: 0 0 0 3px rgba(204,217,225,0.5); }
+.tl-dot.pending { background: var(--grey2); }
+.tl-dot.warn    { background: var(--yellow); }
+
+/* QUESTIONNAIRE STATUS */
+.qrow { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: var(--white); border: 1px solid var(--border); border-radius: 7px; margin-bottom: 6px; }
+.qrow-left { display: flex; flex-direction: column; gap: 2px; }
+.qrow-name { font-size: 12.5px; font-weight: 500; }
+.qrow-date { font-size: 11px; color: var(--muted); }
+
+/* PRODUCTION */
+.prod-field { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); }
+.prod-field:last-child { border-bottom: none; }
+.prod-label { font-size: 11.5px; color: var(--muted); }
+.prod-value { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.prod-value.mono { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; background: var(--grey); padding: 2px 6px; border-radius: 4px; }
+
+/* EMAIL TEMPLATES */
+.email-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+.email-card:hover { border-color: var(--ocean); background: #fff; }
+.email-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.email-card-name { font-size: 12.5px; font-weight: 500; }
+.email-card-desc { font-size: 11px; color: var(--muted); }
+.email-sent { font-size: 11px; color: var(--green); }
+
+/* FILES */
+.file-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--white); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
+.file-icon { font-size: 15px; }
+.file-name { flex: 1; color: var(--text); font-weight: 500; }
+.file-meta { font-size: 10.5px; color: var(--muted); }
+.upload-zone { border: 1.5px dashed var(--border); border-radius: 7px; padding: 14px; text-align: center; color: var(--muted); font-size: 12px; cursor: pointer; transition: all 0.15s; margin-top: 6px; }
+.upload-zone:hover { border-color: var(--ocean); color: var(--ocean); background: #f7f9fc; }
+
+/* ACTION BUTTONS */
+.action-btn { display: flex; align-items: center; gap: 8px; padding: 9px 13px; background: var(--white); border: 1px solid var(--border); border-radius: 7px; cursor: pointer; font-size: 12.5px; color: var(--text); width: 100%; text-align: left; transition: all 0.15s; margin-bottom: 6px; font-family: inherit; }
+.action-btn:hover { border-color: var(--ocean); color: var(--ocean); background: #fff; }
+.action-btn.danger { color: var(--red); }
+.action-btn.danger:hover { border-color: var(--red); background: var(--red-bg); }
+
+/* VIEWS */
+.view { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+.view.active { display: flex; }
+
+/* PIPELINE FULL */
+.pipeline-full { display: none; gap: 12px; padding: 20px 24px; overflow-x: auto; flex: 1; align-items: flex-start; }
+.pipeline-full.active { display: flex; }
+.pf-col { min-width: 232px; max-width: 232px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; max-height: calc(100vh - 90px); }
+.pf-col-accent { height: 3px; border-radius: 3px 3px 0 0; margin: -14px -14px 12px; }
+.pf-col-num { font-size: 10px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.pf-col-title { font-size: 13px; font-weight: 600; margin-top: 2px; }
+.pf-col-count { display: inline-block; margin-top: 5px; background: var(--grey); border-radius: 10px; padding: 2px 8px; font-size: 10.5px; color: var(--muted); font-weight: 600; }
+.pf-cards { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+.pf-card { background: var(--white); border: 1px solid var(--border); border-radius: 7px; padding: 11px 12px; cursor: pointer; transition: all 0.15s; }
+.pf-card:hover { border-color: var(--ocean); box-shadow: 0 2px 8px rgba(41,45,63,0.07); }
+.pf-card-name { font-size: 12.5px; font-weight: 500; margin-bottom: 5px; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.pf-card-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 10px; }
+.pf-card-tag.tag-lost { background: var(--red-bg); color: var(--red); }
+.pf-card-info { font-size: 11px; color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
+.pf-card-md { font-size: 10.5px; color: var(--muted); margin-top: 5px; display: flex; justify-content: space-between; }
+
+/* PHASE TASKS (checklist per phase) */
+.pf-tasks { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
+.pf-tasks-label { font-size: 9.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+
+/* TASKS PER CARD (eigene Checkboxen je Person, auf-/einklappbar) */
+.pf-card-tasks { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); cursor: default; }
+.pf-card-tasks-label { font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; padding: 2px 0; }
+.pf-card-tasks-label:hover { color: var(--ocean); }
+.ct-chevron { font-size: 9px; transition: transform 0.15s; display: inline-block; }
+.pf-card-tasks.collapsed .ct-chevron { transform: rotate(-90deg); }
+.ct-count { margin-left: auto; font-size: 9px; font-weight: 700; color: var(--muted); background: var(--grey); border-radius: 9px; padding: 1px 7px; letter-spacing: 0; }
+.ct-count.all-done { background: var(--green-bg); color: var(--green); }
+.pf-card-tasks-list { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+.pf-card-tasks.collapsed .pf-card-tasks-list { display: none; }
+.task { background: var(--white); border: 1px solid var(--border); border-radius: 7px; padding: 8px 9px; }
+.task.auto { background: #f4f8fb; border-color: var(--spark); }
+.task-row { display: flex; align-items: flex-start; gap: 8px; }
+.task-check { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; border: 1.5px solid var(--grey2); border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #fff; transition: all 0.15s; }
+.task-check:hover { border-color: var(--ocean); }
+.task-check.checked { background: var(--green); border-color: var(--green); }
+.task-check svg { width: 9px; height: 9px; stroke: #fff; stroke-width: 3.5; opacity: 0; }
+.task-check.checked svg { opacity: 1; }
+.task-body { flex: 1; min-width: 0; }
+.task-label { font-size: 11.5px; line-height: 1.35; color: var(--text); cursor: pointer; }
+.task.done .task-label { text-decoration: line-through; color: var(--muted); }
+.task-auto-tag { display: inline-flex; align-items: center; gap: 3px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--blue); background: var(--blue-bg); padding: 1px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; }
+.task-add { font-size: 10.5px; color: var(--muted); cursor: pointer; margin-top: 4px; display: inline-flex; align-items: center; gap: 3px; user-select: none; }
+.task-add:hover { color: var(--ocean); }
+.task-input { display: none; width: 100%; margin-top: 6px; border: 1px solid var(--border); border-radius: 5px; padding: 6px 8px; font-size: 11px; font-family: inherit; color: var(--text); resize: vertical; min-height: 32px; outline: none; }
+.task-input.show { display: block; }
+.task-input:focus { border-color: var(--ocean); }
+.task-note { display: none; margin-top: 5px; font-size: 11px; color: var(--text); background: #fff; border-left: 2px solid var(--spark); padding: 4px 8px; border-radius: 0 4px 4px 0; }
+.task-note.show { display: block; }
+
+/* PHASE AUTOMATIONS (system-triggered, no checkbox) */
+.pf-autos { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
+.auto-item { background: #f4f8fb; border: 1px solid var(--spark); border-radius: 7px; padding: 8px 9px; }
+.auto-head { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+.auto-icon { font-size: 11px; color: var(--blue); }
+.auto-trigger { font-size: 10.5px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.4px; }
+.auto-action { font-size: 11px; line-height: 1.4; color: var(--text); }
+
+/* E-MAIL VORLAGEN */
+.mail-layout { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; }
+.mail-list { display: flex; flex-direction: column; gap: 8px; }
+.mail-card { background: #fff; border: 1px solid var(--border); border-radius: 9px; padding: 12px 14px; cursor: pointer; transition: all 0.15s; }
+.mail-card:hover { border-color: var(--ocean); }
+.mail-card.active { border-color: var(--ocean); background: #f4f8fb; box-shadow: 0 1px 6px rgba(41,45,63,0.06); }
+.mail-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.mail-code { font-size: 10px; font-weight: 700; color: var(--ocean); background: var(--grey); border-radius: 5px; padding: 2px 7px; font-family: monospace; }
+.mail-card-title { font-size: 13px; font-weight: 600; }
+.mail-trigger { font-size: 11px; color: var(--muted); line-height: 1.35; }
+.mail-auto-pill { display: inline-flex; align-items: center; gap: 3px; font-size: 9.5px; font-weight: 700; color: var(--blue); background: var(--blue-bg); padding: 1px 6px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.4px; margin-left: auto; }
+.mail-preview { background: #fff; border: 1px solid var(--border); border-radius: 11px; overflow: hidden; position: sticky; top: 0; }
+.mail-preview-head { padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--ocean); color: #fff; }
+.mail-preview-head h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.mail-preview-head .mph-sub { font-size: 11.5px; color: rgba(255,255,255,0.6); }
+.mail-meta-row { display: flex; gap: 18px; padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--white); font-size: 11.5px; flex-wrap: wrap; }
+.mail-meta-row b { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
+.mail-subject { padding: 14px 20px; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+.mail-subject b { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 8px; }
+.mail-body-text { padding: 20px; font-size: 13px; line-height: 1.65; color: var(--text); white-space: pre-wrap; max-height: calc(100vh - 360px); overflow-y: auto; }
+.mail-var { background: var(--sand); color: #5a4a3a; border-radius: 4px; padding: 0 5px; font-weight: 600; font-size: 12px; white-space: nowrap; }
+.mail-preview-actions { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: var(--white); }
+.mail-empty { padding: 60px 20px; text-align: center; color: var(--muted); font-size: 13px; }
+
+/* AKTIVITÄTS-FEED (kompakt) */
+.activity-feed { background: #fff; border: 1px solid var(--border); border-radius: 10px; max-height: 160px; overflow-y: auto; overflow-x: hidden; }
+.act-item { display: flex; align-items: center; gap: 10px; padding: 7px 14px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.act-item:last-child { border-bottom: none; }
+.act-item.clickable { cursor: pointer; }
+.act-item.clickable:hover { background: var(--white); }
+.act-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.act-text { flex: 1; min-width: 0; font-size: 12px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.act-time { font-size: 10.5px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+.act-dot.act-phase { background: var(--blue); }
+.act-dot.act-frage { background: var(--green); }
+.act-dot.act-task  { background: var(--ocean); }
+.act-dot.act-mail  { background: var(--sand2); }
+.act-dot.act-prod  { background: var(--yellow); }
+
+/* SORTABLE TABLE HEADERS */
+th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+th.sortable:hover { color: var(--ocean); }
+th.sortable .sort-arrow { opacity: 0.3; margin-left: 4px; font-size: 9px; }
+th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
+.kunden-empty td { text-align: center; color: var(--muted); padding: 30px; font-size: 13px; }
+
+/* AUTOMATIONEN */
+.auto-group { margin-bottom: 26px; }
+.auto-group-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.auto-rule { background: #fff; border: 1px solid var(--border); border-radius: 11px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: center; gap: 18px; transition: all 0.15s; }
+.auto-rule:hover { border-color: var(--grey2); }
+.auto-rule.off { opacity: 0.55; }
+.auto-rule-icon { width: 38px; height: 38px; border-radius: 9px; background: var(--blue-bg); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.auto-rule-main { flex: 1; min-width: 0; }
+.auto-rule-flow { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 5px; }
+.auto-chip { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px; }
+.auto-chip.trigger { background: var(--sand); color: #5a4a3a; }
+.auto-chip.act { background: var(--blue-bg); color: var(--blue); }
+.auto-arrow { color: var(--muted); font-size: 13px; }
+.auto-rule-desc { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.auto-rule-meta { display: flex; gap: 8px; margin-top: 7px; flex-wrap: wrap; }
+.auto-tag2 { font-size: 10px; font-weight: 600; color: var(--muted); background: var(--grey); padding: 2px 8px; border-radius: 10px; }
+.auto-tag2.mail { background: #eef3f7; color: var(--blue); }
+.auto-tag2.timer { background: var(--yellow-bg); color: var(--yellow); }
+/* Toggle switch */
+.switch { position: relative; width: 38px; height: 22px; flex-shrink: 0; cursor: pointer; }
+.switch-track { position: absolute; inset: 0; background: var(--grey2); border-radius: 20px; transition: background 0.2s; }
+.switch.on .switch-track { background: var(--green); }
+.switch-thumb { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.switch.on .switch-thumb { transform: translateX(16px); }
+
+/* FRAGEBÖGEN */
+.fb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.fb-card { background: #fff; border: 1px solid var(--border); border-radius: 11px; padding: 18px; }
+.fb-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.fb-card .fb-when { font-size: 11.5px; color: var(--muted); margin-bottom: 12px; line-height: 1.4; }
+.fb-fields { font-size: 12px; color: var(--text); line-height: 1.7; }
+.fb-link { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--blue); word-break: break-all; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 100; display: none; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: #fff; border-radius: 12px; padding: 28px; width: 520px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+.modal-title { font-size: 16px; font-weight: 600; margin-bottom: 20px; color: var(--ocean); }
+.form-row { margin-bottom: 14px; }
+.form-row label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+.form-row input, .form-row select { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 13px; color: var(--text); outline: none; font-family: inherit; background: #fff; }
+.form-row input:focus, .form-row select:focus { border-color: var(--ocean); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 22px; }
+
+/* PREF TOGGLE */
+.pref-toggle { display: flex; gap: 5px; }
+.pref-btn { padding: 5px 12px; border-radius: 5px; font-size: 11.5px; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--muted); transition: all 0.15s; }
+.pref-btn.active { border-color: var(--ocean); color: var(--ocean); background: var(--blue-bg); font-weight: 500; }
+
+/* PHASENWECHSEL SELECTOR */
+.phase-select-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.phase-select { flex: 1; border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; font-size: 12.5px; color: var(--text); outline: none; font-family: inherit; background: #fff; }
+.phase-select:focus { border-color: var(--ocean); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="logo">
+    <h1>PERFORMULA</h1>
+    <span>CRM · Intern</span>
+  </div>
+  <nav class="nav">
+    <div class="nav-group">Übersicht</div>
+    <div class="nav-item active" onclick="showView('dashboard', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" onclick="showView('pipeline', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Pipeline
+    </div>
+    <div class="nav-group">Kunden</div>
+    <div class="nav-item" onclick="showView('kunden', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Alle Kunden
+    </div>
+    <div class="nav-group">Tools</div>
+    <div class="nav-item" onclick="showView('emails', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      E-Mail-Vorlagen
+      <span class="nav-badge">11</span>
+    </div>
+    <div class="nav-item" onclick="showView('fragebogen', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Fragebögen
+    </div>
+    <div class="nav-item" onclick="showView('automationen', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Automationen
+    </div>
+  </nav>
+  <div class="sidebar-user">
+    <div class="user-avatar">AW</div>
+    <div>
+      <div class="user-name">Angi Wirtz</div>
+      <div class="user-role">Managing Director</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP BODY -->
+<div class="app-body">
+<div class="main" id="main-wrap">
+
+  <!-- DASHBOARD VIEW -->
+  <div id="view-dashboard" class="view active">
+    <div class="topbar">
+      <div>
+        <h2>Dashboard</h2>
+        <div class="topbar-sub">KW 25 · 19. Juni 2026</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost btn-sm">Export</button>
+        <button class="btn btn-primary btn-sm" onclick="openModal()">+ Neuer Kunde</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="stats">
+        <div class="stat-card highlight">
+          <div class="stat-label">Aktive Kunden</div>
+          <div class="stat-value" id="stat-aktiv">–</div>
+          <div class="stat-sub">In Einnahme / versorgt</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">In Akquise (Leads)</div>
+          <div class="stat-value" id="stat-leads">–</div>
+          <div class="stat-sub">Noch keine Kunden</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">In Bearbeitung</div>
+          <div class="stat-value" id="stat-bearbeitung">–</div>
+          <div class="stat-sub">Diagnostik bis On-Boarding</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Lost</div>
+          <div class="stat-value red" id="stat-lost">–</div>
+          <div class="stat-sub">Verloren / 90 Tage</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Gesamt-Kontakte</div>
+          <div class="stat-value" id="stat-gesamt">–</div>
+          <div class="stat-sub">Alle Einträge</div>
+        </div>
+      </div>
+
+      <div class="section-title">Letzte Änderungen</div>
+      <div class="activity-feed" id="activity-feed" style="margin-bottom:22px;"></div>
+
+      <div class="section-title">Pipeline-Übersicht</div>
+      <div class="pipeline" id="mini-pipeline" style="margin-bottom:22px;"></div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <input class="search" placeholder="🔍  Kunde suchen…" type="text">
+            <div class="filter-tabs">
+              <div class="filter-tab active">Alle</div>
+              <div class="filter-tab">Aktiv</div>
+              <div class="filter-tab">Pipeline</div>
+              <div class="filter-tab">Verloren</div>
+            </div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);">50 Kunden</div>
+        </div>
+        <table>
+          <thead><tr>
+            <th>Name</th><th>Status</th><th>Phase</th><th>Fortschritt</th><th>Nächste Aktion</th><th>MD</th><th>Arzt</th>
+          </tr></thead>
+          <tbody>
+            <tr onclick="openDetail('sarah')">
+              <td><strong>Sarah Braun</strong><br><span style="color:var(--muted);font-size:11px">sarah@email.de · Kd-001</span></td>
+              <td><span class="badge badge-green">● Aktiv</span></td>
+              <td>Einnahme · Batch 1</td>
+              <td><div class="phase-bar"><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step active"></div><div class="phase-step pending"></div></div></td>
+              <td style="color:var(--muted)">Check-in in 46 Tagen</td><td>AW</td><td>JvH</td>
+            </tr>
+            <tr onclick="openDetail('max')">
+              <td><strong>Max Mustermann</strong><br><span style="color:var(--muted);font-size:11px">max@firma.de · Kd-002</span></td>
+              <td><span class="badge badge-blue">● Pipeline</span></td>
+              <td>Lead Long List</td>
+              <td><div class="phase-bar"><div class="phase-step done"></div><div class="phase-step active"></div><div class="phase-step pending"></div><div class="phase-step pending"></div><div class="phase-step pending"></div><div class="phase-step pending"></div><div class="phase-step pending"></div></div></td>
+              <td>Angebot versenden</td><td>SW</td><td>—</td>
+            </tr>
+            <tr>
+              <td><strong>Julia Weber</strong><br><span style="color:var(--muted);font-size:11px">j.weber@mail.de · Kd-003</span></td>
+              <td><span class="badge badge-green">● Aktiv</span></td>
+              <td>Einnahme · Batch 3</td>
+              <td><div class="phase-bar"><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step active"></div></div></td>
+              <td style="color:var(--muted)">Verlängerung in 28d</td><td>SK</td><td>SF</td>
+            </tr>
+            <tr>
+              <td><strong>Peter Schulz</strong><br><span style="color:var(--muted);font-size:11px">p.schulz@web.de · Kd-004</span></td>
+              <td><span class="badge badge-green">● Aktiv</span></td>
+              <td>Einnahme · Batch 1</td>
+              <td><div class="phase-bar"><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step active"></div><div class="phase-step pending"></div></div></td>
+              <td><span style="color:var(--red);font-weight:500">⚠ Check-in fällig (60d)</span></td><td>AW</td><td>JK</td>
+            </tr>
+            <tr>
+              <td><strong>Anna Schmidt</strong><br><span style="color:var(--muted);font-size:11px">a.schmidt@gm.de · Kd-005</span></td>
+              <td><span class="badge badge-yellow">● Pipeline</span></td>
+              <td>Diagnostik</td>
+              <td><div class="phase-bar"><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step active"></div><div class="phase-step pending"></div><div class="phase-step pending"></div><div class="phase-step pending"></div></div></td>
+              <td>Termin 22. Juni</td><td>AW</td><td>JvH</td>
+            </tr>
+            <tr>
+              <td><strong>Klaus Richter</strong><br><span style="color:var(--muted);font-size:11px">k.richter@t-o.de · Kd-006</span></td>
+              <td><span class="badge badge-red">● Verloren</span></td>
+              <td>—</td>
+              <td><div class="phase-bar"><div class="phase-step done"></div><div class="phase-step done"></div><div class="phase-step pending"></div><div class="phase-step pending"></div><div class="phase-step pending"></div><div class="phase-step pending"></div><div class="phase-step pending"></div></div></td>
+              <td>—</td><td>SW</td><td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- KUNDEN VIEW -->
+  <div id="view-kunden" class="view">
+    <div class="topbar">
+      <div><h2>Alle Kunden</h2><div class="topbar-sub" id="kunden-count">—</div></div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost btn-sm">Import</button>
+        <button class="btn btn-primary btn-sm" onclick="openModal()">+ Neuer Kunde</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="table-wrap">
+        <div class="table-header">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <input class="search" id="kunden-search" placeholder="🔍  Name, E-Mail, KdNr…" type="text" oninput="renderKunden()">
+            <div class="filter-tabs" id="kunden-filters">
+              <div class="filter-tab active" onclick="setKundenFilter('alle', this)">Alle</div>
+              <div class="filter-tab" onclick="setKundenFilter('Privatperson', this)">Privatperson</div>
+              <div class="filter-tab" onclick="setKundenFilter('Unternehmen', this)">Unternehmen</div>
+              <div class="filter-tab" onclick="setKundenFilter('VIP', this)">VIP</div>
+            </div>
+          </div>
+        </div>
+        <table id="kunden-table">
+          <thead><tr id="kunden-head"></tr></thead>
+          <tbody id="kunden-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- E-MAIL VORLAGEN VIEW -->
+  <div id="view-emails" class="view">
+    <div class="topbar">
+      <div><h2>E-Mail-Vorlagen</h2><div class="topbar-sub">11 Vorlagen · Variablen werden automatisch gefüllt</div></div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm">+ Neue Vorlage</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="mail-layout">
+        <div class="mail-list" id="mail-list"></div>
+        <div class="mail-preview" id="mail-preview"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRAGEBÖGEN VIEW -->
+  <div id="view-fragebogen" class="view">
+    <div class="topbar">
+      <div><h2>Fragebögen</h2><div class="topbar-sub">Jotform · Antworten fließen automatisch ins CRM</div></div>
+    </div>
+    <div class="content" id="frageboegen-content"></div>
+  </div>
+
+  <!-- AUTOMATIONEN VIEW -->
+  <div id="view-automationen" class="view">
+    <div class="topbar">
+      <div><h2>Automationen</h2><div class="topbar-sub">Regeln, die das CRM automatisch ausführt</div></div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm">+ Neue Regel</button>
+      </div>
+    </div>
+    <div class="content" id="automationen-content"></div>
+  </div>
+
+</div><!-- end main-wrap -->
+
+<!-- PIPELINE FULL VIEW -->
+<div id="view-pipeline" class="pipeline-full"></div>
+
+</div><!-- end app-body -->
+
+<!-- DETAIL PANEL -->
+<div class="detail-panel hidden" id="detail-panel">
+  <div class="detail-header">
+    <div class="detail-header-top">
+      <div>
+        <div class="detail-name" id="dp-name">—</div>
+        <div class="detail-kdnr" id="dp-kdnr"></div>
+      </div>
+      <button class="close-btn" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="detail-badges" id="dp-badges"></div>
+  </div>
+  <div class="detail-tabs" id="dp-tabs">
+    <div class="detail-tab active" onclick="switchTab('profil', this)">Profil</div>
+    <div class="detail-tab" onclick="switchTab('prozess', this)">Prozess</div>
+    <div class="detail-tab" onclick="switchTab('produktion', this)">Produktion</div>
+    <div class="detail-tab" onclick="switchTab('fragebögen', this)">Fragebögen</div>
+    <div class="detail-tab" onclick="switchTab('dokumente', this)">Dokumente</div>
+    <div class="detail-tab" onclick="switchTab('emails', this)">E-Mails</div>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
+</div>
+
+<!-- NEUER KUNDE MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title">Neuer Kunde anlegen</div>
+    <div class="form-grid">
+      <div class="form-row"><label>Vorname *</label><input type="text" placeholder="Max"></div>
+      <div class="form-row"><label>Nachname *</label><input type="text" placeholder="Mustermann"></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>E-Mail *</label><input type="email" placeholder="max@email.de"></div>
+      <div class="form-row"><label>Telefon</label><input type="tel" placeholder="+49 170 …"></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Geburtsdatum</label><input type="date"></div>
+      <div class="form-row"><label>Geschlecht</label><select><option value="">— wählen —</option><option>Männlich</option><option>Weiblich</option><option>Divers</option></select></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Kategorie</label><select><option>Privatperson</option><option>Unternehmen</option></select></div>
+      <div class="form-row"><label>Betreuung</label><select><option>Standard</option><option>VIP</option></select></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Verantwortlicher MD</label><select><option>AW – Angi Wirtz</option><option>SW – Sebastian Wirtz</option><option>SK – Sebastian Koch</option></select></div>
+      <div class="form-row"><label>Zugeteilter Arzt</label><select><option>— noch nicht zugeteilt —</option><option>JvH – Dr. Vonhoegen</option><option>SF – Dr. Friedsam</option><option>JK – Dr. Kostron</option><option>AB – Dr. Boukllouâ</option><option>AL – Dr. Latz</option></select></div>
+    </div>
+    <div class="form-row"><label>Kommt via</label><select><option>Weiterempfehlung</option><option>Social Media</option><option>Direktkontakt</option><option>Website</option><option>Kooperation</option><option>Sonstiges</option></select></div>
+    <div class="form-row"><label>Firma (falls Unternehmenskunde)</label><input type="text" placeholder="Firma GmbH"></div>
+    <div class="form-row"><label>Startphase</label><select><option>Phase 1 – Akquise</option><option>Phase 2 – Angebot & Paket</option><option>Phase 3 – Anamnese</option></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Abbrechen</button>
+      <button class="btn btn-primary">Kunde anlegen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== PIPELINE PHASES + TASKS ===== */
+const phases = [
+  {
+    num: 1, name: 'Lead Long List', accent: 'var(--blue)',
+    tasks: [{ t: 'Nachgehen' }],
+    cards: [
+      { id: 'max', name: 'Max Mustermann', info: ['Via Weiterempfehlung', 'Seit 3 Tagen'], md: 'MD: SW' },
+      { name: 'Laura Hoffmann', info: ['Direktkontakt', 'Seit 1 Woche'], md: 'MD: AW' },
+      { name: 'Erik Neumann', info: ['Social Media'], md: 'MD: SK' },
+      { name: 'Klaus Richter', tag: 'Lost', md: 'MD: SW' },
+      { name: 'Petra Vogel', tag: 'Lost', md: 'MD: AW' },
+    ],
+  },
+  {
+    num: 2, name: 'Lead Hot List', accent: 'var(--sand)',
+    tasks: [{ t: 'Kunden gewinnen' }],
+    cards: [
+      { name: 'Sophie Wagner', badge: ['badge-yellow', 'Angebot ausstehend'], md: 'MD: AW' },
+    ],
+  },
+  {
+    num: 3, name: 'Diagnostik', accent: 'var(--spark)',
+    tasks: [
+      { t: 'Anamnese-Fragebogen verschicken' },
+      { t: 'Customer Service: Termin zur Blutabnahme mit Kunde besprechen' },
+    ],
+    cards: [
+      { name: 'Jonas Becker', badge: ['badge-green', 'Fragebogen eingegangen'], md: 'MD: SW · Arzt: JK' },
+      { name: 'Marie Krause', badge: ['badge-yellow', 'Fragebogen ausstehend'], md: 'MD: AW · Arzt: SF' },
+    ],
+  },
+  {
+    num: 4, name: 'Arztgespräch', accent: '#9bb8c8',
+    tasks: [
+      { t: 'Customer Service: Arzt zuweisen' },
+    ],
+    automations: [
+      { trigger: 'Bei Arzt-Zuweisung', action: 'Arzt erhält automatisch eine Benachrichtigung, das Blutbild zu analysieren.' },
+    ],
+    cards: [
+      { name: 'Anna Schmidt', info: ['Termin: 22. Juni', 'Performula Köln'], md: 'MD: AW · Arzt: JvH' },
+    ],
+  },
+  {
+    num: 5, name: 'Formulierung & Produktion', accent: 'var(--ocean)',
+    tasks: [
+      { t: 'Formulierung erstellen' },
+      { t: 'Formulierung zur Produktion schicken' },
+    ],
+    automations: [
+      { trigger: 'Nach Versand durch Hersteller', action: 'DHL-API holt die Trackingnummer automatisch ins CRM und versendet die Versandbestätigung (A7) mit Trackinglink an den Kunden.' },
+    ],
+    cards: [
+      { name: 'Maria Fischer', info: ['Produktion läuft', 'Fertig ca. 25. Juni'], md: 'MD: AW · Arzt: SF' },
+    ],
+  },
+  {
+    num: 6, name: 'On-Boarding', accent: 'var(--sand2)',
+    tasks: [
+      { t: 'Kontaktperson meldet sich beim Kunden, sobald Paket da ist' },
+    ],
+    automations: [
+      { trigger: 'Bei DHL-Status „zugestellt“', action: 'DHL-API überwacht den Sendungsstatus und benachrichtigt automatisch die Kontaktperson, sobald das Paket zugestellt wurde.' },
+    ],
+    cards: [
+      { name: 'Tobias Lang', info: ['Paket unterwegs', 'Zustellung ca. 23. Juni'], md: 'MD: SK · Arzt: JK' },
+    ],
+  },
+  {
+    num: 7, name: 'Einnahme Zyklus', accent: 'var(--green)',
+    tasks: [],
+    cards: [
+      { id: 'sarah', name: 'Sarah Braun', info: ['Batch 1 · Tag 14', 'Check-in in 46d'], md: 'MD: AW · Arzt: JvH' },
+      { name: 'Peter Schulz', badge: ['badge-red', 'Check-in fällig (60d)'], md: 'MD: AW · Arzt: JK' },
+      { name: 'Julia Weber', info: ['Batch 3 · Verlängerung in 28d'], md: 'MD: SK · Arzt: SF' },
+    ],
+  },
+];
+
+const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>';
+
+function renderPipeline() {
+  const root = document.getElementById('view-pipeline');
+  root.innerHTML = phases.map((p, pi) => {
+    const cards = p.cards.map((c, ci) => {
+      const click = c.id ? ` onclick="openDetail('${c.id}')"` : '';
+
+      // Tasks pro Person (eigene Checkboxen je Karte, standardmäßig eingeklappt)
+      const ctid = `ct-${pi}-${ci}`;
+      const cardTasks = (p.tasks && p.tasks.length) ? `
+        <div class="pf-card-tasks collapsed" id="${ctid}">
+          <div class="pf-card-tasks-label" onclick="event.stopPropagation();toggleCardTasks('${ctid}')">
+            <span class="ct-chevron">▾</span>
+            <span>Aufgaben</span>
+            <span class="ct-count" id="cnt-${ctid}">0/${p.tasks.length}</span>
+          </div>
+          <div class="pf-card-tasks-list">
+          ${p.tasks.map((task, ti) => {
+            const tid = `t-${pi}-${ci}-${ti}`;
+            return `
+            <div class="task" id="${tid}">
+              <div class="task-row">
+                <div class="task-check" onclick="event.stopPropagation();toggleTask('${tid}')">${CHECK_SVG}</div>
+                <div class="task-body">
+                  <span class="task-label" onclick="event.stopPropagation();toggleTask('${tid}')">${task.t}</span>
+                  <div class="task-add" onclick="event.stopPropagation();toggleInput('${tid}')">＋ Info hinzufügen</div>
+                  <textarea class="task-input" placeholder="Notiz, Datum, Detail…" onclick="event.stopPropagation()"></textarea>
+                </div>
+              </div>
+            </div>`;
+          }).join('')}
+          </div>
+        </div>` : '';
+
+      return `<div class="pf-card${c.id ? ' clickable' : ''}"${click}>
+        <div class="pf-card-name">${c.name}${c.tag ? `<span class="pf-card-tag tag-${c.tag.toLowerCase()}">${c.tag}</span>` : ''}</div>
+        ${cardTasks}
+      </div>`;
+    }).join('');
+
+    const autoHtml = (p.automations && p.automations.length) ? `
+      <div class="pf-autos">
+        <div class="pf-tasks-label">Automatisierungen</div>
+        ${p.automations.map(a => `
+          <div class="auto-item">
+            <div class="auto-head"><span class="auto-icon">⚙</span><span class="auto-trigger">${a.trigger}</span></div>
+            <div class="auto-action">${a.action}</div>
+          </div>`).join('')}
+      </div>` : '';
+
+    return `
+      <div class="pf-col">
+        <div class="pf-col-accent" style="background:${p.accent}"></div>
+        <div class="pf-col-num">Phase ${p.num}</div>
+        <div class="pf-col-title">${p.name}</div>
+        <span class="pf-col-count">${p.cards.length} ${p.cards.length === 1 ? 'Kontakt' : 'Kontakte'}</span>
+        <div class="pf-cards">${cards}</div>
+        ${autoHtml}
+      </div>`;
+  }).join('');
+}
+
+/* ===== DASHBOARD-KENNZAHLEN (berechnet aus kundenliste) ===== */
+const AKQUISE_PHASEN = ['Lead Long List', 'Lead Hot List'];
+
+function renderDashboardStats() {
+  let aktiv = 0, leads = 0, bearbeitung = 0, lost = 0;
+  kundenliste.forEach(k => {
+    if (k.status === 'verloren') lost++;
+    else if (k.status === 'aktiv') aktiv++;
+    else if (k.status === 'pipeline') {
+      if (AKQUISE_PHASEN.includes(k.phase)) leads++;
+      else bearbeitung++;
+    }
+  });
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('stat-aktiv', aktiv);
+  set('stat-leads', leads);
+  set('stat-bearbeitung', bearbeitung);
+  set('stat-lost', lost);
+  set('stat-gesamt', kundenliste.length);
+}
+
+/* ===== AKTIVITÄTS-FEED (Letzte Änderungen) ===== */
+const ACT_TYPES = {
+  phase:      { label: 'Phase',      icon: '➡️', cls: 'act-phase' },
+  fragebogen: { label: 'Fragebogen', icon: '📋', cls: 'act-frage' },
+  task:       { label: 'Aufgabe',    icon: '✅', cls: 'act-task' },
+  email:      { label: 'E-Mail',     icon: '📧', cls: 'act-mail' },
+  produktion: { label: 'Produktion', icon: '📦', cls: 'act-prod' },
+};
+
+const activityFeed = [
+  { type: 'fragebogen', time: 'vor 35 Min',  customer: 'Jonas Becker',    text: 'Anamnese-Fragebogen eingegangen' },
+  { type: 'produktion', time: 'vor 2 Std',   customer: 'Tobias Lang',     text: 'Paket zugestellt (DHL) – Kontaktperson benachrichtigt' },
+  { type: 'task',       time: 'vor 3 Std',   customer: 'Sarah Braun',     id: 'sarah', text: 'Aufgabe „Check-in 60 Tage versenden" erledigt' },
+  { type: 'phase',      time: 'vor 5 Std',   customer: 'Max Mustermann',  id: 'max',   text: 'von Lead Long List → Lead Hot List verschoben' },
+  { type: 'email',      time: 'Gestern',     customer: 'Anna Schmidt',    text: 'A4 Reminder Blutentnahme automatisch versendet' },
+  { type: 'produktion', time: 'Gestern',     customer: 'Maria Fischer',   text: 'Herstellerprotokoll an Hersteller übermittelt (Charge 26-00071-MF)' },
+  { type: 'fragebogen', time: 'Gestern',     customer: 'Sarah Braun',     id: 'sarah', text: 'Check-in 60 Tage ausgefüllt – möchte verlängern' },
+  { type: 'phase',      time: '18. Juni',    customer: 'Klaus Richter',   text: 'mit „Lost"-Tag markiert (90 Tage ohne Verlängerung)' },
+  { type: 'email',      time: '18. Juni',    customer: 'Jonas Becker',    text: 'A2 Welcome-Mail + Anamnese-Link versendet' },
+  { type: 'email',      time: '17. Juni',    customer: 'Peter Schulz',    text: 'A9 Check-in 7 Tage automatisch versendet' },
+];
+
+function renderActivityFeed() {
+  const root = document.getElementById('activity-feed');
+  if (!root) return;
+  root.innerHTML = activityFeed.slice(0, 10).map(a => {
+    const t = ACT_TYPES[a.type] || ACT_TYPES.task;
+    const click = a.id ? ` onclick="openDetail('${a.id}')"` : '';
+    return `
+      <div class="act-item${a.id ? ' clickable' : ''}"${click} title="${t.label}">
+        <span class="act-dot ${t.cls}"></span>
+        <div class="act-text"><strong>${a.customer}</strong> · ${a.text}</div>
+        <div class="act-time">${a.time}</div>
+      </div>`;
+  }).join('');
+}
+
+let miniSelection = null;  // einmal pro Seitenaufruf festgelegt, dann stabil
+
+function pickRandom(arr, n) {
+  const copy = arr.slice();
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, n);
+}
+
+// Person hat offene Aufgaben, wenn die Phase Aufgaben hat und kein Lost-Tag vorliegt
+function hasOpenTasks(phase, card) {
+  return !!(phase.tasks && phase.tasks.length) && !card.tag;
+}
+
+function renderMiniPipeline() {
+  const root = document.getElementById('mini-pipeline');
+  if (!root) return;
+
+  // Zufallsauswahl nur einmal pro Seitenaufruf bestimmen (stabil bis Neuladen)
+  if (!miniSelection) {
+    miniSelection = phases.map(p => {
+      const candidates = p.cards.filter(c => hasOpenTasks(p, c));
+      return { shown: pickRandom(candidates, 3), total: candidates.length };
+    });
+  }
+
+  root.innerHTML = phases.map((p, pi) => {
+    const sel = miniSelection[pi];
+    const cards = sel.shown.map(c => {
+      const click = c.id ? ` onclick="openDetail('${c.id}')"` : '';
+      return `<div class="pipeline-card"${click}><div class="pipeline-card-name">${c.name}</div></div>`;
+    }).join('');
+    const more = sel.total > sel.shown.length
+      ? `<div class="pipeline-more">+${sel.total - sel.shown.length} weitere</div>` : '';
+    const empty = sel.total === 0
+      ? `<div class="pipeline-empty">Keine offenen Aufgaben</div>` : '';
+    return `
+      <div class="pipeline-col">
+        <div class="pipeline-col-header"><span class="pipeline-col-title">${p.name}</span><span class="pipeline-count">${sel.total}</span></div>
+        ${cards}${more}${empty}
+      </div>`;
+  }).join('');
+}
+
+function toggleTask(tid) {
+  const el = document.getElementById(tid);
+  const check = el.querySelector('.task-check');
+  const on = check.classList.toggle('checked');
+  el.classList.toggle('done', on);
+  updateCardTaskCount(el.closest('.pf-card-tasks'));
+}
+
+function toggleCardTasks(ctid) {
+  document.getElementById(ctid).classList.toggle('collapsed');
+}
+
+function toggleProfileTask(el) {
+  const on = el.classList.toggle('done');
+  el.querySelector('.task-check').classList.toggle('checked', on);
+}
+
+function updateCardTaskCount(container) {
+  if (!container) return;
+  const total = container.querySelectorAll('.task').length;
+  const done = container.querySelectorAll('.task-check.checked').length;
+  const cnt = container.querySelector('.ct-count');
+  if (cnt) {
+    cnt.textContent = `${done}/${total}`;
+    cnt.classList.toggle('all-done', done === total && total > 0);
+  }
+}
+
+function toggleInput(tid) {
+  const el = document.getElementById(tid);
+  const input = el.querySelector('.task-input');
+  input.classList.toggle('show');
+  if (input.classList.contains('show')) input.focus();
+}
+
+/* ===== E-MAIL VORLAGEN ===== */
+const emails = [
+  {
+    code: 'A1', title: 'Angebot Neukunde', phase: 'Lead Hot List', auto: false,
+    trigger: 'Manuell nach dem ersten Gespräch — Angebot im Anhang.',
+    subject: 'Dein PERFORMULA-Angebot',
+    body: `Lieber {{Vorname}},
+
+herzlichen Dank für den angenehmen Austausch und für dein Interesse, Teilnehmer des PERFORMULA-Programms zu werden.
+
+Im Anhang findest du dein offizielles Angebot.
+
+Nach Annahme des Angebots gestalten sich die nächsten Schritte wie folgt:
+• Einsteuerung der Blutabnahme sowie Stuhl-/Urinproben durch PERFORMULA
+• Anamnesegespräch per Video-Call oder Telefon (ca. 7–10 Tage nach Blutentnahme)
+• Erstellung deiner individuellen Rezeptur
+
+Du erhältst darin:
+• 90 Tagesrationen Mikronährstoffe (bis zu 40 Inhaltsstoffe, individuell abgestimmt)
+• 90 Portionen Fruchtpulver/Proteinpulver auf Geschmacksbasis
+
+Bei Fragen melde dich sehr gerne jederzeit!`,
+  },
+  {
+    code: 'A2', title: 'Welcome + Anamnese-Bogen', phase: 'Diagnostik', auto: true,
+    trigger: 'Automatisch bei Übergang Lead Hot List → Diagnostik. Enthält Jotform-Link + DHL-Tracking fürs Probenset.',
+    subject: 'Willkommen bei PERFORMULA – deine nächsten Schritte',
+    body: `Lieber {{Vorname}},
+
+wir freuen uns sehr, dass du dich für die Teilnahme am PERFORMULA Programm entschieden hast.
+
+Anbei findest du einen Link zu einem Fragebogen, der uns dabei hilft, auf Basis deines Blutbilds deine individuelle Mikronährstoff-Rezeptur zu erstellen.
+→ Anamnese-Bogen: https://form.jotform.com/261323094836357
+
+Außerdem erhältst du in den nächsten Tagen eine Lieferung mit deinem Probenentnahme-Set für Stuhl und Urin.
+Hier dein DHL-Trackinglink: {{DHL-Trackinglink}}
+
+WICHTIG: Bitte lege unbedingt den unterschriebenen Auftrag mit in die Versandtasche.
+
+Im nächsten Schritt steht deine Blutentnahme an:
+Praxis: {{Praxis}}
+Termin: {{Termin}}
+
+Die Blutentnahme erfolgt nüchtern – bitte jedoch ausreichend Wasser trinken.
+
+Solltest du Fragen haben, melde dich gerne jederzeit!`,
+  },
+  {
+    code: 'A2.2', title: 'Nur Anamnese-Bogen', phase: 'Diagnostik', auto: false,
+    trigger: 'Manuell, falls der Fragebogen separat nachgeschickt wird.',
+    subject: 'Dein PERFORMULA Anamnese-Bogen',
+    body: `Lieber {{Vorname}},
+
+wir freuen uns sehr, dass du am PERFORMULA-Programm teilnimmst.
+
+Anbei der Link zu einem Fragebogen, der uns dabei hilft, auf Basis deines Blutbilds deine individuelle Mikronährstoff-Rezeptur zu erstellen.
+→ Anamnese-Bogen: https://form.jotform.com/261323094836357
+
+Wir würden uns freuen, wenn du den Fragebogen vollständig ausfüllst (ca. 10 Min.).
+
+Liebe Grüße aus Köln,
+{{Absender}}`,
+  },
+  {
+    code: 'A3', title: 'Reminder Stuhl-/Urinprobe', phase: 'Diagnostik', auto: true,
+    trigger: 'Automatisch, wenn DHL-Zustellung des Probensets bestätigt ist, aber noch kein Probeneingang im Labor.',
+    subject: 'Kurze Nachfrage zu deinen Proben',
+    body: `Lieber {{Vorname}},
+
+laut DHL sind deine Materialien für die Stuhl- und Urinproben bei dir eingetroffen.
+
+Da wir bisher noch keinen Probeneingang im Labor verzeichnen konnten, möchten wir kurz nachfragen, ob du noch Unterstützung benötigst oder ob du bereits abschätzen kannst, wann du die Proben versenden wirst.
+
+Solltest du Fragen haben, melde dich gerne jederzeit!
+Liebe Grüße`,
+  },
+  {
+    code: 'A4', title: 'Reminder Blutentnahme', phase: 'Diagnostik', auto: true,
+    trigger: 'Automatisch am Tag vor dem Blutentnahme-Termin.',
+    subject: 'Erinnerung: morgen ist deine Blutentnahme',
+    body: `Lieber {{Vorname}},
+
+morgen findet deine Blutentnahme statt. Hier noch einmal alle relevanten Informationen:
+Praxis: {{Praxis}}
+Termin: {{Termin}}
+
+Bitte erscheine nüchtern zur Blutentnahme – Wasser ist selbstverständlich erlaubt.
+
+Wichtig: Bitte entnimm deine Stuhl- und Urinprobe am Morgen der Blutentnahme und bringe sie gemeinsam mit dem unterschriebenen Auftrag in der Versandtasche mit.
+
+Du kannst bereits jetzt dein Anamnesegespräch bei {{Arzt}} buchen:
+{{Meeting-Link}}
+
+Solltest du Fragen haben, melde dich gerne jederzeit!`,
+  },
+  {
+    code: 'A5', title: 'Befunde liegen vor', phase: 'Arztgespräch', auto: true,
+    trigger: 'Automatisch, sobald die Laborbefunde vorliegen (ca. 7–10 Tage nach Blutentnahme). Mit Buchungslink fürs Arztgespräch.',
+    subject: 'Deine Befunde liegen vor – jetzt Termin buchen',
+    body: `Lieber {{Vorname}},
+
+deine Befunde liegen nun vor.
+
+Gerne kannst du über den folgenden Link dein Anamnesegespräch bei {{Arzt}} buchen:
+{{Meeting-Link}}
+
+Sollte bei der Terminauswahl kein passender Slot dabei sein, melde dich einfach – wir finden selbstverständlich einen Alternativtermin.
+
+Liebe Grüße`,
+  },
+  {
+    code: 'A6', title: 'Verzögerung Produktion', phase: 'Formulierung & Produktion', auto: false,
+    trigger: 'Manuell bei Produktionsverzögerung (z. B. fehlende Rohstoffe).',
+    subject: 'Kurzes Update zu deiner Mischung',
+    body: `Lieber {{Vorname}},
+
+anbei ein kurzes Update zu deiner PERFORMULA Mikronährstoffmischung: Wir gehen aktuell davon aus, dass die Produktion noch diese Woche abgeschlossen werden kann.
+
+Zwei benötigte Rohstoffe treffen voraussichtlich in Kürze ein, sodass deine individuelle Mischung zeitnah finalisiert und verschickt werden kann.
+
+Bei Fragen melde dich gerne jederzeit bei uns,
+Liebe Grüße`,
+  },
+  {
+    code: 'A7', title: 'Versandbestätigung', phase: 'Formulierung & Produktion', auto: true,
+    trigger: 'Automatisch (DHL-API), sobald die Sendung erstellt ist – mit Trackinglink der Mischung.',
+    subject: 'Deine PERFORMULA Mischung ist unterwegs!',
+    body: `Lieber {{Vorname}},
+
+deine PERFORMULA Mikronährstoffmischung ist auf dem Weg zu dir!
+
+Hier dein DHL-Trackinglink: {{DHL-Trackinglink}}
+
+Sobald das Paket eingetroffen ist, melde dich gerne bei uns – dann legen wir gemeinsam einen kurzen Termin für einen Videocall (Onboarding) fest.
+
+Bei Fragen melde dich gerne jederzeit bei uns,
+Liebe Grüße`,
+  },
+  {
+    code: 'A8', title: 'Re-check', phase: 'On-Boarding', auto: false,
+    trigger: 'Manuell, einige Wochen nach Lieferung – informelle Nachfrage.',
+    subject: 'Wie kommst du mit deinen Mikronährstoffen zurecht?',
+    body: `Lieber {{Vorname}},
+
+vor einigen Wochen sind deine PERFORMULA Mikronährstoffe bei dir angekommen. Wir freuen uns sehr, dass du den Weg zu mehr Gesundheit und Wohlbefinden mit uns gehst.
+
+Wie kommst du zurecht? Gibt es etwas, das du uns fragen möchtest? Merkst du schon Veränderungen oder Effekte?
+
+Melde dich gerne jederzeit bei uns!
+Liebe Grüße`,
+  },
+  {
+    code: 'A9', title: 'Check-in · 7 Tage', phase: 'On-Boarding', auto: true,
+    trigger: 'Automatisch 10 Tage nach Paketerhalt. Enthält den Check-in-Fragebogen (7 Tage).',
+    subject: 'Deine ersten Tage mit PERFORMULA – kurzes Feedback?',
+    body: `Lieber {{Vorname}},
+
+deine PERFORMULA Mikronährstoffe sind nun seit einigen Tagen bei dir – wie läuft es bisher?
+
+Wir würden uns sehr über dein kurzes Feedback freuen (ca. 3 Min.). So können wir deine Erfahrung optimal begleiten:
+→ Check-in (7 Tage): https://form.jotform.com/261302990765360
+
+Vielen Dank und melde dich jederzeit gerne bei uns!
+Liebe Grüße`,
+  },
+  {
+    code: 'A10', title: 'Check-in · 60 Tage', phase: 'Einnahme Zyklus', auto: true,
+    trigger: 'Automatisch 60 Tage nach Einnahmestart. Enthält den Check-in-Fragebogen (60 Tage).',
+    subject: 'Dein 60-Tage Check-in bei PERFORMULA',
+    body: `Lieber {{Vorname}},
+
+du nimmst deine individuelle Mikronährstoffmischung nun seit rund 60 Tagen ein – ein guter Zeitpunkt, um gemeinsam Bilanz zu ziehen.
+
+Bitte nimm dir einen kurzen Moment für unseren Check-in-Fragebogen (ca. 5 Min.):
+→ Check-in (60 Tage): https://form.jotform.com/260392593422357
+
+Auf Wunsch besprechen wir die nächsten Schritte – Verlängerung deiner Formel oder ein neuer Zyklus mit erneuter Blutanalyse.
+
+Liebe Grüße`,
+  },
+];
+
+let activeMail = 0;
+
+function renderEmails() {
+  const list = document.getElementById('mail-list');
+  list.innerHTML = emails.map((m, i) => `
+    <div class="mail-card ${i === activeMail ? 'active' : ''}" onclick="selectMail(${i})">
+      <div class="mail-card-top">
+        <span class="mail-code">${m.code}</span>
+        <span class="mail-card-title">${m.title}</span>
+        ${m.auto ? '<span class="mail-auto-pill">⚙ Auto</span>' : ''}
+      </div>
+      <div class="mail-trigger">${m.trigger}</div>
+    </div>`).join('');
+  renderMailPreview();
+}
+
+function selectMail(i) { activeMail = i; renderEmails(); }
+
+function highlightVars(text) {
+  let html = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color:var(--blue);word-break:break-all;">$1</a>');
+  html = html.replace(/\{\{(.*?)\}\}/g, '<span class="mail-var">{{$1}}</span>');
+  return html;
+}
+
+function renderMailPreview() {
+  const m = emails[activeMail];
+  const prev = document.getElementById('mail-preview');
+  if (!m) { prev.innerHTML = '<div class="mail-empty">Wähle eine Vorlage aus.</div>'; return; }
+  prev.innerHTML = `
+    <div class="mail-preview-head">
+      <h3>${m.code} · ${m.title}</h3>
+      <div class="mph-sub">Phase: ${m.phase} · ${m.auto ? 'Automatisch versendet' : 'Manuell versendet'}</div>
+    </div>
+    <div class="mail-meta-row">
+      <div><b>Auslöser</b>${m.trigger}</div>
+    </div>
+    <div class="mail-subject"><b>Betreff</b>${highlightVars(m.subject)}</div>
+    <div class="mail-body-text">${highlightVars(m.body)}</div>
+    <div class="mail-preview-actions">
+      <button class="btn btn-primary btn-sm">Bearbeiten</button>
+      <button class="btn btn-ghost btn-sm">Test-Mail senden</button>
+    </div>`;
+}
+
+/* ===== FRAGEBÖGEN ===== */
+const frageboegen = [
+  {
+    title: 'Anamnese-Fragebogen', when: 'Automatisch beim Übergang Lead Hot List → Diagnostik.',
+    fields: ['Stammdaten (Name, E-Mail, Telefon, Adresse, Geburtsdatum, Geschlecht, Größe, Gewicht)', 'Versicherungsart (GKV/PKV)', 'Persönliche Ziele', 'Allergien / Unverträglichkeiten', 'Geschmackswahl & Mixer-Farbe', 'Medizinische Daten (nur für Ärzte sichtbar)', 'DSGVO-Einwilligung'],
+    link: 'https://form.jotform.com/261323094836357',
+  },
+  {
+    title: 'Check-in · 7 Tage', when: 'Automatisch 10 Tage nach Paketerhalt.',
+    fields: ['Produkterfahrung', 'Verträglichkeit', 'Service-Bewertung', 'Lab-Wallet-Nutzung'],
+    link: 'https://form.jotform.com/261302990765360',
+  },
+  {
+    title: 'Check-in · 60 Tage', when: 'Automatisch 60 Tage nach Einnahmestart.',
+    fields: ['Wohlbefinden & Performance', 'Einnahmeverhalten', 'Weitermachen? (Ja/Nein) → bei Nein nach 90 Tagen automatisch „Lost“'],
+    link: 'https://form.jotform.com/260392593422357',
+  },
+  {
+    title: 'Postpartum-Fragebogen', when: 'Für Kundinnen nach der Geburt (Kooperation female-health-club.com).',
+    fields: ['Spezifische Anamnese rund um Schwangerschaft & Geburt', 'Stillzeit & Verträglichkeit', 'Individuelle Ziele für die postpartale Phase'],
+    link: 'https://form.jotform.com/261513479894369',
+  },
+];
+
+function renderFrageboegen() {
+  document.getElementById('frageboegen-content').innerHTML = `
+    <div class="fb-grid">
+      ${frageboegen.map(f => `
+        <div class="fb-card">
+          <h3>${f.title}</h3>
+          <div class="fb-when">${f.when}</div>
+          <div class="fb-fields">${f.fields.map(x => `• ${x}`).join('<br>')}</div>
+          <a class="fb-link" href="${f.link}" target="_blank">${f.link}</a>
+        </div>`).join('')}
+    </div>`;
+}
+
+/* ===== AUTOMATIONEN ===== */
+const automationGroups = [
+  {
+    group: 'Fragebögen & Kommunikation',
+    rules: [
+      { icon: '📋', trigger: 'Lead Hot List → Diagnostik', action: 'Welcome-Mail + Anamnese-Link senden', desc: 'Sobald ein Lead in die Diagnostik übergeht, wird automatisch die A2-Welcome-Mail mit dem Anamnese-Fragebogen versendet.', tags: [['mail','E-Mail A2'],['',  'Anamnese-Bogen']], on: true },
+      { icon: '🩸', trigger: 'DHL: Probenset zugestellt + kein Laboreingang', action: 'Reminder Stuhl-/Urinprobe', desc: 'Wenn das Probenset zugestellt wurde, aber nach einigen Tagen kein Probeneingang im Labor verzeichnet ist.', tags: [['mail','E-Mail A3']], on: true },
+      { icon: '⏰', trigger: '1 Tag vor Blutentnahme-Termin', action: 'Reminder Blutentnahme', desc: 'Automatische Erinnerung mit Praxis, Termin und Buchungslink fürs Arztgespräch.', tags: [['mail','E-Mail A4'],['timer','Termin − 1 Tag']], on: true },
+      { icon: '✅', trigger: 'Laborbefunde vollständig', action: 'Befunde-Mail mit Buchungslink', desc: 'Sobald die Befunde vorliegen, erhält der Kunde den Link zur Buchung des Arztgesprächs.', tags: [['mail','E-Mail A5']], on: true },
+    ],
+  },
+  {
+    group: 'Arzt & Produktion',
+    rules: [
+      { icon: '👩‍⚕️', trigger: 'Arzt wird zugewiesen', action: 'Arzt benachrichtigen: Blutbild analysieren', desc: 'Bei Zuweisung erhält der Arzt automatisch eine Benachrichtigung, das Blutbild des Kunden zu analysieren.', tags: [['','Interne Notifikation']], on: true },
+      { icon: '🗓️', trigger: 'Datum Abfüllung erfasst', action: 'Haltbarkeit berechnen (+ 12 Monate)', desc: 'Das Haltbarkeitsdatum wird automatisch als Abfülldatum + 12 Monate gesetzt.', tags: [['','Feld-Berechnung']], on: true },
+      { icon: '📦', trigger: 'Versand durch Hersteller (DHL-API)', action: 'Trackingnr. ziehen + Versandbestätigung', desc: 'Die DHL-API holt die Trackingnummer automatisch ins CRM und versendet die A7-Versandbestätigung mit Trackinglink an den Kunden.', tags: [['mail','E-Mail A7'],['','DHL-API']], on: true },
+      { icon: '🚚', trigger: 'DHL-Status „zugestellt"', action: 'Kontaktperson benachrichtigen', desc: 'Sobald das Paket zugestellt wurde, wird die zuständige Kontaktperson automatisch informiert, um sich beim Kunden zu melden.', tags: [['','Interne Notifikation'],['','DHL-API']], on: true },
+    ],
+  },
+  {
+    group: 'Check-ins & Lebenszyklus',
+    rules: [
+      { icon: '📨', trigger: '10 Tage nach Paketerhalt', action: 'Check-in (7 Tage) senden', desc: 'Automatischer Versand des 7-Tage-Check-in-Fragebogens.', tags: [['mail','E-Mail A9'],['timer','Erhalt + 10 Tage']], on: true },
+      { icon: '📨', trigger: '60 Tage nach Einnahmestart', action: 'Check-in (60 Tage) senden', desc: 'Automatischer Versand des 60-Tage-Check-in-Fragebogens mit Frage „Weitermachen?".', tags: [['mail','E-Mail A10'],['timer','Start + 60 Tage']], on: true },
+      { icon: '🔔', trigger: 'Check-in 60 Tage: „Ja" (weitermachen)', action: 'MD benachrichtigen', desc: 'Der zuständige Managing Director wird informiert und bestätigt die Verlängerung manuell.', tags: [['','Interne Notifikation']], on: true },
+      { icon: '🚫', trigger: 'Check-in 60 Tage: „Nein" + 90 Tage', action: 'Kunde erhält „Lost"-Tag', desc: 'Gibt der Kunde an, nicht weiterzumachen, wird er nach 90 Tagen automatisch mit dem „Lost"-Tag markiert und zurück in die Lead Long List gelegt.', tags: [['timer','+ 90 Tage'],['','Lost-Tag']], on: true },
+    ],
+  },
+];
+
+function renderAutomationen() {
+  document.getElementById('automationen-content').innerHTML = automationGroups.map((g, gi) => `
+    <div class="auto-group">
+      <div class="auto-group-title">${g.group}</div>
+      ${g.rules.map((r, ri) => `
+        <div class="auto-rule ${r.on ? '' : 'off'}" id="auto-${gi}-${ri}">
+          <div class="auto-rule-icon">${r.icon}</div>
+          <div class="auto-rule-main">
+            <div class="auto-rule-flow">
+              <span class="auto-chip trigger">${r.trigger}</span>
+              <span class="auto-arrow">→</span>
+              <span class="auto-chip act">${r.action}</span>
+            </div>
+            <div class="auto-rule-desc">${r.desc}</div>
+            <div class="auto-rule-meta">${r.tags.map(t => `<span class="auto-tag2 ${t[0]}">${t[1]}</span>`).join('')}</div>
+          </div>
+          <div class="switch ${r.on ? 'on' : ''}" onclick="toggleAuto(${gi},${ri},this)">
+            <div class="switch-track"></div><div class="switch-thumb"></div>
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function toggleAuto(gi, ri, el) {
+  const r = automationGroups[gi].rules[ri];
+  r.on = !r.on;
+  el.classList.toggle('on', r.on);
+  document.getElementById(`auto-${gi}-${ri}`).classList.toggle('off', !r.on);
+}
+
+/* ===== KUNDENLISTE (sortierbar) ===== */
+const kundenliste = [
+  { kdnr:'Kd-001', vorname:'Sarah',    nachname:'Braun',     email:'sarah@email.de',     kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-07-18', md:'AW', arzt:'JvH', detail:'sarah' },
+  { kdnr:'Kd-002', vorname:'Max',      nachname:'Mustermann',email:'max@firma.de',       kategorie:'Unternehmen',  status:'pipeline', phase:'Lead Long List',           versorgt:'',           md:'SW', arzt:'—',   detail:'max' },
+  { kdnr:'Kd-003', vorname:'Julia',    nachname:'Weber',     email:'j.weber@mail.de',    kategorie:'VIP',          status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-09-15', md:'SK', arzt:'SF' },
+  { kdnr:'Kd-004', vorname:'Peter',    nachname:'Schulz',    email:'p.schulz@web.de',    kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-08-02', md:'AW', arzt:'JK' },
+  { kdnr:'Kd-005', vorname:'Anna',     nachname:'Schmidt',   email:'a.schmidt@gm.de',    kategorie:'Privatperson', status:'pipeline', phase:'Diagnostik',               versorgt:'',           md:'AW', arzt:'JvH' },
+  { kdnr:'Kd-006', vorname:'Klaus',    nachname:'Richter',   email:'k.richter@t-o.de',   kategorie:'Unternehmen',  status:'verloren', phase:'Lead Long List',           versorgt:'',           md:'SW', arzt:'—' },
+  { kdnr:'Kd-007', vorname:'Maria',    nachname:'Fischer',   email:'m.fischer@web.de',   kategorie:'VIP',          status:'pipeline', phase:'Formulierung & Produktion',versorgt:'',           md:'AW', arzt:'SF' },
+  { kdnr:'Kd-008', vorname:'Thomas',   nachname:'Klein',     email:'t.klein@mail.de',    kategorie:'Privatperson', status:'pipeline', phase:'Arztgespräch',             versorgt:'',           md:'SK', arzt:'JK' },
+  { kdnr:'Kd-009', vorname:'Sophie',   nachname:'Wagner',    email:'s.wagner@gmx.de',    kategorie:'Privatperson', status:'pipeline', phase:'Lead Hot List',            versorgt:'',           md:'AW', arzt:'—' },
+  { kdnr:'Kd-010', vorname:'Jonas',    nachname:'Becker',    email:'j.becker@web.de',    kategorie:'Unternehmen',  status:'pipeline', phase:'Diagnostik',               versorgt:'',           md:'SW', arzt:'JK' },
+  { kdnr:'Kd-011', vorname:'Laura',    nachname:'Hoffmann',  email:'l.hoffmann@mail.de', kategorie:'Privatperson', status:'pipeline', phase:'Lead Long List',           versorgt:'',           md:'AW', arzt:'—' },
+  { kdnr:'Kd-012', vorname:'Tobias',   nachname:'Lang',      email:'t.lang@firma.de',    kategorie:'Unternehmen',  status:'aktiv',    phase:'On-Boarding',              versorgt:'2026-10-05', md:'SK', arzt:'JK' },
+  { kdnr:'Kd-013', vorname:'Petra',    nachname:'Vogel',     email:'p.vogel@gmx.de',     kategorie:'Privatperson', status:'verloren', phase:'Lead Long List',           versorgt:'',           md:'AW', arzt:'—' },
+  { kdnr:'Kd-014', vorname:'Daniel',   nachname:'Krüger',    email:'d.krueger@web.de',   kategorie:'VIP',          status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-06-28', md:'SW', arzt:'AB' },
+  { kdnr:'Kd-015', vorname:'Christina',nachname:'Albrecht',  email:'c.albrecht@mail.de', kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-11-12', md:'SK', arzt:'AL' },
+  { kdnr:'Kd-016', vorname:'Felix',    nachname:'Zimmermann',email:'f.zimmer@gmx.de',    kategorie:'Unternehmen',  status:'pipeline', phase:'Diagnostik',               versorgt:'',           md:'AW', arzt:'SF' },
+  { kdnr:'Kd-017', vorname:'Nina',     nachname:'Bauer',     email:'n.bauer@web.de',     kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-07-30', md:'SW', arzt:'JvH' },
+  { kdnr:'Kd-018', vorname:'Oliver',   nachname:'Hartmann',  email:'o.hartmann@firma.de',kategorie:'VIP',          status:'pipeline', phase:'Arztgespräch',             versorgt:'',           md:'SK', arzt:'AB' },
+];
+
+const PHASE_ORDER = { 'Lead Long List':1,'Lead Hot List':2,'Diagnostik':3,'Arztgespräch':4,'Formulierung & Produktion':5,'On-Boarding':6,'Einnahme Zyklus':7 };
+const STATUS_MAP = { aktiv:['badge-green','Aktiv'], pipeline:['badge-blue','Pipeline'], verloren:['badge-red','Verloren'] };
+const KAT_MAP = { 'Privatperson':'badge-muted', 'Unternehmen':'badge-blue', 'VIP':'badge-sand' };
+const MONTHS_DE = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+
+const kundenColumns = [
+  { key:'kdnr',      label:'KdNr' },
+  { key:'name',      label:'Name' },
+  { key:'kategorie', label:'Kategorie' },
+  { key:'status',    label:'Status' },
+  { key:'phase',     label:'Phase' },
+  { key:'versorgt',  label:'versorgt bis' },
+  { key:'md',        label:'MD' },
+  { key:'arzt',      label:'Arzt' },
+];
+
+let kundenSort = { key:'kdnr', dir:1 };   // dir: 1 = aufsteigend, -1 = absteigend
+let kundenFilter = 'alle';
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return `${d.getDate()}. ${MONTHS_DE[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function sortValue(k, key) {
+  switch (key) {
+    case 'kdnr':     return parseInt(k.kdnr.replace(/\D/g,''), 10);
+    case 'name':     return (k.nachname + ' ' + k.vorname).toLowerCase();
+    case 'phase':    return PHASE_ORDER[k.phase] || 99;
+    case 'status':   return STATUS_MAP[k.status] ? STATUS_MAP[k.status][1].toLowerCase() : '';
+    case 'versorgt': return k.versorgt ? new Date(k.versorgt).getTime() : Infinity; // ohne Datum ans Ende
+    default:         return (k[key] || '').toString().toLowerCase();
+  }
+}
+
+function sortKunden(key) {
+  if (kundenSort.key === key) kundenSort.dir *= -1;
+  else kundenSort = { key, dir: 1 };
+  renderKunden();
+}
+
+function setKundenFilter(f, el) {
+  kundenFilter = f;
+  document.querySelectorAll('#kunden-filters .filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderKunden();
+}
+
+function renderKunden() {
+  // Kopfzeile mit Sortier-Pfeilen
+  document.getElementById('kunden-head').innerHTML = kundenColumns.map(c => {
+    const sorted = kundenSort.key === c.key;
+    const arrow = sorted ? (kundenSort.dir === 1 ? '▲' : '▼') : '▲';
+    return `<th class="sortable ${sorted ? 'sorted' : ''}" onclick="sortKunden('${c.key}')">${c.label}<span class="sort-arrow">${arrow}</span></th>`;
+  }).join('');
+
+  // Filter + Suche
+  const q = (document.getElementById('kunden-search').value || '').toLowerCase();
+  let rows = kundenliste.filter(k => {
+    if (kundenFilter !== 'alle' && k.kategorie !== kundenFilter) return false;
+    if (!q) return true;
+    return (`${k.vorname} ${k.nachname} ${k.email} ${k.kdnr}`).toLowerCase().includes(q);
+  });
+
+  // Sortierung
+  rows.sort((a, b) => {
+    const va = sortValue(a, kundenSort.key), vb = sortValue(b, kundenSort.key);
+    if (va < vb) return -1 * kundenSort.dir;
+    if (va > vb) return 1 * kundenSort.dir;
+    return 0;
+  });
+
+  document.getElementById('kunden-count').textContent = `${rows.length} von ${kundenliste.length} Einträgen`;
+
+  const tbody = document.getElementById('kunden-tbody');
+  if (!rows.length) { tbody.innerHTML = `<tr class="kunden-empty"><td colspan="8">Keine Kunden gefunden.</td></tr>`; return; }
+
+  tbody.innerHTML = rows.map(k => {
+    const [sc, sl] = STATUS_MAP[k.status] || ['badge-muted','—'];
+    const click = k.detail ? ` onclick="openDetail('${k.detail}')"` : '';
+    return `<tr${click}>
+      <td style="color:var(--muted);font-family:monospace;font-size:11px">${k.kdnr}</td>
+      <td><strong>${k.vorname} ${k.nachname}</strong><br><span style="color:var(--muted);font-size:11px">${k.email}</span></td>
+      <td><span class="badge ${KAT_MAP[k.kategorie]}">${k.kategorie}</span></td>
+      <td><span class="badge ${sc}">● ${sl}</span></td>
+      <td>${k.phase}</td>
+      <td>${fmtDate(k.versorgt)}</td>
+      <td>${k.md}</td>
+      <td>${k.arzt}</td>
+    </tr>`;
+  }).join('');
+}
+
+const customers = {
+  sarah: {
+    name: 'Sarah Braun',
+    kdnr: 'Kd-001',
+    status: 'aktiv',
+    phase: 'Einnahme · Batch 1',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Sarah', nachname: 'Braun', titel: '—',
+      email: 'sarah@email.de', telefon: '+49 151 234 5678',
+      geburtsdatum: '12.03.1988', geschlecht: 'Weiblich',
+      adresse: 'Musterstraße 12, 50667 Köln', land: 'Deutschland',
+      versicherung: 'PKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Weiterempfehlung',
+      weiterer_hintergrund: 'Leistungssportlerin, Fokus Performance & Regeneration',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'AW – Angi Wirtz',
+      arzt: 'JvH – Dr. Vonhoegen',
+      versorgt_bis: '18. Juli 2026',
+      ziele: 'Performance, Resilienz & Wohlbefinden',
+      notizen: 'Sehr engagierte Kundin, meldet sich regelmäßig proaktiv. Hat Unverträglichkeit gegen Laktose — in Rezeptur berücksichtigt.'
+    },
+    diagnostik: {
+      blutabnahme: '28. März 2026',
+      befunde: '5. April 2026',
+      entnahmestelle: 'Performula Köln',
+      status: 'Befund liegt vor · ausgewertet von JvH'
+    },
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Check-in 60 Tage versenden', done: false },
+        { text: 'Verlängerung mit Kundin besprechen', done: false },
+      ],
+      letzteMeldung: { date: '12. Juni 2026', text: 'Kundin meldet sich proaktiv – sehr zufrieden mit Energielevel, fragt nach Verlängerung.' },
+      zusatzinfos: 'Laktoseintoleranz in Rezeptur berücksichtigt. Bevorzugt Kontakt per E-Mail. Reagiert schnell.',
+    },
+    produktion: {
+      charge: '26-00063-SB',
+      auftrag_am: '12. April 2026',
+      abfuellung: '18. April 2026',
+      haltbarkeit: '18. April 2027',
+      tracking_versand: '00340434737697301584',
+      tracking_probenset: '00340434737697201433',
+      menge_kunde: 90,
+      menge_rueckstell: 10,
+      batch_nr: 1
+    },
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '19. März 2026', auswertung: 'JvH', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'done', datum: '27. April 2026', auswertung: 'JvH', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: 'Fällig: 20. Juni 2026', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt', date: '12. März 2026', state: 'done' },
+      { title: 'Angebot & Paket besprochen', date: '15. März 2026', state: 'done' },
+      { title: 'Welcome-Mail + Anamnese-Link versendet', date: '16. März 2026', state: 'done', note: 'A2.1 versendet' },
+      { title: 'Anamnese-Fragebogen eingegangen', date: '19. März 2026', state: 'done' },
+      { title: 'Probenset versendet (DHL)', date: '20. März 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '28. März 2026', state: 'done', note: 'Performula Köln · nüchtern' },
+      { title: 'Laborbefunde vollständig', date: '5. April 2026', state: 'done' },
+      { title: 'Arzt-Gespräch (Video)', date: '7. April 2026', state: 'done', note: 'Dr. Vonhoegen via Sprechstunde Online' },
+      { title: 'Rezeptur formuliert', date: '9. April 2026', state: 'done' },
+      { title: 'Herstellerprotokoll an Landes', date: '12. April 2026', state: 'done', note: 'Charge 26-00063-SB' },
+      { title: 'Produktion abgeschlossen', date: '18. April 2026', state: 'done' },
+      { title: 'Versand Batch 1 (DHL)', date: '20. April 2026', state: 'done' },
+      { title: 'Einnahme gestartet', date: '22. April 2026', state: 'done' },
+      { title: 'Check-in · 7 Tage versendet', date: '29. April 2026', state: 'done' },
+      { title: 'Check-in · 60 Tage', date: 'Fällig: 20. Juni 2026', state: 'active' },
+      { title: 'Verlängerung oder neuer Zyklus', date: 'Offen', state: 'pending' },
+    ],
+    files: [
+      { name: 'Anamnese_SarahBraun.pdf', typ: 'Fragebogen', datum: '19. März 2026' },
+      { name: 'Blutbild_28-03-2026.pdf', typ: 'Labor', datum: '5. April 2026' },
+      { name: 'Rezeptur_JvH_09-04-2026.pdf', typ: 'Arzt-Dokument', datum: '9. April 2026' },
+      { name: 'Herstellerprotokoll_26-00063-SB.xlsx', typ: 'Produktion', datum: '12. April 2026' },
+    ],
+    emails_sent: ['A2.1 Welcome + Anamnese · 16. März', 'A4 Reminder Blutabnahme · 27. März', 'A5 Befunde liegen vor · 5. April', 'A7 Versandbestätigung · 20. April'],
+    notif: 'email'
+  },
+  max: {
+    name: 'Max Mustermann',
+    kdnr: 'Kd-002',
+    status: 'pipeline',
+    phase: 'Lead Long List',
+    kategorie: 'Unternehmen',
+    betreuung: 'VIP',
+    profil: {
+      vorname: 'Max', nachname: 'Mustermann', titel: 'Dr.',
+      email: 'max@firma.de', telefon: '+49 160 987 6543',
+      geburtsdatum: '03.07.1980', geschlecht: 'Männlich',
+      adresse: 'Businessstraße 5, 80333 München', land: 'Deutschland',
+      versicherung: 'PKV',
+      firma: 'Mustermann GmbH', branche: 'Technologie', linkedin: 'linkedin.com/in/maxmustermann',
+      kommt_via: 'Weiterempfehlung',
+      weiterer_hintergrund: 'CEO, Fokus Longevity & Stressresilienz',
+      kontaktpraeferenz: 'SMS',
+      md: 'SW – Sebastian Wirtz',
+      arzt: '— noch nicht zugeteilt —',
+      versorgt_bis: '—',
+      ziele: 'Prevention & Longevity',
+      notizen: 'Hat Interesse an Gruppenpaket für sein Führungsteam (5 Personen). Termin Angebotsgespräch: 20. Juni.'
+    },
+    produktion: null,
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Nachgehen', done: true },
+        { text: 'Angebot für 5-köpfiges Team erstellen', done: false },
+      ],
+      letzteMeldung: { date: '16. Juni 2026', text: 'Erstgespräch sehr positiv. Max möchte ein Angebot für sein Führungsteam (5 Personen).' },
+      zusatzinfos: 'Bevorzugt Kontakt per SMS. Entscheidung bis Ende Juni angekündigt. Interesse an VIP-Betreuung.',
+    },
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'pending', datum: 'Noch nicht versendet', auswertung: '—', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Weiterempfehlung', date: '16. Juni 2026', state: 'done' },
+      { title: 'Angebot & Paket besprechen', date: 'Geplant: 20. Juni 2026', state: 'active' },
+      { title: 'Anamnese-Fragebogen versenden', date: 'Offen', state: 'pending' },
+      { title: 'Blutabnahme koordinieren', date: 'Offen', state: 'pending' },
+      { title: 'Ärztliche Auswertung & Gespräch', date: 'Offen', state: 'pending' },
+      { title: 'Formulierung & Produktion', date: 'Offen', state: 'pending' },
+      { title: 'Versand & Einnahme', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A1 Angebot · 16. Juni'],
+    notif: 'sms'
+  }
+};
+
+const emailTemplates = [
+  { code: 'A1', name: 'Angebot Neukunde', desc: 'Nach erstem Gespräch — mit Angebot im Anhang' },
+  { code: 'A2.1', name: 'Welcome + Anamnese-Bogen', desc: 'Nach Vertragsabschluss — inkl. Jotform-Link + DHL-Tracking Probenset' },
+  { code: 'A2.2', name: 'Nur Anamnese-Bogen', desc: 'Falls Bogen separat nachgeschickt wird' },
+  { code: 'A3', name: 'Reminder Stuhlprobe', desc: 'Wenn DHL-Zustellung bestätigt, aber kein Probeneingang' },
+  { code: 'A4', name: 'Reminder Blutentnahme', desc: 'Tag vor dem Termin — mit allen Infos' },
+  { code: 'A4.1', name: 'Reminder Anamnese + Blut', desc: 'Kombinierter Reminder' },
+  { code: 'A5', name: 'Befunde liegen vor', desc: 'Nach 7–10 Tagen — mit Buchungslink Arztgespräch' },
+  { code: 'A6', name: 'Verzögerung Produktion', desc: 'Bei Produktionsverzögerung durch fehlende Rohstoffe' },
+  { code: 'A7', name: 'Versandbestätigung', desc: 'Paket ist unterwegs — mit DHL-Tracking' },
+  { code: 'A8', name: 'Re-check', desc: 'Einige Wochen nach Lieferung — informelle Nachfrage' },
+];
+
+let currentCustomer = null;
+let currentTab = 'profil';
+
+function showView(v, el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  document.querySelectorAll('.view').forEach(e => e.classList.remove('active'));
+  const pv = document.getElementById('view-pipeline');
+  pv.classList.remove('active');
+  pv.style.display = 'none';
+  document.getElementById('main-wrap').style.display = '';
+
+  if (v === 'pipeline') {
+    renderPipeline();
+    document.getElementById('main-wrap').style.display = 'none';
+    pv.style.display = 'flex';
+    pv.classList.add('active');
+  } else {
+    if (v === 'dashboard') { renderDashboardStats(); renderActivityFeed(); renderMiniPipeline(); }
+    if (v === 'kunden') renderKunden();
+    if (v === 'emails') renderEmails();
+    if (v === 'fragebogen') renderFrageboegen();
+    if (v === 'automationen') renderAutomationen();
+    const t = document.getElementById('view-' + v);
+    if (t) t.classList.add('active');
+  }
+  closeDetail();
+}
+
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderTabContent(currentCustomer, tab);
+}
+
+function openDetail(id) {
+  const c = customers[id];
+  if (!c) return;
+  currentCustomer = c;
+
+  document.getElementById('dp-name').textContent = c.name;
+  document.getElementById('dp-kdnr').textContent = c.kdnr + ' · ' + c.kategorie + ' · ' + c.betreuung;
+
+  const statusMap = { aktiv: ['badge-green','Aktiv'], pipeline: ['badge-blue','Pipeline'], verloren: ['badge-red','Verloren'] };
+  const [sc, sl] = statusMap[c.status] || ['badge-muted','—'];
+  document.getElementById('dp-badges').innerHTML =
+    `<span class="badge ${sc}">● ${sl}</span><span class="badge badge-muted">${c.phase}</span>`;
+
+  // reset to profil tab
+  document.querySelectorAll('.detail-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+  currentTab = 'profil';
+  renderTabContent(c, 'profil');
+
+  document.getElementById('detail-panel').classList.remove('hidden');
+}
+
+function renderTabContent(c, tab) {
+  const body = document.getElementById('detail-body');
+  body.innerHTML = '';
+
+  const div = document.createElement('div');
+  div.className = 'tab-content active';
+
+  if (tab === 'profil') {
+    const p = c.profil;
+    div.innerHTML = `
+      <div class="ds">
+        <div class="ds-title">Stammdaten</div>
+        <div class="field-grid">
+          <div class="field"><div class="field-label">Vorname</div><div class="field-value">${p.vorname}</div></div>
+          <div class="field"><div class="field-label">Nachname</div><div class="field-value">${p.nachname}</div></div>
+          <div class="field"><div class="field-label">Geburtsdatum</div><div class="field-value">${p.geburtsdatum}</div></div>
+          <div class="field"><div class="field-label">Geschlecht</div><div class="field-value">${p.geschlecht}</div></div>
+          <div class="field"><div class="field-label">E-Mail</div><div class="field-value"><a href="mailto:${p.email}">${p.email}</a></div></div>
+          <div class="field"><div class="field-label">Telefon</div><div class="field-value">${p.telefon}</div></div>
+        </div>
+        <div style="margin-top:10px;" class="field-grid">
+          <div class="field"><div class="field-label">Adresse</div><div class="field-value">${p.adresse}</div></div>
+          <div class="field"><div class="field-label">Land</div><div class="field-value">${p.land}</div></div>
+          <div class="field"><div class="field-label">Versicherung</div><div class="field-value">${p.versicherung}</div></div>
+          <div class="field"><div class="field-label">Kontaktpräferenz</div><div class="field-value">${p.kontaktpraeferenz}</div></div>
+        </div>
+      </div>
+      <div class="ds">
+        <div class="ds-title">Betreuung & Zuordnung</div>
+        <div class="field-grid">
+          <div class="field"><div class="field-label">Verantwortlicher MD</div><div class="field-value">${p.md}</div></div>
+          <div class="field"><div class="field-label">Zugeteilter Arzt</div><div class="field-value">${p.arzt}</div></div>
+          <div class="field"><div class="field-label">Versorgt bis</div><div class="field-value">${p.versorgt_bis}</div></div>
+          <div class="field"><div class="field-label">Kommt via</div><div class="field-value">${p.kommt_via}</div></div>
+        </div>
+      </div>
+      <div class="ds">
+        <div class="ds-title">Blutanalyse / Diagnostik</div>
+        ${(function(){
+          const lab = (c.files || []).find(f => f.typ === 'Labor');
+          if (!lab && !c.diagnostik) return `<div style="color:var(--muted);font-size:12px;">Noch keine Blutanalyse vorhanden.</div>`;
+          const d = c.diagnostik || {};
+          return `<div class="field-grid">
+            <div class="field"><div class="field-label">Blutabnahme</div><div class="field-value">${d.blutabnahme || '—'}</div></div>
+            <div class="field"><div class="field-label">Befunde vollständig</div><div class="field-value">${d.befunde || '—'}</div></div>
+            <div class="field"><div class="field-label">Entnahmestelle</div><div class="field-value">${d.entnahmestelle || '—'}</div></div>
+            <div class="field"><div class="field-label">Status</div><div class="field-value">${d.status || (lab ? 'Befund liegt vor' : '—')}</div></div>
+          </div>
+          ${lab ? `<div class="file-item" style="margin-top:10px;" onclick="switchTab('dokumente', document.querySelectorAll('.detail-tab')[4])"><div class="file-icon">🩸</div><div><div class="file-name">${lab.name}</div><div class="file-meta">Blutbild · ${lab.datum}</div></div></div>` : ''}`;
+        })()}
+      </div>
+      <div class="ds">
+        <div class="ds-title">Ziele & Hintergrund</div>
+        <div class="field-grid full">
+          <div class="field"><div class="field-label">Persönliche Ziele</div><div class="field-value">${p.ziele}</div></div>
+          <div class="field"><div class="field-label">Weiterer Hintergrund</div><div class="field-value">${p.weiterer_hintergrund}</div></div>
+          ${p.firma !== '—' ? `<div class="field"><div class="field-label">Firma</div><div class="field-value">${p.firma}</div></div>` : ''}
+          ${p.branche !== '—' ? `<div class="field"><div class="field-label">Branche</div><div class="field-value">${p.branche}</div></div>` : ''}
+        </div>
+      </div>
+      <div class="ds">
+        <div class="ds-title">Benachrichtigung bevorzugt via</div>
+        <div class="pref-toggle">
+          <div class="pref-btn ${c.notif==='email'?'active':''}" onclick="setPref(this)">E-Mail</div>
+          <div class="pref-btn ${c.notif==='sms'?'active':''}" onclick="setPref(this)">SMS</div>
+          <div class="pref-btn ${c.notif==='both'?'active':''}" onclick="setPref(this)">Beides</div>
+        </div>
+      </div>
+      <div class="ds">
+        <div class="ds-title">Interne Notizen</div>
+        <textarea class="field-input">${p.notizen}</textarea>
+      </div>
+      <div class="ds">
+        <div class="ds-title">Phase verschieben</div>
+        <div class="phase-select-row">
+          <select class="phase-select">
+            <option>Phase 1 – Lead Long List</option>
+            <option>Phase 2 – Lead Hot List</option>
+            <option>Phase 3 – Diagnostik</option>
+            <option>Phase 4 – Arztgespräch</option>
+            <option>Phase 5 – Formulierung & Produktion</option>
+            <option>Phase 6 – On-Boarding</option>
+            <option>Phase 7 – Einnahme Zyklus</option>
+            <option>Lost</option>
+          </select>
+          <button class="btn btn-primary btn-sm">Speichern</button>
+        </div>
+      </div>`;
+  }
+
+  else if (tab === 'prozess') {
+    const pi = c.prozessInfo || {};
+    const tlHtml = c.timeline.map(t => `
+      <div class="tl-item">
+        <div class="tl-line">
+          <div class="tl-dot ${t.state}"></div>
+          <div class="tl-connector"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-title">${t.title}</div>
+          <div class="tl-date">${t.date}</div>
+          ${t.note ? `<div class="tl-note">${t.note}</div>` : ''}
+        </div>
+      </div>`).join('');
+
+    // Aufgaben der aktuellen Phase (pro Kunde)
+    const aufgaben = pi.aufgaben || [];
+    const aufgabenHtml = aufgaben.length
+      ? aufgaben.map((a, i) => `
+        <div class="ptask ${a.done ? 'done' : ''}" onclick="toggleProfileTask(this)">
+          <div class="task-check ${a.done ? 'checked' : ''}">${CHECK_SVG}</div>
+          <span class="ptask-label">${a.text}</span>
+        </div>`).join('')
+      : `<div style="color:var(--muted);font-size:12px;">Keine offenen Aufgaben in dieser Phase.</div>`;
+
+    div.innerHTML = `
+      <div class="ds">
+        <div class="ds-title">Aktueller Prozess</div>
+        <div class="proc-current">
+          <div class="proc-phase-badge">${c.phase}</div>
+          <div class="proc-phase-sub">Status: ${({aktiv:'Aktiv',pipeline:'In Pipeline',verloren:'Verloren'})[c.status] || '—'}</div>
+        </div>
+      </div>
+      <div class="ds">
+        <div class="ds-title">Aufgaben in dieser Phase</div>
+        ${aufgabenHtml}
+      </div>
+      <div class="ds">
+        <div class="ds-title">Letzte Meldung</div>
+        ${pi.letzteMeldung
+          ? `<div class="proc-msg"><div class="proc-msg-date">${pi.letzteMeldung.date}</div><div class="proc-msg-text">${pi.letzteMeldung.text}</div></div>`
+          : `<div style="color:var(--muted);font-size:12px;">Noch keine Meldung erfasst.</div>`}
+      </div>
+      <div class="ds">
+        <div class="ds-title">Zusatzinfos</div>
+        <textarea class="field-input">${pi.zusatzinfos || ''}</textarea>
+      </div>
+      <div class="ds">
+        <div class="ds-title">Vollständige Timeline</div>
+        <div class="timeline">${tlHtml}</div>
+      </div>
+      <div class="ds">
+        <div class="ds-title">Schnellaktionen</div>
+        <button class="action-btn">📧 E-Mail an Kunde senden</button>
+        <button class="action-btn">➡️ In nächste Phase schieben</button>
+        <button class="action-btn danger">✕ Als verloren markieren</button>
+      </div>`;
+  }
+
+  else if (tab === 'produktion') {
+    if (!c.produktion) {
+      div.innerHTML = `<div style="padding:30px 0;text-align:center;color:var(--muted);font-size:13px;">Noch keine Produktionsdaten — Kunde befindet sich in der Akquise-Phase.</div>`;
+    } else {
+      const prod = c.produktion;
+      div.innerHTML = `
+        <div class="ds">
+          <div class="ds-title">Aktuelle Charge (Batch ${prod.batch_nr})</div>
+          <div class="prod-field"><span class="prod-label">Chargennummer</span><span class="prod-value mono">${prod.charge}</span></div>
+          <div class="prod-field"><span class="prod-label">Auftrag an Landes</span><span class="prod-value">${prod.auftrag_am}</span></div>
+          <div class="prod-field"><span class="prod-label">Datum Abfüllung</span><span class="prod-value">${prod.abfuellung}</span></div>
+          <div class="prod-field"><span class="prod-label">Haltbarkeit bis</span><span class="prod-value">${prod.haltbarkeit}</span></div>
+          <div class="prod-field"><span class="prod-label">Menge Kunde</span><span class="prod-value">${prod.menge_kunde} Beutel</span></div>
+          <div class="prod-field"><span class="prod-label">Rückstellmuster</span><span class="prod-value">${prod.menge_rueckstell} Beutel</span></div>
+        </div>
+        <div class="ds">
+          <div class="ds-title">DHL-Tracking</div>
+          <div class="prod-field"><span class="prod-label">Versand Mischung</span><span class="prod-value"><a href="https://www.dhl.de/de/privatkunden.html?piececode=${prod.tracking_versand}" target="_blank" style="color:var(--blue);text-decoration:none;font-family:monospace;font-size:11.5px">${prod.tracking_versand}</a></span></div>
+          <div class="prod-field"><span class="prod-label">Versand Probenset</span><span class="prod-value"><a href="https://www.dhl.de/de/privatkunden.html?piececode=${prod.tracking_probenset}" target="_blank" style="color:var(--blue);text-decoration:none;font-family:monospace;font-size:11.5px">${prod.tracking_probenset}</a></span></div>
+        </div>
+        <div class="ds">
+          <div class="ds-title">Batch-Historie</div>
+          <div class="prod-field"><span class="prod-label">Batch 1</span><span class="prod-value">Charge ${prod.charge} · versandt ${prod.abfuellung}</span></div>
+          <div class="prod-field" style="color:var(--muted)"><span class="prod-label">Batch 2</span><span style="font-size:11px;color:var(--muted)">Offen</span></div>
+        </div>`;
+    }
+  }
+
+  else if (tab === 'fragebögen') {
+    const rows = c.fragebögen.map(q => {
+      const statusBadge = q.status === 'done'
+        ? `<span class="badge badge-green">✓ Eingegangen</span>`
+        : q.status === 'active'
+        ? `<span class="badge badge-yellow">⏰ Fällig</span>`
+        : `<span class="badge badge-muted">Ausstehend</span>`;
+      return `<div class="qrow">
+        <div class="qrow-left">
+          <div class="qrow-name">${q.name}</div>
+          <div class="qrow-date">${q.datum}${q.auswertung !== '—' ? ' · Ausgewertet: '+q.auswertung : ''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          ${statusBadge}
+          ${q.status !== 'done' ? `<button class="btn btn-sm btn-ghost" onclick="window.open('${q.link}','_blank')">Link senden</button>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+    div.innerHTML = `<div class="ds"><div class="ds-title">Fragebogen-Status</div>${rows}</div>
+      <div class="ds"><div class="ds-title">Jotform-Links</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <a href="https://form.jotform.com/261323094836357" target="_blank" class="action-btn" style="text-decoration:none">📋 Anamnese-Fragebogen öffnen</a>
+          <a href="https://form.jotform.com/261302990765360" target="_blank" class="action-btn" style="text-decoration:none">📋 Check-in 7 Tage öffnen</a>
+          <a href="https://form.jotform.com/260392593422357" target="_blank" class="action-btn" style="text-decoration:none">📋 Check-in 60 Tage öffnen</a>
+          <a href="https://app.sprechstunde.online/performula" target="_blank" class="action-btn" style="text-decoration:none">🎥 Arztgespräch buchen (Sprechstunde Online)</a>
+        </div>
+      </div>`;
+  }
+
+  else if (tab === 'dokumente') {
+    const fileHtml = c.files.length > 0
+      ? c.files.map(f => `<div class="file-item"><div class="file-icon">📄</div><div><div class="file-name">${f.name}</div><div class="file-meta">${f.typ} · ${f.datum}</div></div></div>`).join('')
+      : `<div style="color:var(--muted);font-size:12px;margin-bottom:10px;">Noch keine Dokumente hochgeladen.</div>`;
+    div.innerHTML = `<div class="ds"><div class="ds-title">Dokumente</div>${fileHtml}
+      <div class="upload-zone">📎 Datei hochladen (Anamnese, Blutbild, Rezeptur, Herstellerprotokoll…)</div>
+    </div>
+    <div class="ds"><div class="ds-title">Kategorien</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-muted">Fragebogen</span>
+        <span class="badge badge-muted">Labor / Blutbild</span>
+        <span class="badge badge-muted">Arzt-Dokument</span>
+        <span class="badge badge-muted">Produktion</span>
+        <span class="badge badge-muted">Versand</span>
+        <span class="badge badge-muted">Sonstiges</span>
+      </div>
+    </div>`;
+  }
+
+  else if (tab === 'emails') {
+    const sentHtml = c.emails_sent.length > 0
+      ? c.emails_sent.map(e => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--green)">✓</span> ${e}</div>`).join('')
+      : `<div style="color:var(--muted);font-size:12px;">Noch keine E-Mails versendet.</div>`;
+    const templateHtml = emailTemplates.map(t => `
+      <div class="email-card">
+        <div class="email-card-header">
+          <div><span style="font-family:monospace;font-size:10.5px;color:var(--muted);margin-right:6px;">${t.code}</span><span class="email-card-name">${t.name}</span></div>
+          <button class="btn btn-sm btn-ghost">Senden</button>
+        </div>
+        <div class="email-card-desc">${t.desc}</div>
+      </div>`).join('');
+    div.innerHTML = `
+      <div class="ds"><div class="ds-title">Bereits versendet</div>${sentHtml}</div>
+      <div class="ds"><div class="ds-title">Vorlage versenden</div>${templateHtml}</div>`;
+  }
+
+  body.appendChild(div);
+}
+
+function closeDetail() { document.getElementById('detail-panel').classList.add('hidden'); }
+function setPref(el) {
+  el.closest('.pref-toggle').querySelectorAll('.pref-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+function openModal() { document.getElementById('modal').classList.add('open'); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+// Init
+document.getElementById('view-pipeline').style.display = 'none';
+renderDashboardStats();
+renderActivityFeed();
+renderMiniPipeline();
+</script>
+</body>
+</html>
