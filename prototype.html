@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Performula CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -28,7 +30,7 @@
   --blue-bg:  #e5eff6;
   --panel:    400px;
 }
-body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--white); color: var(--text); display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
+body { font-family: 'Avenir Next', 'Mulish', -apple-system, sans-serif; background: var(--white); color: var(--text); display: flex; height: 100vh; overflow: hidden; font-size: 14px; font-weight: 300; }
 
 /* SIDEBAR */
 .sidebar { width: 220px; background: var(--ocean); display: flex; flex-direction: column; flex-shrink: 0; }
@@ -51,7 +53,7 @@ body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background
 .app-body { flex: 1; display: flex; overflow: hidden; }
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .topbar { padding: 14px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: #fff; flex-shrink: 0; }
-.topbar h2 { font-size: 15px; font-weight: 600; color: var(--text); }
+.topbar h2 { font-size: 17px; font-weight: 700; color: var(--text); }
 .topbar-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
 .topbar-actions { display: flex; gap: 8px; align-items: center; }
 .content { flex: 1; overflow-y: auto; padding: 22px 24px; }
@@ -78,13 +80,13 @@ body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background
 .stat-sub { font-size: 11px; color: var(--muted); }
 
 /* SECTION TITLE */
-.section-title { font-size: 10.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+.section-title { font-size: 12.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
 
 /* MINI PIPELINE */
 .pipeline { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 22px; }
 .pipeline-col { min-width: 170px; background: #fff; border: 1px solid var(--border); border-radius: 9px; padding: 12px; flex-shrink: 0; }
 .pipeline-col-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.pipeline-col-title { font-size: 10.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.pipeline-col-title { font-size: 12.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
 .pipeline-count { background: var(--grey); color: var(--muted); border-radius: 10px; padding: 2px 7px; font-size: 10.5px; font-weight: 600; }
 .pipeline-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 9px 10px; margin-bottom: 6px; cursor: pointer; transition: all 0.15s; }
 .pipeline-card:hover { border-color: var(--ocean); box-shadow: 0 1px 5px rgba(41,45,63,0.08); }
@@ -103,7 +105,7 @@ body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background
 .filter-tab { padding: 5px 11px; border-radius: 5px; font-size: 11.5px; cursor: pointer; color: var(--muted); border: 1px solid transparent; transition: all 0.15s; }
 .filter-tab.active { background: var(--white); border-color: var(--border); color: var(--ocean); font-weight: 500; }
 table { width: 100%; border-collapse: collapse; }
-th { padding: 9px 14px; text-align: left; font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); font-weight: 600; white-space: nowrap; }
+th { padding: 9px 14px; text-align: left; font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); font-weight: 700; white-space: nowrap; }
 td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12.5px; }
 tr:last-child td { border-bottom: none; }
 tbody tr { cursor: pointer; transition: background 0.1s; }
@@ -127,11 +129,11 @@ tbody tr:hover td { background: #fafbfc; }
 .phase-step.pending { background: var(--grey); }
 
 /* DETAIL PANEL */
-.detail-panel { width: var(--panel); background: #fff; border-left: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; transition: width 0.2s; }
-.detail-panel.hidden { width: 0; border: none; overflow: hidden; }
+.detail-panel { position: fixed; right: 0; top: 0; bottom: 0; width: calc(100% - 220px); background: #fff; border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; z-index: 50; box-shadow: -6px 0 30px rgba(41,45,63,0.13); transition: transform 0.25s cubic-bezier(0.4,0,0.2,1); }
+.detail-panel.hidden { transform: translateX(110%); pointer-events: none; }
 .detail-header { padding: 20px 22px 16px; border-bottom: 1px solid var(--border); background: var(--ocean); flex-shrink: 0; }
 .detail-header-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
-.detail-name { font-size: 17px; font-weight: 600; color: #fff; }
+.detail-name { font-size: 19px; font-weight: 700; color: #fff; }
 .detail-kdnr { font-size: 10.5px; color: rgba(255,255,255,0.4); margin-top: 2px; }
 .close-btn { background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 13px; padding: 5px 8px; border-radius: 5px; line-height: 1; }
 .close-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
@@ -141,12 +143,12 @@ tbody tr:hover td { background: #fafbfc; }
 .detail-tab.active { color: var(--ocean); border-bottom-color: var(--ocean); font-weight: 600; }
 .detail-tab:hover:not(.active) { color: var(--text); }
 .detail-body { flex: 1; overflow-y: auto; }
-.tab-content { display: none; padding: 18px 20px; }
+.tab-content { display: none; padding: 24px 32px; max-width: 1200px; }
 .tab-content.active { display: block; }
 
 /* DETAIL SECTIONS */
 .ds { margin-bottom: 20px; }
-.ds-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.ds-title { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
 .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .field-grid.full { grid-template-columns: 1fr; }
 .field { display: flex; flex-direction: column; gap: 3px; }
@@ -231,7 +233,7 @@ textarea.field-input:focus { border-color: var(--ocean); }
 .pf-col { min-width: 232px; max-width: 232px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; max-height: calc(100vh - 90px); }
 .pf-col-accent { height: 3px; border-radius: 3px 3px 0 0; margin: -14px -14px 12px; }
 .pf-col-num { font-size: 10px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-.pf-col-title { font-size: 13px; font-weight: 600; margin-top: 2px; }
+.pf-col-title { font-size: 15px; font-weight: 700; margin-top: 2px; }
 .pf-col-count { display: inline-block; margin-top: 5px; background: var(--grey); border-radius: 10px; padding: 2px 8px; font-size: 10.5px; color: var(--muted); font-weight: 600; }
 .pf-cards { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
 .pf-card { background: var(--white); border: 1px solid var(--border); border-radius: 7px; padding: 11px 12px; cursor: pointer; transition: all 0.15s; }
@@ -292,7 +294,7 @@ textarea.field-input:focus { border-color: var(--ocean); }
 .mail-card.active { border-color: var(--ocean); background: #f4f8fb; box-shadow: 0 1px 6px rgba(41,45,63,0.06); }
 .mail-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
 .mail-code { font-size: 10px; font-weight: 700; color: var(--ocean); background: var(--grey); border-radius: 5px; padding: 2px 7px; font-family: monospace; }
-.mail-card-title { font-size: 13px; font-weight: 600; }
+.mail-card-title { font-size: 15px; font-weight: 700; }
 .mail-trigger { font-size: 11px; color: var(--muted); line-height: 1.35; }
 .mail-auto-pill { display: inline-flex; align-items: center; gap: 3px; font-size: 9.5px; font-weight: 700; color: var(--blue); background: var(--blue-bg); padding: 1px 6px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.4px; margin-left: auto; }
 .mail-preview { background: #fff; border: 1px solid var(--border); border-radius: 11px; overflow: hidden; position: sticky; top: 0; }
@@ -332,7 +334,7 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
 
 /* AUTOMATIONEN */
 .auto-group { margin-bottom: 26px; }
-.auto-group-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.auto-group-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
 .auto-rule { background: #fff; border: 1px solid var(--border); border-radius: 11px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: center; gap: 18px; transition: all 0.15s; }
 .auto-rule:hover { border-color: var(--grey2); }
 .auto-rule.off { opacity: 0.55; }
@@ -358,7 +360,7 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
 /* FRAGEBÖGEN */
 .fb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
 .fb-card { background: #fff; border: 1px solid var(--border); border-radius: 11px; padding: 18px; }
-.fb-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.fb-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
 .fb-card .fb-when { font-size: 11.5px; color: var(--muted); margin-bottom: 12px; line-height: 1.4; }
 .fb-fields { font-size: 12px; color: var(--text); line-height: 1.7; }
 .fb-link { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--blue); word-break: break-all; }
@@ -367,7 +369,7 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 100; display: none; align-items: center; justify-content: center; }
 .modal-overlay.open { display: flex; }
 .modal { background: #fff; border-radius: 12px; padding: 28px; width: 520px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-.modal-title { font-size: 16px; font-weight: 600; margin-bottom: 20px; color: var(--ocean); }
+.modal-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--ocean); }
 .form-row { margin-bottom: 14px; }
 .form-row label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
 .form-row input, .form-row select { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 13px; color: var(--text); outline: none; font-family: inherit; background: #fff; }
@@ -384,6 +386,67 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
 .phase-select-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
 .phase-select { flex: 1; border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; font-size: 12.5px; color: var(--text); outline: none; font-family: inherit; background: #fff; }
 .phase-select:focus { border-color: var(--ocean); }
+
+/* MEINE AUFGABEN */
+.aufg-tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 4px; width: fit-content; }
+.aufg-tab { padding: 7px 20px; border-radius: 6px; font-size: 12.5px; cursor: pointer; color: var(--muted); transition: all 0.15s; font-weight: 500; }
+.aufg-tab.active { background: var(--ocean); color: #fff; font-weight: 600; }
+.aufg-tab:hover:not(.active) { background: var(--grey); color: var(--text); }
+.aufg-section { display: none; }
+.aufg-section.active { display: block; }
+.aufg-empty { padding: 40px 0; text-align: center; color: var(--muted); font-size: 13px; }
+.aufg-row { background: #fff; border: 1px solid var(--border); border-radius: 9px; padding: 13px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 14px; transition: all 0.15s; cursor: pointer; }
+.aufg-row:hover { border-color: var(--ocean); box-shadow: 0 1px 6px rgba(41,45,63,0.07); }
+.aufg-row.done-row { opacity: 0.6; }
+.aufg-prio { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.aufg-prio.hoch { background: var(--red); }
+.aufg-prio.mittel { background: var(--yellow); }
+.aufg-prio.niedrig { background: var(--green); }
+.aufg-prio.done-dot { background: var(--grey2); }
+.aufg-main { flex: 1; min-width: 0; }
+.aufg-task-label { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+.aufg-task-label.strikethrough { text-decoration: line-through; color: var(--muted); }
+.aufg-meta { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.aufg-phase-pill { font-size: 10.5px; font-weight: 600; color: var(--blue); background: var(--blue-bg); padding: 2px 8px; border-radius: 5px; }
+.aufg-date { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.aufg-date.warn { color: var(--yellow); font-weight: 600; }
+
+/* POSTEINGANG / E-MAIL VERLAUF */
+.inbox-layout { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; }
+.inbox-list { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.inbox-item { padding: 13px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.12s; }
+.inbox-item:last-child { border-bottom: none; }
+.inbox-item:hover { background: var(--white); }
+.inbox-item.active { background: #f4f8fb; border-left: 3px solid var(--ocean); padding-left: 13px; }
+.inbox-item-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px; }
+.inbox-kunde { font-size: 13px; font-weight: 600; }
+.inbox-time { font-size: 10.5px; color: var(--muted); }
+.inbox-betreff { font-size: 12px; color: var(--text); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+.inbox-preview { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.inbox-unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+.inbox-meta { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.inbox-bearbeiter { font-size: 10px; font-weight: 600; color: var(--muted); background: var(--grey); padding: 1px 6px; border-radius: 4px; }
+.conv-panel { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; min-height: 400px; }
+.conv-empty { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 13px; }
+.conv-head { padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--ocean); color: #fff; flex-shrink: 0; }
+.conv-head-name { font-size: 15px; font-weight: 700; }
+.conv-head-sub { font-size: 11.5px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.conv-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; max-height: calc(100vh - 300px); overflow-y: auto; }
+.conv-msg { max-width: 70%; }
+.conv-msg.out { align-self: flex-end; }
+.conv-msg.in { align-self: flex-start; }
+.conv-bubble { border-radius: 12px; padding: 11px 15px; font-size: 12.5px; line-height: 1.6; white-space: pre-wrap; }
+.conv-msg.out .conv-bubble { background: var(--ocean); color: #fff; border-radius: 12px 12px 3px 12px; }
+.conv-msg.in .conv-bubble { background: var(--white); border: 1px solid var(--border); color: var(--text); border-radius: 12px 12px 12px 3px; }
+.conv-msg-meta { font-size: 10.5px; color: var(--muted); margin-top: 4px; }
+.conv-msg.out .conv-msg-meta { text-align: right; }
+.conv-footer { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: var(--white); flex-shrink: 0; }
+.conv-input { flex: 1; border: 1px solid var(--border); border-radius: 7px; padding: 8px 12px; font-size: 13px; font-family: inherit; outline: none; resize: none; }
+.conv-input:focus { border-color: var(--ocean); }
+
+/* PROFIL ZWEI-SPALTEN im breiten Panel */
+.profil-wide { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.profil-wide .ds { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -409,15 +472,29 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       Alle Kunden
     </div>
+    <div class="nav-item" onclick="showView('aufgaben', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Meine Aufgaben
+      <span class="nav-badge">5</span>
+    </div>
     <div class="nav-group">Tools</div>
     <div class="nav-item" onclick="showView('emails', this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       E-Mail-Vorlagen
       <span class="nav-badge">11</span>
     </div>
+    <div class="nav-item" onclick="showView('posteingang', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+      Posteingang
+      <span class="nav-badge" style="background:var(--blue)">1</span>
+    </div>
     <div class="nav-item" onclick="showView('fragebogen', this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       Fragebögen
+    </div>
+    <div class="nav-item" onclick="showView('team', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Team
     </div>
     <div class="nav-item" onclick="showView('automationen', this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -425,9 +502,9 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
     </div>
   </nav>
   <div class="sidebar-user">
-    <div class="user-avatar">AW</div>
+    <div class="user-avatar">AA</div>
     <div>
-      <div class="user-name">Angi Wirtz</div>
+      <div class="user-name">Anton Altreuther</div>
       <div class="user-role">Managing Director</div>
     </div>
   </div>
@@ -466,10 +543,10 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
           <div class="stat-value" id="stat-bearbeitung">–</div>
           <div class="stat-sub">Diagnostik bis On-Boarding</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Lost</div>
-          <div class="stat-value red" id="stat-lost">–</div>
-          <div class="stat-sub">Verloren / 90 Tage</div>
+        <div class="stat-card warn">
+          <div class="stat-label">Check-in fällig</div>
+          <div class="stat-value warn" id="stat-checkin">5</div>
+          <div class="stat-sub">Kunden warten auf Check-in</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Gesamt-Kontakte</div>
@@ -583,7 +660,7 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
   <!-- E-MAIL VORLAGEN VIEW -->
   <div id="view-emails" class="view">
     <div class="topbar">
-      <div><h2>E-Mail-Vorlagen</h2><div class="topbar-sub">11 Vorlagen · Variablen werden automatisch gefüllt</div></div>
+      <div><h2>E-Mail-Vorlagen</h2><div class="topbar-sub">13 Vorlagen · Variablen werden automatisch gefüllt</div></div>
       <div class="topbar-actions">
         <button class="btn btn-primary btn-sm">+ Neue Vorlage</button>
       </div>
@@ -604,6 +681,19 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
     <div class="content" id="frageboegen-content"></div>
   </div>
 
+  <!-- TEAM VIEW -->
+  <div id="view-team" class="view">
+    <div class="topbar">
+      <div><h2>Team</h2><div class="topbar-sub">Kontaktdaten für Automationen</div></div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm">+ Person hinzufügen</button>
+      </div>
+    </div>
+    <div class="content">
+      <div id="team-content"></div>
+    </div>
+  </div>
+
   <!-- AUTOMATIONEN VIEW -->
   <div id="view-automationen" class="view">
     <div class="topbar">
@@ -613,6 +703,30 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
       </div>
     </div>
     <div class="content" id="automationen-content"></div>
+  </div>
+
+  <!-- MEINE AUFGABEN VIEW -->
+  <div id="view-aufgaben" class="view">
+    <div class="topbar">
+      <div><h2>Meine Aufgaben</h2><div class="topbar-sub">AA · Anton Altreuther · Managing Director</div></div>
+    </div>
+    <div class="content" id="aufgaben-content"></div>
+  </div>
+
+  <!-- POSTEINGANG VIEW -->
+  <div id="view-posteingang" class="view">
+    <div class="topbar">
+      <div><h2>Posteingang</h2><div class="topbar-sub">E-Mail-Verläufe aller Team-Mitglieder mit Kunden</div></div>
+      <div class="topbar-actions">
+        <div class="filter-tabs" id="inbox-filter-tabs">
+          <div class="filter-tab active" onclick="setInboxFilter('alle', this)">Alle</div>
+          <div class="filter-tab" onclick="setInboxFilter('AA', this)">AA</div>
+          <div class="filter-tab" onclick="setInboxFilter('AW', this)">AW</div>
+          <div class="filter-tab" onclick="setInboxFilter('SW', this)">SW</div>
+        </div>
+      </div>
+    </div>
+    <div class="content" id="posteingang-content"></div>
   </div>
 
 </div><!-- end main-wrap -->
@@ -650,31 +764,52 @@ th.sortable.sorted .sort-arrow { opacity: 1; color: var(--ocean); }
   <div class="modal">
     <div class="modal-title">Neuer Kunde anlegen</div>
     <div class="form-grid">
-      <div class="form-row"><label>Vorname *</label><input type="text" placeholder="Max"></div>
-      <div class="form-row"><label>Nachname *</label><input type="text" placeholder="Mustermann"></div>
+      <div class="form-row"><label>Vorname *</label><input id="nk-vorname" type="text" placeholder="Max"></div>
+      <div class="form-row"><label>Nachname *</label><input id="nk-nachname" type="text" placeholder="Mustermann"></div>
     </div>
     <div class="form-grid">
-      <div class="form-row"><label>E-Mail *</label><input type="email" placeholder="max@email.de"></div>
-      <div class="form-row"><label>Telefon</label><input type="tel" placeholder="+49 170 …"></div>
+      <div class="form-row"><label>E-Mail *</label><input id="nk-email" type="email" placeholder="max@email.de"></div>
+      <div class="form-row"><label>Telefon</label><input id="nk-telefon" type="tel" placeholder="+49 170 …"></div>
     </div>
     <div class="form-grid">
-      <div class="form-row"><label>Geburtsdatum</label><input type="date"></div>
-      <div class="form-row"><label>Geschlecht</label><select><option value="">— wählen —</option><option>Männlich</option><option>Weiblich</option><option>Divers</option></select></div>
+      <div class="form-row"><label>Geburtsdatum</label><input id="nk-geburtsdatum" type="date"></div>
+      <div class="form-row"><label>Geschlecht</label><select id="nk-geschlecht"><option value="">— wählen —</option><option>Männlich</option><option>Weiblich</option><option>Divers</option></select></div>
     </div>
     <div class="form-grid">
-      <div class="form-row"><label>Kategorie</label><select><option>Privatperson</option><option>Unternehmen</option></select></div>
-      <div class="form-row"><label>Betreuung</label><select><option>Standard</option><option>VIP</option></select></div>
+      <div class="form-row"><label>Kategorie</label><select id="nk-kategorie"><option>Privatperson</option><option>Unternehmen</option></select></div>
+      <div class="form-row"><label>Kommt via</label><select id="nk-via"><option>Weiterempfehlung</option><option>Social Media</option><option>Direktkontakt</option><option>Website</option><option>Kooperation</option><option>Sonstiges</option></select></div>
     </div>
+    <div class="form-row"><label>Betreuung</label><select id="nk-betreuung"><option value="AA">AA – Anton Altreuther</option><option value="SK">SK – Sebastian Koch</option><option value="SW">SW – Sebastian Wirtz</option><option value="AW">AW – Angi Wirtz</option><option value="LV">LV</option><option value="JV">JV</option></select></div>
     <div class="form-grid">
-      <div class="form-row"><label>Verantwortlicher MD</label><select><option>AW – Angi Wirtz</option><option>SW – Sebastian Wirtz</option><option>SK – Sebastian Koch</option></select></div>
-      <div class="form-row"><label>Zugeteilter Arzt</label><select><option>— noch nicht zugeteilt —</option><option>JvH – Dr. Vonhoegen</option><option>SF – Dr. Friedsam</option><option>JK – Dr. Kostron</option><option>AB – Dr. Boukllouâ</option><option>AL – Dr. Latz</option></select></div>
+      <div class="form-row"><label>Zugeteilter Arzt</label><select id="nk-arzt"><option value="—">— noch nicht zugeteilt —</option><option value="JvH">JvH – Dr. Vonhoegen</option><option value="SF">SF – Dr. Friedsam</option><option value="JK">JK – Dr. Kostron</option><option value="AB">AB – Dr. Boukllouâ</option><option value="AL">AL – Dr. Latz</option></select></div>
+      <div class="form-row"><label>Startphase</label><select id="nk-phase"><option>Lead Long List</option><option>Lead Hot List</option><option>Diagnostik</option><option>Arztgespräch</option><option>Formulierung & Produktion</option><option>On-Boarding</option><option>Einnahme Zyklus</option></select></div>
     </div>
-    <div class="form-row"><label>Kommt via</label><select><option>Weiterempfehlung</option><option>Social Media</option><option>Direktkontakt</option><option>Website</option><option>Kooperation</option><option>Sonstiges</option></select></div>
-    <div class="form-row"><label>Firma (falls Unternehmenskunde)</label><input type="text" placeholder="Firma GmbH"></div>
-    <div class="form-row"><label>Startphase</label><select><option>Phase 1 – Akquise</option><option>Phase 2 – Angebot & Paket</option><option>Phase 3 – Anamnese</option></select></div>
+    <div class="form-row"><label>Firma (falls Unternehmenskunde)</label><input id="nk-firma" type="text" placeholder="Firma GmbH"></div>
+    <div class="form-row"><label>Hintergrundinfos</label><textarea id="nk-hintergrund" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:13px;color:var(--text);font-family:inherit;resize:vertical;min-height:60px;" placeholder="Ziele, Besonderheiten, Kontext …"></textarea></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal()">Abbrechen</button>
-      <button class="btn btn-primary">Kunde anlegen</button>
+      <button class="btn btn-primary" onclick="createKunde()">Kunde anlegen</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM BEARBEITEN MODAL -->
+<div class="modal-overlay" id="team-modal" onclick="if(event.target===this)closeTeamModal()">
+  <div class="modal">
+    <div class="modal-title">Teammitglied bearbeiten</div>
+    <input type="hidden" id="tm-kuerzel">
+    <div class="form-grid">
+      <div class="form-row"><label>Kürzel</label><input id="tm-kuerzel-display" type="text" readonly style="opacity:0.5;cursor:not-allowed;"></div>
+      <div class="form-row"><label>Rolle</label><input id="tm-rolle" type="text" placeholder="Managing Director"></div>
+    </div>
+    <div class="form-row"><label>Name</label><input id="tm-name" type="text" placeholder="Vor- und Nachname"></div>
+    <div class="form-grid">
+      <div class="form-row"><label>E-Mail</label><input id="tm-email" type="email" placeholder="email@performula.de"></div>
+      <div class="form-row"><label>Telefon</label><input id="tm-telefon" type="tel" placeholder="+49 221 …"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeTeamModal()">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveTeamMember()">Speichern</button>
     </div>
   </div>
 </div>
@@ -686,18 +821,18 @@ const phases = [
     num: 1, name: 'Lead Long List', accent: 'var(--blue)',
     tasks: [{ t: 'Nachgehen' }],
     cards: [
-      { id: 'max', name: 'Max Mustermann', info: ['Via Weiterempfehlung', 'Seit 3 Tagen'], md: 'MD: SW' },
-      { name: 'Laura Hoffmann', info: ['Direktkontakt', 'Seit 1 Woche'], md: 'MD: AW' },
-      { name: 'Erik Neumann', info: ['Social Media'], md: 'MD: SK' },
-      { name: 'Klaus Richter', tag: 'Lost', md: 'MD: SW' },
-      { name: 'Petra Vogel', tag: 'Lost', md: 'MD: AW' },
+      { id: 'max',   name: 'Max Mustermann',  info: ['Via Weiterempfehlung', 'Seit 3 Tagen'], md: 'MD: SW' },
+      { id: 'laura', name: 'Laura Hoffmann',   info: ['Direktkontakt', 'Seit 1 Woche'],        md: 'MD: SK' },
+      { name: 'Erik Neumann', info: ['Social Media'], md: 'MD: SW' },
+      { id: 'klaus', name: 'Klaus Richter', tag: 'Lost', md: 'MD: SW' },
+      { id: 'petra', name: 'Petra Vogel',   tag: 'Lost', md: 'MD: AW' },
     ],
   },
   {
     num: 2, name: 'Lead Hot List', accent: 'var(--sand)',
     tasks: [{ t: 'Kunden gewinnen' }],
     cards: [
-      { name: 'Sophie Wagner', badge: ['badge-yellow', 'Angebot ausstehend'], md: 'MD: AW' },
+      { id: 'sophie', name: 'Sophie Wagner', badge: ['badge-yellow', 'Angebot ausstehend'], md: 'MD: SK' },
     ],
   },
   {
@@ -707,8 +842,9 @@ const phases = [
       { t: 'Customer Service: Termin zur Blutabnahme mit Kunde besprechen' },
     ],
     cards: [
-      { name: 'Jonas Becker', badge: ['badge-green', 'Fragebogen eingegangen'], md: 'MD: SW · Arzt: JK' },
-      { name: 'Marie Krause', badge: ['badge-yellow', 'Fragebogen ausstehend'], md: 'MD: AW · Arzt: SF' },
+      { id: 'anna',  name: 'Anna Schmidt',     badge: ['badge-green', 'Fragebogen eingegangen'], md: 'MD: SK · Arzt: JvH' },
+      { id: 'jonas', name: 'Jonas Becker',      badge: ['badge-yellow', 'Fragebogen ausstehend'], md: 'MD: AW · Arzt: —' },
+      { id: 'felix', name: 'Felix Zimmermann',  badge: ['badge-yellow', 'Fragebogen ausstehend'], md: 'MD: AW · Arzt: —' },
     ],
   },
   {
@@ -720,7 +856,8 @@ const phases = [
       { trigger: 'Bei Arzt-Zuweisung', action: 'Arzt erhält automatisch eine Benachrichtigung, das Blutbild zu analysieren.' },
     ],
     cards: [
-      { name: 'Anna Schmidt', info: ['Termin: 22. Juni', 'Performula Köln'], md: 'MD: AW · Arzt: JvH' },
+      { id: 'thomas', name: 'Thomas Klein',   info: ['Befunde liegen vor', 'Arzt: JK'],       md: 'MD: AW · Arzt: JK' },
+      { id: 'oliver', name: 'Oliver Hartmann', info: ['Termin: 26. Juni', 'Arzt: JvH'],       md: 'MD: SW · Arzt: JvH' },
     ],
   },
   {
@@ -733,7 +870,7 @@ const phases = [
       { trigger: 'Nach Versand durch Hersteller', action: 'DHL-API holt die Trackingnummer automatisch ins CRM und versendet die Versandbestätigung (A7) mit Trackinglink an den Kunden.' },
     ],
     cards: [
-      { name: 'Maria Fischer', info: ['Produktion läuft', 'Fertig ca. 25. Juni'], md: 'MD: AW · Arzt: SF' },
+      { id: 'maria', name: 'Maria Fischer', info: ['Formulierung in Arbeit', 'Produktion KW 26'], md: 'MD: SK · Arzt: JvH' },
     ],
   },
   {
@@ -742,19 +879,22 @@ const phases = [
       { t: 'Kontaktperson meldet sich beim Kunden, sobald Paket da ist' },
     ],
     automations: [
-      { trigger: 'Bei DHL-Status „zugestellt“', action: 'DHL-API überwacht den Sendungsstatus und benachrichtigt automatisch die Kontaktperson, sobald das Paket zugestellt wurde.' },
+      { trigger: 'Bei DHL-Status „zugestellt”', action: 'DHL-API überwacht den Sendungsstatus und benachrichtigt automatisch die Kontaktperson, sobald das Paket zugestellt wurde.' },
     ],
     cards: [
-      { name: 'Tobias Lang', info: ['Paket unterwegs', 'Zustellung ca. 23. Juni'], md: 'MD: SK · Arzt: JK' },
+      { id: 'tobias', name: 'Tobias Lang', info: ['Paket zugestellt 21. Juni', 'Kontakt ausstehend'], md: 'MD: SW · Arzt: SF' },
     ],
   },
   {
     num: 7, name: 'Einnahme Zyklus', accent: 'var(--green)',
     tasks: [],
     cards: [
-      { id: 'sarah', name: 'Sarah Braun', info: ['Batch 1 · Tag 14', 'Check-in in 46d'], md: 'MD: AW · Arzt: JvH' },
-      { name: 'Peter Schulz', badge: ['badge-red', 'Check-in fällig (60d)'], md: 'MD: AW · Arzt: JK' },
-      { name: 'Julia Weber', info: ['Batch 3 · Verlängerung in 28d'], md: 'MD: SK · Arzt: SF' },
+      { id: 'sarah',     name: 'Sarah Braun',      info: ['Batch 1 · Tag 61', 'Check-in 60d fällig'], md: 'MD: AW · Arzt: JvH' },
+      { id: 'peter',     name: 'Peter Schulz',      badge: ['badge-red', 'Check-in fällig (60d)'],    md: 'MD: SW · Arzt: JvH' },
+      { id: 'julia',     name: 'Julia Weber',        info: ['Batch 1 · Verlängerung offen'],            md: 'MD: SK · Arzt: SF' },
+      { id: 'daniel',    name: 'Daniel Krüger',      info: ['Batch 1 · Läuft gut'],                     md: 'MD: AW · Arzt: JvH' },
+      { id: 'christina', name: 'Christina Albrecht', info: ['Batch 1 · 2. Zyklus geplant'],             md: 'MD: SK · Arzt: SF' },
+      { id: 'nina',      name: 'Nina Bauer',          badge: ['badge-red', 'Check-in fällig (60d)'],   md: 'MD: AW · Arzt: JK' },
     ],
   },
 ];
@@ -826,10 +966,9 @@ function renderPipeline() {
 const AKQUISE_PHASEN = ['Lead Long List', 'Lead Hot List'];
 
 function renderDashboardStats() {
-  let aktiv = 0, leads = 0, bearbeitung = 0, lost = 0;
+  let aktiv = 0, leads = 0, bearbeitung = 0;
   kundenliste.forEach(k => {
-    if (k.status === 'verloren') lost++;
-    else if (k.status === 'aktiv') aktiv++;
+    if (k.status === 'aktiv') aktiv++;
     else if (k.status === 'pipeline') {
       if (AKQUISE_PHASEN.includes(k.phase)) leads++;
       else bearbeitung++;
@@ -839,8 +978,8 @@ function renderDashboardStats() {
   set('stat-aktiv', aktiv);
   set('stat-leads', leads);
   set('stat-bearbeitung', bearbeitung);
-  set('stat-lost', lost);
   set('stat-gesamt', kundenliste.length);
+  // stat-checkin bleibt statisch (Platzhalter: 5)
 }
 
 /* ===== AKTIVITÄTS-FEED (Letzte Änderungen) ===== */
@@ -974,18 +1113,59 @@ herzlichen Dank für den angenehmen Austausch und für dein Interesse, Teilnehme
 Im Anhang findest du dein offizielles Angebot.
 
 Nach Annahme des Angebots gestalten sich die nächsten Schritte wie folgt:
-• Einsteuerung der Blutabnahme sowie Stuhl-/Urinproben durch PERFORMULA
-• Anamnesegespräch per Video-Call oder Telefon (ca. 7–10 Tage nach Blutentnahme)
-• Erstellung deiner individuellen Rezeptur
+
+Einsteuerung der Blutabnahme sowie Stuhl-/Urinproben durch PERFORMULA
+Wir koordinieren für dich einen Termin in der Praxis {{Praxis}}, in der deine Blutabnahme durchgeführt wird.
+Vorab senden wir dir alle benötigten Materialien für die Stuhl- und Urinprobe zu. Diese bringst du bitte am Morgen der Blutabnahme mit in die Praxis.
+
+Anamnesegespräch per Video-Call oder Telefon
+Sobald uns alle Laborergebnisse vorliegen (in der Regel ca. 7–10 Tage nach Blutentnahme und Abgabe der Proben), findet dein Anamnesegespräch mit einer unserer Ärzt:innen über Sprechstunde Online statt.
+
+Erstellung deiner individuellen Rezeptur
+Auf Basis deiner Werte formulieren unsere Ärzt:innen anschließend deine persönliche Mikronährstoffmischung.
 
 Du erhältst darin:
 • 90 Tagesrationen Mikronährstoffe (bis zu 40 Inhaltsstoffe, individuell abgestimmt)
 • 90 Portionen Fruchtpulver/Proteinpulver auf Geschmacksbasis
 
+Auf Wunsch bieten wir dir zusätzlich einen Onboarding-Call an, in dem wir Einnahme, Anwendung und offene Fragen gemeinsam durchgehen.
+
+Fortlaufende Betreuung:
+Wenn du anschließend im Programm bleibst – wovon wir ausgehen – erfolgt ca. 10 Wochen nach Einnahmebeginn eine erneute Blutabnahme, um die Entwicklung deiner Werte zu überprüfen. Basierend darauf wird deine nächste 3-Monats-Rezeptur optimiert.
+
+Langjährige Kund:innen mit stabilen Laborwerten benötigen meist nur noch zwei Blutabnahmen pro Jahr.
+
 Bei Fragen melde dich sehr gerne jederzeit!`,
   },
   {
-    code: 'A2', title: 'Welcome + Anamnese-Bogen', phase: 'Diagnostik', auto: true,
+    code: 'A2', title: 'Welcome Neukunde', phase: 'Diagnostik', auto: true,
+    trigger: 'Automatisch bei Übergang Lead Hot List → Diagnostik. Enthält DHL-Tracking fürs Probenset + Blutentnahme-Termin (ohne Anamnese-Link).',
+    subject: 'Willkommen bei PERFORMULA – deine nächsten Schritte',
+    body: `Lieber {{Vorname}},
+
+wir freuen uns sehr, dass du dich für die Teilnahme am PERFORMULA Programm entschieden hast.
+
+In den nächsten Tagen erhältst du eine Lieferung mit deinem Probenentnahme-Set für Stuhl und Urin.
+Hier noch einmal dein DHL-Trackinglink (du bekommst parallel dazu weitere Status-Updates per E-Mail):
+{{DHL-Trackinglink-Probenset}}
+
+Bitte lies die beiliegenden Anleitungen sorgfältig durch.
+Die Proben solltest du am Morgen deiner Blutentnahme durchführen und anschließend in der mitgelieferten Versandtasche mit zur Blutentnahme bringen.
+
+WICHTIG: Bitte lege unbedingt den unterschriebenen Auftrag mit in die Versandtasche.
+
+Im nächsten Schritt steht deine Blutentnahme an. Hierfür wurde bereits ein Termin für dich vereinbart.
+Praxis: {{Praxis}}
+Termin: {{Termin}}
+
+Die Blutentnahme erfolgt nüchtern – bitte jedoch ausreichend Wasser trinken.
+
+Nach der Blutentnahme dauert es ca. 7–10 Werktage, bis alle Laborergebnisse vollständig vorliegen. In der Zwischenzeit kommen wir zwecks Terminabsprache für dein Anamnese- bzw. Diagnostikgespräch mit unseren Ärzt:innen auf dich zu.
+
+Solltest du Fragen haben, melde dich gerne jederzeit!`,
+  },
+  {
+    code: 'A2.1', title: 'Welcome + Anamnese-Bogen', phase: 'Diagnostik', auto: true,
     trigger: 'Automatisch bei Übergang Lead Hot List → Diagnostik. Enthält Jotform-Link + DHL-Tracking fürs Probenset.',
     subject: 'Willkommen bei PERFORMULA – deine nächsten Schritte',
     body: `Lieber {{Vorname}},
@@ -993,18 +1173,26 @@ Bei Fragen melde dich sehr gerne jederzeit!`,
 wir freuen uns sehr, dass du dich für die Teilnahme am PERFORMULA Programm entschieden hast.
 
 Anbei findest du einen Link zu einem Fragebogen, der uns dabei hilft, auf Basis deines Blutbilds deine individuelle Mikronährstoff-Rezeptur zu erstellen.
-→ Anamnese-Bogen: https://form.jotform.com/261323094836357
+Anamnese-Bogen: {{Anamnese-Link}}
+
+Wir würden uns freuen, wenn du den Fragebogen vollständig ausfüllst (ca. 10 Min.), damit unsere Ärzt:innen anschließend deine persönliche Rezeptur zusammenstellen können.
 
 Außerdem erhältst du in den nächsten Tagen eine Lieferung mit deinem Probenentnahme-Set für Stuhl und Urin.
-Hier dein DHL-Trackinglink: {{DHL-Trackinglink}}
+Hier noch einmal dein DHL-Trackinglink (du bekommst parallel dazu weitere Status-Updates per E-Mail):
+{{DHL-Trackinglink-Probenset}}
+
+Bitte lies die beiliegenden Anleitungen sorgfältig durch.
+Die Proben solltest du am Morgen deiner Blutentnahme durchführen und anschließend in der mitgelieferten Versandtasche mit zur Blutentnahme bringen.
 
 WICHTIG: Bitte lege unbedingt den unterschriebenen Auftrag mit in die Versandtasche.
 
-Im nächsten Schritt steht deine Blutentnahme an:
+Im nächsten Schritt steht deine Blutentnahme an. Hierfür wurde bereits ein Termin für dich vereinbart.
 Praxis: {{Praxis}}
 Termin: {{Termin}}
 
 Die Blutentnahme erfolgt nüchtern – bitte jedoch ausreichend Wasser trinken.
+
+Nach der Blutentnahme dauert es ca. 7–10 Werktage, bis alle Laborergebnisse vollständig vorliegen. In der Zwischenzeit kommen wir zwecks Terminabsprache für dein Anamnese- bzw. Diagnostikgespräch mit unseren Ärzt:innen auf dich zu.
 
 Solltest du Fragen haben, melde dich gerne jederzeit!`,
   },
@@ -1017,9 +1205,11 @@ Solltest du Fragen haben, melde dich gerne jederzeit!`,
 wir freuen uns sehr, dass du am PERFORMULA-Programm teilnimmst.
 
 Anbei der Link zu einem Fragebogen, der uns dabei hilft, auf Basis deines Blutbilds deine individuelle Mikronährstoff-Rezeptur zu erstellen.
-→ Anamnese-Bogen: https://form.jotform.com/261323094836357
+Anamnese-Bogen: {{Anamnese-Link}}
 
-Wir würden uns freuen, wenn du den Fragebogen vollständig ausfüllst (ca. 10 Min.).
+Wir würden uns freuen, wenn du den Fragebogen vollständig ausfüllst (ca. 10 Min.), damit unsere Ärzt:innen anschließend deine persönliche Rezeptur zusammenstellen können.
+
+Bei Fragen melde dich gerne jederzeit bei uns.
 
 Liebe Grüße aus Köln,
 {{Absender}}`,
@@ -1035,6 +1225,7 @@ laut DHL sind deine Materialien für die Stuhl- und Urinproben bei dir eingetrof
 Da wir bisher noch keinen Probeneingang im Labor verzeichnen konnten, möchten wir kurz nachfragen, ob du noch Unterstützung benötigst oder ob du bereits abschätzen kannst, wann du die Proben versenden wirst.
 
 Solltest du Fragen haben, melde dich gerne jederzeit!
+
 Liebe Grüße`,
   },
   {
@@ -1043,16 +1234,48 @@ Liebe Grüße`,
     subject: 'Erinnerung: morgen ist deine Blutentnahme',
     body: `Lieber {{Vorname}},
 
-morgen findet deine Blutentnahme statt. Hier noch einmal alle relevanten Informationen:
+morgen findet deine Blutentnahme statt. Hier noch einmal alle relevanten Informationen für dich:
 Praxis: {{Praxis}}
 Termin: {{Termin}}
 
-Bitte erscheine nüchtern zur Blutentnahme – Wasser ist selbstverständlich erlaubt.
+Bitte erscheine nüchtern zur Blutentnahme – Wasser ist selbstverständlich erlaubt – trinke gerne ausreichend vorher.
+
+Nach der Blutentnahme dauert es ca. 7–10 Werktage, bis deine vollständigen Laborbefunde validiert sind.
 
 Wichtig: Bitte entnimm deine Stuhl- und Urinprobe am Morgen der Blutentnahme und bringe sie gemeinsam mit dem unterschriebenen Auftrag in der Versandtasche mit.
 
-Du kannst bereits jetzt dein Anamnesegespräch bei {{Arzt}} buchen:
+Du kannst bereits jetzt dein Anamnesegespräch bei {{Arzt}} buchen. Bitte wähle dafür einen Termin ab dem {{Termin-frühestens}}, damit sichergestellt ist, dass alle Endbefunde rechtzeitig vorliegen.
 {{Meeting-Link}}
+
+Sollte bei der Terminauswahl kein geeigneter Slot für dich dabei sein, melde dich einfach – wir finden selbstverständlich einen Alternativtermin.
+
+Solltest du Fragen haben, melde dich gerne jederzeit!`,
+  },
+  {
+    code: 'A4.1', title: 'Reminder Anamnese + Blutentnahme', phase: 'Diagnostik', auto: false,
+    trigger: 'Manuell — kombinierter Reminder: Blutentnahme-Termin + Anamnese-Fragebogen falls noch nicht ausgefüllt.',
+    subject: 'Erinnerung: morgen ist deine Blutentnahme',
+    body: `Lieber {{Vorname}},
+
+morgen findet deine Blutentnahme statt. Hier noch einmal alle relevanten Informationen für dich:
+Praxis: {{Praxis}}
+Termin: {{Termin}}
+
+Bitte erscheine nüchtern zur Blutentnahme – Wasser ist selbstverständlich erlaubt – trinke gerne ausreichend vorher.
+
+Nach der Blutentnahme dauert es ca. 7–10 Werktage, bis deine vollständigen Laborbefunde validiert sind.
+
+Wichtig: Bitte entnimm deine Stuhl- und Urinprobe am Morgen der Blutentnahme und bringe sie gemeinsam mit dem unterschriebenen Auftrag in der Versandtasche mit.
+
+Außerdem findest du anbei einen Link zu einem Fragebogen, der uns dabei hilft, auf Basis deines Blutbilds deine individuelle Mikronährstoff-Rezeptur zu erstellen.
+Anamnese-Bogen: {{Anamnese-Link}}
+
+Wir würden uns freuen, wenn du den Fragebogen vollständig ausfüllst (ca. 10 Min.), damit unsere Ärzt:innen anschließend deine persönliche Rezeptur zusammenstellen können.
+
+Du kannst bereits jetzt dein Anamnesegespräch bei {{Arzt}} buchen. Bitte wähle dafür einen Termin ab dem {{Termin-frühestens}}, damit sichergestellt ist, dass alle Endbefunde rechtzeitig vorliegen.
+{{Meeting-Link}}
+
+Sollte bei der Terminauswahl kein geeigneter Slot für dich dabei sein, melde dich einfach – wir finden selbstverständlich einen Alternativtermin.
 
 Solltest du Fragen haben, melde dich gerne jederzeit!`,
   },
@@ -1067,7 +1290,9 @@ deine Befunde liegen nun vor.
 Gerne kannst du über den folgenden Link dein Anamnesegespräch bei {{Arzt}} buchen:
 {{Meeting-Link}}
 
-Sollte bei der Terminauswahl kein passender Slot dabei sein, melde dich einfach – wir finden selbstverständlich einen Alternativtermin.
+Sollte bei der Terminauswahl kein passender Slot für dich dabei sein, melde dich einfach – wir finden selbstverständlich einen Alternativtermin.
+
+Und natürlich kannst du dich jederzeit bei uns melden, falls du noch Fragen hast.
 
 Liebe Grüße`,
   },
@@ -1077,11 +1302,12 @@ Liebe Grüße`,
     subject: 'Kurzes Update zu deiner Mischung',
     body: `Lieber {{Vorname}},
 
-anbei ein kurzes Update zu deiner PERFORMULA Mikronährstoffmischung: Wir gehen aktuell davon aus, dass die Produktion noch diese Woche abgeschlossen werden kann.
+anbei ein kurzes Update zu deiner PERFORMULA Mikronährstoffmischung: Wir gehen aktuell davon aus, dass die Produktion noch diese Woche fertig abgeschlossen werden kann.
 
-Zwei benötigte Rohstoffe treffen voraussichtlich in Kürze ein, sodass deine individuelle Mischung zeitnah finalisiert und verschickt werden kann.
+Zwei benötigte Rohstoffe treffen voraussichtlich in Kürze ein, so dass deine individuelle Mischung zeitnah finalisiert und verschickt werden kann.
 
 Bei Fragen melde dich gerne jederzeit bei uns,
+
 Liebe Grüße`,
   },
   {
@@ -1092,11 +1318,14 @@ Liebe Grüße`,
 
 deine PERFORMULA Mikronährstoffmischung ist auf dem Weg zu dir!
 
-Hier dein DHL-Trackinglink: {{DHL-Trackinglink}}
+Hier noch dein DHL-Trackinglink (du bekommst parallel dazu weitere Status-Updates per E-Mail):
+{{DHL-Trackinglink}}
 
-Sobald das Paket eingetroffen ist, melde dich gerne bei uns – dann legen wir gemeinsam einen kurzen Termin für einen Videocall (Onboarding) fest.
+Onboarding?
+Sobald das Paket eingetroffen ist, melde dich gerne bei uns – dann legen wir gemeinsam einen kurzen Termin für einen Videocall fest, in dem wir dir das Produkt und die Einnahme ausführlich erklären und alle offenen Fragen besprochen werden können.
 
 Bei Fragen melde dich gerne jederzeit bei uns,
+
 Liebe Grüße`,
   },
   {
@@ -1105,11 +1334,15 @@ Liebe Grüße`,
     subject: 'Wie kommst du mit deinen Mikronährstoffen zurecht?',
     body: `Lieber {{Vorname}},
 
-vor einigen Wochen sind deine PERFORMULA Mikronährstoffe bei dir angekommen. Wir freuen uns sehr, dass du den Weg zu mehr Gesundheit und Wohlbefinden mit uns gehst.
+vor einigen Wochen sind deine PERFORMULA Mikronährstoffe bei dir angekommen. Wir freuen uns sehr, dass du bereits den Weg zu mehr Gesundheit und Wohlbefinden gemeinsam mit uns gehst.
 
-Wie kommst du zurecht? Gibt es etwas, das du uns fragen möchtest? Merkst du schon Veränderungen oder Effekte?
+Wie kommst du zurecht? Gibt es etwas, das du uns fragen möchtest?
+Merkst du schon Veränderungen oder Effekte?
+
+Wir unterstützen dich sehr gerne und stehen dir jederzeit für Fragen oder Anmerkungen zur Verfügung.
 
 Melde dich gerne jederzeit bei uns!
+
 Liebe Grüße`,
   },
   {
@@ -1121,10 +1354,27 @@ Liebe Grüße`,
 deine PERFORMULA Mikronährstoffe sind nun seit einigen Tagen bei dir – wie läuft es bisher?
 
 Wir würden uns sehr über dein kurzes Feedback freuen (ca. 3 Min.). So können wir deine Erfahrung optimal begleiten:
-→ Check-in (7 Tage): https://form.jotform.com/261302990765360
+→ Check-in (7 Tage): {{Checkin-7-Link}}
 
 Vielen Dank und melde dich jederzeit gerne bei uns!
+
 Liebe Grüße`,
+  },
+  {
+    code: 'A11', title: 'Geburtstag', phase: 'Alle Phasen', auto: true,
+    trigger: 'Automatisch am Geburtstag des Kunden (laut Profil-Geburtsdatum).',
+    subject: 'Alles Gute zum Geburtstag, {{Vorname}}! 🎂',
+    body: `Lieber {{Vorname}},
+
+heute ist dein Geburtstag – herzlichen Glückwunsch von uns allen bei PERFORMULA!
+
+Wir wünschen dir einen wunderschönen Tag, viel Energie und alles Gute für das neue Lebensjahr.
+
+Es ist uns eine Freude, dich auf deinem Weg zu mehr Gesundheit und Wohlbefinden begleiten zu dürfen.
+
+Auf ein gesundes Jahr!
+
+Dein PERFORMULA-Team`,
   },
   {
     code: 'A10', title: 'Check-in · 60 Tage', phase: 'Einnahme Zyklus', auto: true,
@@ -1135,7 +1385,7 @@ Liebe Grüße`,
 du nimmst deine individuelle Mikronährstoffmischung nun seit rund 60 Tagen ein – ein guter Zeitpunkt, um gemeinsam Bilanz zu ziehen.
 
 Bitte nimm dir einen kurzen Moment für unseren Check-in-Fragebogen (ca. 5 Min.):
-→ Check-in (60 Tage): https://form.jotform.com/260392593422357
+→ Check-in (60 Tage): {{Checkin-60-Link}}
 
 Auf Wunsch besprechen wir die nächsten Schritte – Verlängerung deiner Formel oder ein neuer Zyklus mit erneuter Blutanalyse.
 
@@ -1238,10 +1488,10 @@ const automationGroups = [
   {
     group: 'Arzt & Produktion',
     rules: [
-      { icon: '👩‍⚕️', trigger: 'Arzt wird zugewiesen', action: 'Arzt benachrichtigen: Blutbild analysieren', desc: 'Bei Zuweisung erhält der Arzt automatisch eine Benachrichtigung, das Blutbild des Kunden zu analysieren.', tags: [['','Interne Notifikation']], on: true },
-      { icon: '🗓️', trigger: 'Datum Abfüllung erfasst', action: 'Haltbarkeit berechnen (+ 12 Monate)', desc: 'Das Haltbarkeitsdatum wird automatisch als Abfülldatum + 12 Monate gesetzt.', tags: [['','Feld-Berechnung']], on: true },
+      { icon: '👩‍⚕️', trigger: 'Arzt wird zugewiesen', action: 'Arzt: Aufgabe + E-Mail', desc: 'Bei Zuweisung erhält der Arzt automatisch eine interne Aufgabe sowie eine E-Mail mit der Info, dass ihm ein neuer Kunde zur Blutbild-Analyse zugewiesen wurde.', tags: [['','Interne Aufgabe'],['mail','E-Mail an Arzt']], on: true },
+      { icon: '🗓️', trigger: 'Datum Abfüllung erfasst', action: 'Haltbarkeit berechnen (+ 12 Monate)', desc: 'Sobald das Abfülldatum im Produktions-Tab eingetragen wird, berechnet das CRM das Haltbarkeitsdatum automatisch (Abfüllung + 12 Monate) und trägt es direkt ein.', tags: [['','Feld-Berechnung']], on: true },
       { icon: '📦', trigger: 'Versand durch Hersteller (DHL-API)', action: 'Trackingnr. ziehen + Versandbestätigung', desc: 'Die DHL-API holt die Trackingnummer automatisch ins CRM und versendet die A7-Versandbestätigung mit Trackinglink an den Kunden.', tags: [['mail','E-Mail A7'],['','DHL-API']], on: true },
-      { icon: '🚚', trigger: 'DHL-Status „zugestellt"', action: 'Kontaktperson benachrichtigen', desc: 'Sobald das Paket zugestellt wurde, wird die zuständige Kontaktperson automatisch informiert, um sich beim Kunden zu melden.', tags: [['','Interne Notifikation'],['','DHL-API']], on: true },
+      { icon: '🚚', trigger: 'DHL-Status „zugestellt"', action: 'Kontaktperson + MD benachrichtigen', desc: 'Sobald das Paket zugestellt wurde, wird die zuständige Kontaktperson intern benachrichtigt und der MD erhält zusätzlich eine E-Mail, damit der Onboarding-Call zeitnah koordiniert werden kann.', tags: [['','Interne Notifikation'],['mail','E-Mail an MD'],['','DHL-API']], on: true },
     ],
   },
   {
@@ -1249,7 +1499,7 @@ const automationGroups = [
     rules: [
       { icon: '📨', trigger: '10 Tage nach Paketerhalt', action: 'Check-in (7 Tage) senden', desc: 'Automatischer Versand des 7-Tage-Check-in-Fragebogens.', tags: [['mail','E-Mail A9'],['timer','Erhalt + 10 Tage']], on: true },
       { icon: '📨', trigger: '60 Tage nach Einnahmestart', action: 'Check-in (60 Tage) senden', desc: 'Automatischer Versand des 60-Tage-Check-in-Fragebogens mit Frage „Weitermachen?".', tags: [['mail','E-Mail A10'],['timer','Start + 60 Tage']], on: true },
-      { icon: '🔔', trigger: 'Check-in 60 Tage: „Ja" (weitermachen)', action: 'MD benachrichtigen', desc: 'Der zuständige Managing Director wird informiert und bestätigt die Verlängerung manuell.', tags: [['','Interne Notifikation']], on: true },
+      { icon: '🔔', trigger: 'Check-in 60 Tage: „Ja" (weitermachen)', action: 'MD benachrichtigen', desc: 'Der zuständige MD erhält eine interne Notifikation sowie eine E-Mail mit der Info, dass der Kunde weitermachen möchte — damit die Verlängerung zeitnah bestätigt und koordiniert werden kann.', tags: [['','Interne Notifikation'],['mail','E-Mail an MD']], on: true },
       { icon: '🚫', trigger: 'Check-in 60 Tage: „Nein" + 90 Tage', action: 'Kunde erhält „Lost"-Tag', desc: 'Gibt der Kunde an, nicht weiterzumachen, wird er nach 90 Tagen automatisch mit dem „Lost"-Tag markiert und zurück in die Lead Long List gelegt.', tags: [['timer','+ 90 Tage'],['','Lost-Tag']], on: true },
     ],
   },
@@ -1278,6 +1528,45 @@ function renderAutomationen() {
     </div>`).join('');
 }
 
+/* ===== TEAM ===== */
+const teamData = [
+  { kuerzel: 'JvH', name: 'Dr. Max Mustermann',   rolle: 'Arzt · Innere Medizin / Labordiagnostik',  email: 'jvh@performula.de', telefon: '+49 221 …' },
+  { kuerzel: 'SF',  name: 'Dr. Maria Musterfrau', rolle: 'Ärztin · Allgemeinmedizin',                 email: 'sf@performula.de',  telefon: '+49 221 …' },
+  { kuerzel: 'JK',  name: 'Dr. Julia Beispiel',   rolle: 'Ärztin · Sportmedizin',                     email: 'jk@performula.de',  telefon: '+49 221 …' },
+  { kuerzel: 'AB',  name: 'Dr. Alex Beispiel',    rolle: 'Arzt · Innere Medizin',                     email: 'ab@performula.de',  telefon: '+49 221 …' },
+  { kuerzel: 'AL',  name: 'Dr. Anna Beispiel',    rolle: 'Ärztin · Allgemeinmedizin',                 email: 'al@performula.de',  telefon: '+49 221 …' },
+  { kuerzel: 'SW',  name: 'Max Mustermann',        rolle: 'Managing Director',                          email: 'sw@performula.de',  telefon: '+49 221 …' },
+  { kuerzel: 'SK',  name: 'Simon Beispiel',        rolle: 'Managing Director',                          email: 'sk@performula.de',  telefon: '+49 221 …' },
+  { kuerzel: 'AW',  name: 'Anna Musterfrau',       rolle: 'Managing Director',                          email: 'aw@performula.de',  telefon: '+49 221 …' },
+  { kuerzel: 'LV',  name: '— noch nicht angelegt —', rolle: 'Managing Director',                       email: '—',                 telefon: '—' },
+  { kuerzel: 'JV',  name: '— noch nicht angelegt —', rolle: 'Managing Director',                       email: '—',                 telefon: '—' },
+  { kuerzel: 'AA',  name: 'Anton Altreuther',        rolle: 'Managing Director',                          email: 'anton_altreuther@icloud.com', telefon: '+49 …' },
+];
+
+function renderTeam() {
+  const people = teamData;
+  document.getElementById('team-content').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;">
+      ${people.map(p => `
+        <div class="ds" style="margin:0;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div style="width:42px;height:42px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--ocean);flex-shrink:0;">${p.kuerzel}</div>
+            <div>
+              <div style="font-weight:600;font-size:14px;color:var(--text);">${p.name}</div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:1px;">${p.rolle}${p.fach ? ' · ' + p.fach : ''}</div>
+            </div>
+          </div>
+          <div class="field-grid">
+            <div class="field"><div class="field-label">E-Mail</div><div class="field-value">${p.email !== '—' ? `<a href="mailto:${p.email}" style="color:var(--blue)">${p.email}</a>` : '—'}</div></div>
+            <div class="field"><div class="field-label">Telefon</div><div class="field-value">${p.telefon}</div></div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="openTeamModal('${p.kuerzel}')">Bearbeiten</button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
 function toggleAuto(gi, ri, el) {
   const r = automationGroups[gi].rules[ri];
   r.on = !r.on;
@@ -1289,22 +1578,22 @@ function toggleAuto(gi, ri, el) {
 const kundenliste = [
   { kdnr:'Kd-001', vorname:'Sarah',    nachname:'Braun',     email:'sarah@email.de',     kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-07-18', md:'AW', arzt:'JvH', detail:'sarah' },
   { kdnr:'Kd-002', vorname:'Max',      nachname:'Mustermann',email:'max@firma.de',       kategorie:'Unternehmen',  status:'pipeline', phase:'Lead Long List',           versorgt:'',           md:'SW', arzt:'—',   detail:'max' },
-  { kdnr:'Kd-003', vorname:'Julia',    nachname:'Weber',     email:'j.weber@mail.de',    kategorie:'VIP',          status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-09-15', md:'SK', arzt:'SF' },
-  { kdnr:'Kd-004', vorname:'Peter',    nachname:'Schulz',    email:'p.schulz@web.de',    kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-08-02', md:'AW', arzt:'JK' },
-  { kdnr:'Kd-005', vorname:'Anna',     nachname:'Schmidt',   email:'a.schmidt@gm.de',    kategorie:'Privatperson', status:'pipeline', phase:'Diagnostik',               versorgt:'',           md:'AW', arzt:'JvH' },
-  { kdnr:'Kd-006', vorname:'Klaus',    nachname:'Richter',   email:'k.richter@t-o.de',   kategorie:'Unternehmen',  status:'verloren', phase:'Lead Long List',           versorgt:'',           md:'SW', arzt:'—' },
-  { kdnr:'Kd-007', vorname:'Maria',    nachname:'Fischer',   email:'m.fischer@web.de',   kategorie:'VIP',          status:'pipeline', phase:'Formulierung & Produktion',versorgt:'',           md:'AW', arzt:'SF' },
-  { kdnr:'Kd-008', vorname:'Thomas',   nachname:'Klein',     email:'t.klein@mail.de',    kategorie:'Privatperson', status:'pipeline', phase:'Arztgespräch',             versorgt:'',           md:'SK', arzt:'JK' },
-  { kdnr:'Kd-009', vorname:'Sophie',   nachname:'Wagner',    email:'s.wagner@gmx.de',    kategorie:'Privatperson', status:'pipeline', phase:'Lead Hot List',            versorgt:'',           md:'AW', arzt:'—' },
-  { kdnr:'Kd-010', vorname:'Jonas',    nachname:'Becker',    email:'j.becker@web.de',    kategorie:'Unternehmen',  status:'pipeline', phase:'Diagnostik',               versorgt:'',           md:'SW', arzt:'JK' },
-  { kdnr:'Kd-011', vorname:'Laura',    nachname:'Hoffmann',  email:'l.hoffmann@mail.de', kategorie:'Privatperson', status:'pipeline', phase:'Lead Long List',           versorgt:'',           md:'AW', arzt:'—' },
-  { kdnr:'Kd-012', vorname:'Tobias',   nachname:'Lang',      email:'t.lang@firma.de',    kategorie:'Unternehmen',  status:'aktiv',    phase:'On-Boarding',              versorgt:'2026-10-05', md:'SK', arzt:'JK' },
-  { kdnr:'Kd-013', vorname:'Petra',    nachname:'Vogel',     email:'p.vogel@gmx.de',     kategorie:'Privatperson', status:'verloren', phase:'Lead Long List',           versorgt:'',           md:'AW', arzt:'—' },
-  { kdnr:'Kd-014', vorname:'Daniel',   nachname:'Krüger',    email:'d.krueger@web.de',   kategorie:'VIP',          status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-06-28', md:'SW', arzt:'AB' },
-  { kdnr:'Kd-015', vorname:'Christina',nachname:'Albrecht',  email:'c.albrecht@mail.de', kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-11-12', md:'SK', arzt:'AL' },
-  { kdnr:'Kd-016', vorname:'Felix',    nachname:'Zimmermann',email:'f.zimmer@gmx.de',    kategorie:'Unternehmen',  status:'pipeline', phase:'Diagnostik',               versorgt:'',           md:'AW', arzt:'SF' },
-  { kdnr:'Kd-017', vorname:'Nina',     nachname:'Bauer',     email:'n.bauer@web.de',     kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-07-30', md:'SW', arzt:'JvH' },
-  { kdnr:'Kd-018', vorname:'Oliver',   nachname:'Hartmann',  email:'o.hartmann@firma.de',kategorie:'VIP',          status:'pipeline', phase:'Arztgespräch',             versorgt:'',           md:'SK', arzt:'AB' },
+  { kdnr:'Kd-003', vorname:'Julia',    nachname:'Weber',     email:'j.weber@mail.de',    kategorie:'VIP',          status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-09-15', md:'SK', arzt:'SF',  detail:'julia' },
+  { kdnr:'Kd-004', vorname:'Peter',    nachname:'Schulz',    email:'p.schulz@web.de',    kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-08-02', md:'AW', arzt:'JK',  detail:'peter' },
+  { kdnr:'Kd-005', vorname:'Anna',     nachname:'Schmidt',   email:'a.schmidt@gm.de',    kategorie:'Privatperson', status:'pipeline', phase:'Diagnostik',               versorgt:'',           md:'AW', arzt:'JvH', detail:'anna' },
+  { kdnr:'Kd-006', vorname:'Klaus',    nachname:'Richter',   email:'k.richter@t-o.de',   kategorie:'Unternehmen',  status:'verloren', phase:'Lead Long List',           versorgt:'',           md:'SW', arzt:'—',   detail:'klaus' },
+  { kdnr:'Kd-007', vorname:'Maria',    nachname:'Fischer',   email:'m.fischer@web.de',   kategorie:'VIP',          status:'pipeline', phase:'Formulierung & Produktion',versorgt:'',           md:'AW', arzt:'SF',  detail:'maria' },
+  { kdnr:'Kd-008', vorname:'Thomas',   nachname:'Klein',     email:'t.klein@mail.de',    kategorie:'Privatperson', status:'pipeline', phase:'Arztgespräch',             versorgt:'',           md:'SK', arzt:'JK',  detail:'thomas' },
+  { kdnr:'Kd-009', vorname:'Sophie',   nachname:'Wagner',    email:'s.wagner@gmx.de',    kategorie:'Privatperson', status:'pipeline', phase:'Lead Hot List',            versorgt:'',           md:'AW', arzt:'—',   detail:'sophie' },
+  { kdnr:'Kd-010', vorname:'Jonas',    nachname:'Becker',    email:'j.becker@web.de',    kategorie:'Unternehmen',  status:'pipeline', phase:'Diagnostik',               versorgt:'',           md:'SW', arzt:'JK',  detail:'jonas' },
+  { kdnr:'Kd-011', vorname:'Laura',    nachname:'Hoffmann',  email:'l.hoffmann@mail.de', kategorie:'Privatperson', status:'pipeline', phase:'Lead Long List',           versorgt:'',           md:'AW', arzt:'—',   detail:'laura' },
+  { kdnr:'Kd-012', vorname:'Tobias',   nachname:'Lang',      email:'t.lang@firma.de',    kategorie:'Unternehmen',  status:'aktiv',    phase:'On-Boarding',              versorgt:'2026-10-05', md:'SK', arzt:'JK',  detail:'tobias' },
+  { kdnr:'Kd-013', vorname:'Petra',    nachname:'Vogel',     email:'p.vogel@gmx.de',     kategorie:'Privatperson', status:'verloren', phase:'Lead Long List',           versorgt:'',           md:'AW', arzt:'—',   detail:'petra' },
+  { kdnr:'Kd-014', vorname:'Daniel',   nachname:'Krüger',    email:'d.krueger@web.de',   kategorie:'VIP',          status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-06-28', md:'SW', arzt:'AB',  detail:'daniel' },
+  { kdnr:'Kd-015', vorname:'Christina',nachname:'Albrecht',  email:'c.albrecht@mail.de', kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-11-12', md:'SK', arzt:'AL',  detail:'christina' },
+  { kdnr:'Kd-016', vorname:'Felix',    nachname:'Zimmermann',email:'f.zimmer@gmx.de',    kategorie:'Unternehmen',  status:'pipeline', phase:'Diagnostik',               versorgt:'',           md:'AW', arzt:'SF',  detail:'felix' },
+  { kdnr:'Kd-017', vorname:'Nina',     nachname:'Bauer',     email:'n.bauer@web.de',     kategorie:'Privatperson', status:'aktiv',    phase:'Einnahme Zyklus',          versorgt:'2026-07-30', md:'SW', arzt:'JvH', detail:'nina' },
+  { kdnr:'Kd-018', vorname:'Oliver',   nachname:'Hartmann',  email:'o.hartmann@firma.de',kategorie:'VIP',          status:'pipeline', phase:'Arztgespräch',             versorgt:'',           md:'SK', arzt:'AB',  detail:'oliver' },
 ];
 
 const PHASE_ORDER = { 'Lead Long List':1,'Lead Hot List':2,'Diagnostik':3,'Arztgespräch':4,'Formulierung & Produktion':5,'On-Boarding':6,'Einnahme Zyklus':7 };
@@ -1531,6 +1820,917 @@ const customers = {
     files: [],
     emails_sent: ['A1 Angebot · 16. Juni'],
     notif: 'sms'
+  },
+
+  julia: {
+    name: 'Julia Weber',
+    kdnr: 'Kd-003',
+    status: 'aktiv',
+    phase: 'Einnahme Zyklus',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Julia', nachname: 'Weber', titel: '—',
+      email: 'j.weber@mail.de', telefon: '+49 160 111 2233',
+      geburtsdatum: '08.05.1990', geschlecht: 'Weiblich',
+      adresse: 'Domstraße 3, 50668 Köln', land: 'Deutschland',
+      versicherung: 'GKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Instagram',
+      weiterer_hintergrund: 'Fokus Resilienz & Wohlbefinden',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SK – Sebastian Koch',
+      arzt: 'SF – Dr. Friedsam',
+      versorgt_bis: '15. September 2026',
+      ziele: 'Resilienz & Wohlbefinden',
+      notizen: ''
+    },
+    diagnostik: {
+      blutabnahme: '10. März 2026',
+      befunde: '17. März 2026',
+      entnahmestelle: 'Hausarzt',
+      status: 'Befund ausgewertet'
+    },
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Check-in 60 Tage verfolgen', done: false },
+      ],
+      letzteMeldung: { date: '10. Juni 2026', text: 'Kundin zufrieden, kein Handlungsbedarf.' },
+      zusatzinfos: '',
+    },
+    produktion: {
+      charge: '26-00071-JW',
+      auftrag_am: '22. März 2026',
+      abfuellung: '28. März 2026',
+      haltbarkeit: '28. März 2027',
+      tracking_versand: '00340434737697401122',
+      tracking_probenset: '—',
+      menge_kunde: 90,
+      menge_rueckstell: 10,
+      batch_nr: 1
+    },
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '5. März 2026', auswertung: 'SF', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'done', datum: '8. April 2026', auswertung: 'SF', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: 'Fällig: 28. Mai 2026', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Instagram', date: '1. März 2026', state: 'done' },
+      { title: 'Angebot besprochen', date: '3. März 2026', state: 'done' },
+      { title: 'Anamnese versendet', date: '4. März 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '10. März 2026', state: 'done' },
+      { title: 'Befunde & Arztgespräch', date: '17. März 2026', state: 'done' },
+      { title: 'Produktion abgeschlossen', date: '28. März 2026', state: 'done' },
+      { title: 'Versand & Einnahmestart', date: '30. März 2026', state: 'done' },
+      { title: 'Check-in · 7 Tage', date: '8. April 2026', state: 'done' },
+      { title: 'Check-in · 60 Tage', date: 'Fällig: 28. Mai 2026', state: 'active' },
+      { title: 'Verlängerung oder neuer Zyklus', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 4. März', 'A7 Versandbestätigung · 30. März'],
+    notif: 'email'
+  },
+
+  peter: {
+    name: 'Peter Schulz',
+    kdnr: 'Kd-004',
+    status: 'aktiv',
+    phase: 'Einnahme Zyklus',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Peter', nachname: 'Schulz', titel: '—',
+      email: 'p.schulz@web.de', telefon: '+49 172 334 5566',
+      geburtsdatum: '22.11.1975', geschlecht: 'Männlich',
+      adresse: 'Ehrenstraße 18, 50672 Köln', land: 'Deutschland',
+      versicherung: 'PKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Weiterempfehlung',
+      weiterer_hintergrund: 'Best Ager, Fokus Prevention & Longevity',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SW – Sebastian Wirtz',
+      arzt: 'JvH – Dr. Vonhoegen',
+      versorgt_bis: '10. August 2026',
+      ziele: 'Prevention & Longevity',
+      notizen: ''
+    },
+    diagnostik: {
+      blutabnahme: '2. April 2026',
+      befunde: '9. April 2026',
+      entnahmestelle: 'Performula Köln',
+      status: 'Befund ausgewertet'
+    },
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Check-in 60 Tage verfolgen', done: false },
+      ],
+      letzteMeldung: { date: '11. Juni 2026', text: 'Zufrieden, will Verlängerung.' },
+      zusatzinfos: '',
+    },
+    produktion: {
+      charge: '26-00075-PS',
+      auftrag_am: '14. April 2026',
+      abfuellung: '21. April 2026',
+      haltbarkeit: '21. April 2027',
+      tracking_versand: '00340434737697501933',
+      tracking_probenset: '00340434737697401821',
+      menge_kunde: 90,
+      menge_rueckstell: 10,
+      batch_nr: 1
+    },
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '28. März 2026', auswertung: 'JvH', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'done', datum: '1. Mai 2026', auswertung: 'JvH', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: 'Fällig: 24. Juni 2026', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Weiterempfehlung', date: '25. März 2026', state: 'done' },
+      { title: 'Anamnese versendet', date: '27. März 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '2. April 2026', state: 'done' },
+      { title: 'Befunde & Arztgespräch', date: '9. April 2026', state: 'done' },
+      { title: 'Produktion abgeschlossen', date: '21. April 2026', state: 'done' },
+      { title: 'Versand & Einnahmestart', date: '23. April 2026', state: 'done' },
+      { title: 'Check-in · 7 Tage', date: '1. Mai 2026', state: 'done' },
+      { title: 'Check-in · 60 Tage', date: 'Fällig: 24. Juni 2026', state: 'active' },
+      { title: 'Verlängerung', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 27. März', 'A7 Versandbestätigung · 23. April'],
+    notif: 'email'
+  },
+
+  anna: {
+    name: 'Anna Schmidt',
+    kdnr: 'Kd-005',
+    status: 'pipeline',
+    phase: 'Diagnostik',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Anna', nachname: 'Schmidt', titel: '—',
+      email: 'a.schmidt@gmail.com', telefon: '+49 151 667 8899',
+      geburtsdatum: '15.07.1993', geschlecht: 'Weiblich',
+      adresse: 'Roonstraße 7, 50674 Köln', land: 'Deutschland',
+      versicherung: 'GKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Website',
+      weiterer_hintergrund: 'Fokus Resilienz & Wohlbefinden, Sport',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SK – Sebastian Koch',
+      arzt: '— noch nicht zugeteilt —',
+      versorgt_bis: '—',
+      ziele: 'Resilienz & Wohlbefinden',
+      notizen: 'Termin zur Blutabnahme noch offen.'
+    },
+    diagnostik: null,
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Anamnese-Fragebogen verschicken', done: true },
+        { text: 'Termin zur Blutabnahme mit Kunde besprechen', done: false },
+      ],
+      letzteMeldung: { date: 'Gestern', text: 'Anamnese eingegangen. Termin Blutabnahme noch zu koordinieren.' },
+      zusatzinfos: '',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '20. Juni 2026', auswertung: '—', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Website', date: '15. Juni 2026', state: 'done' },
+      { title: 'Anamnese versendet', date: '17. Juni 2026', state: 'done' },
+      { title: 'Anamnese eingegangen', date: '20. Juni 2026', state: 'done' },
+      { title: 'Blutabnahme koordinieren', date: 'Offen', state: 'active' },
+      { title: 'Befunde & Arztgespräch', date: 'Offen', state: 'pending' },
+      { title: 'Produktion', date: 'Offen', state: 'pending' },
+      { title: 'Versand & Einnahmestart', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 17. Juni'],
+    notif: 'email'
+  },
+
+  klaus: {
+    name: 'Klaus Richter',
+    kdnr: 'Kd-006',
+    status: 'verloren',
+    phase: 'Lead Long List',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Klaus', nachname: 'Richter', titel: '—',
+      email: 'k.richter@t-online.de', telefon: '+49 163 445 5677',
+      geburtsdatum: '04.02.1968', geschlecht: 'Männlich',
+      adresse: 'Gürtelstraße 25, 50679 Köln', land: 'Deutschland',
+      versicherung: 'GKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Messe',
+      weiterer_hintergrund: 'Kein Interesse mehr nach zweitem Kontakt',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SW – Sebastian Wirtz',
+      arzt: '—',
+      versorgt_bis: '—',
+      ziele: '—',
+      notizen: 'Hat nach zweitem Nachgehen nicht mehr geantwortet. 90-Tage-Frist abgelaufen → Lost.'
+    },
+    diagnostik: null,
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Nachgehen', done: true },
+      ],
+      letzteMeldung: { date: '15. März 2026', text: 'Kein Interesse. Hat nicht zurückgerufen.' },
+      zusatzinfos: 'Lost nach 90 Tagen ohne Reaktion.',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Messe', date: '10. Januar 2026', state: 'done' },
+      { title: 'Nachgehen (1. Versuch)', date: '20. Januar 2026', state: 'done' },
+      { title: 'Nachgehen (2. Versuch)', date: '15. März 2026', state: 'done' },
+      { title: 'Lost-Tag gesetzt', date: '15. März 2026', state: 'done' },
+    ],
+    files: [],
+    emails_sent: ['A1 Angebot · 20. Januar'],
+    notif: 'email'
+  },
+
+  maria: {
+    name: 'Maria Fischer',
+    kdnr: 'Kd-007',
+    status: 'pipeline',
+    phase: 'Formulierung & Produktion',
+    kategorie: 'Privatperson',
+    betreuung: 'VIP',
+    profil: {
+      vorname: 'Maria', nachname: 'Fischer', titel: '—',
+      email: 'm.fischer@icloud.com', telefon: '+49 175 223 4455',
+      geburtsdatum: '30.09.1985', geschlecht: 'Weiblich',
+      adresse: 'Flandrische Straße 9, 50674 Köln', land: 'Deutschland',
+      versicherung: 'PKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Arzt-Empfehlung',
+      weiterer_hintergrund: 'VIP-Kundin, Empfehlung durch Dr. Vonhoegen',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SK – Sebastian Koch',
+      arzt: 'JvH – Dr. Vonhoegen',
+      versorgt_bis: '—',
+      ziele: 'Performance, Resilienz & Wohlbefinden',
+      notizen: 'Formulierung in Arbeit. Produktion geplant KW 26.'
+    },
+    diagnostik: {
+      blutabnahme: '2. Juni 2026',
+      befunde: '9. Juni 2026',
+      entnahmestelle: 'Performula Köln',
+      status: 'Befund ausgewertet, Formulierung in Arbeit'
+    },
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Formulierung erstellen', done: false },
+        { text: 'Formulierung zur Produktion schicken', done: false },
+      ],
+      letzteMeldung: { date: '18. Juni 2026', text: 'Arztgespräch abgeschlossen. Formulierung wird erstellt.' },
+      zusatzinfos: 'VIP-Betreuung.',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '28. Mai 2026', auswertung: 'JvH', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Arzt-Empfehlung', date: '20. Mai 2026', state: 'done' },
+      { title: 'Anamnese versendet & eingegangen', date: '28. Mai 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '2. Juni 2026', state: 'done' },
+      { title: 'Befunde & Arztgespräch', date: '9. Juni 2026', state: 'done' },
+      { title: 'Formulierung erstellen', date: 'In Bearbeitung', state: 'active' },
+      { title: 'Produktion & Versand', date: 'Offen', state: 'pending' },
+      { title: 'Einnahmestart', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 21. Mai', 'A5 Befunde liegen vor · 9. Juni'],
+    notif: 'email'
+  },
+
+  thomas: {
+    name: 'Thomas Klein',
+    kdnr: 'Kd-008',
+    status: 'pipeline',
+    phase: 'Arztgespräch',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Thomas', nachname: 'Klein', titel: '—',
+      email: 't.klein@gmail.com', telefon: '+49 162 556 7788',
+      geburtsdatum: '17.04.1982', geschlecht: 'Männlich',
+      adresse: 'Venloer Straße 45, 50672 Köln', land: 'Deutschland',
+      versicherung: 'GKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Website',
+      weiterer_hintergrund: 'Sportler, Fokus Performance',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'AW – Angi Wirtz',
+      arzt: 'JK – Dr. Kostron',
+      versorgt_bis: '—',
+      ziele: 'Performance',
+      notizen: 'Blutbefunde liegen vor. Arztgespräch noch zu koordinieren.'
+    },
+    diagnostik: {
+      blutabnahme: '10. Juni 2026',
+      befunde: '17. Juni 2026',
+      entnahmestelle: 'Hausarzt',
+      status: 'Befund liegt vor'
+    },
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Customer Service weist Arzt zu', done: true },
+        { text: 'Arzt bekommt Notifikation für Kundengespräch', done: false },
+      ],
+      letzteMeldung: { date: '17. Juni 2026', text: 'Befunde eingegangen. Dr. Kostron zugewiesen.' },
+      zusatzinfos: '',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '4. Juni 2026', auswertung: 'JK', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Website', date: '1. Juni 2026', state: 'done' },
+      { title: 'Anamnese versendet & eingegangen', date: '4. Juni 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '10. Juni 2026', state: 'done' },
+      { title: 'Befunde vollständig', date: '17. Juni 2026', state: 'done' },
+      { title: 'Arztgespräch koordinieren', date: 'Offen', state: 'active' },
+      { title: 'Formulierung & Produktion', date: 'Offen', state: 'pending' },
+      { title: 'Versand & Einnahmestart', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 1. Juni', 'A5 Befunde liegen vor · 17. Juni'],
+    notif: 'email'
+  },
+
+  sophie: {
+    name: 'Sophie Wagner',
+    kdnr: 'Kd-009',
+    status: 'pipeline',
+    phase: 'Lead Hot List',
+    kategorie: 'Privatperson',
+    betreuung: 'VIP',
+    profil: {
+      vorname: 'Sophie', nachname: 'Wagner', titel: '—',
+      email: 's.wagner@outlook.de', telefon: '+49 170 334 6677',
+      geburtsdatum: '25.12.1991', geschlecht: 'Weiblich',
+      adresse: 'Breite Straße 12, 50667 Köln', land: 'Deutschland',
+      versicherung: 'PKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Weiterempfehlung',
+      weiterer_hintergrund: 'Sehr interessiert, möchte VIP-Betreuung',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SK – Sebastian Koch',
+      arzt: '— noch nicht zugeteilt —',
+      versorgt_bis: '—',
+      ziele: 'Performance, Resilienz & Wohlbefinden',
+      notizen: 'Angebot nachfassen bis Ende Juni.'
+    },
+    diagnostik: null,
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Kunden gewinnen – Angebot nachfassen', done: false },
+      ],
+      letzteMeldung: { date: '15. Juni 2026', text: 'Interesse bestätigt, wartet auf konkretes Angebot.' },
+      zusatzinfos: 'Bevorzugt VIP-Paket.',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Weiterempfehlung', date: '10. Juni 2026', state: 'done' },
+      { title: 'Erstgespräch & Angebot', date: '15. Juni 2026', state: 'done' },
+      { title: 'Angebot nachfassen', date: 'Offen', state: 'active' },
+      { title: 'Anamnese versenden', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A1 Angebot · 15. Juni'],
+    notif: 'email'
+  },
+
+  jonas: {
+    name: 'Jonas Becker',
+    kdnr: 'Kd-010',
+    status: 'pipeline',
+    phase: 'Diagnostik',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Jonas', nachname: 'Becker', titel: '—',
+      email: 'j.becker@mail.de', telefon: '+49 155 778 9900',
+      geburtsdatum: '03.08.1998', geschlecht: 'Männlich',
+      adresse: 'Zülpicher Straße 33, 50674 Köln', land: 'Deutschland',
+      versicherung: 'GKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Social Media',
+      weiterer_hintergrund: 'Junger Sportler, Fokus Performance',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'AW – Angi Wirtz',
+      arzt: '— noch nicht zugeteilt —',
+      versorgt_bis: '—',
+      ziele: 'Performance',
+      notizen: 'Anamnese noch ausstehend.'
+    },
+    diagnostik: null,
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Anamnese-Fragebogen verschicken', done: false },
+        { text: 'Termin zur Blutabnahme besprechen', done: false },
+      ],
+      letzteMeldung: { date: 'Heute', text: 'Neu in der Pipeline. Anamnese-Fragebogen verschicken.' },
+      zusatzinfos: '',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Social Media', date: '19. Juni 2026', state: 'done' },
+      { title: 'Anamnese verschicken', date: 'Offen', state: 'active' },
+      { title: 'Blutabnahme', date: 'Offen', state: 'pending' },
+      { title: 'Befunde & Arztgespräch', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: [],
+    notif: 'email'
+  },
+
+  laura: {
+    name: 'Laura Hoffmann',
+    kdnr: 'Kd-011',
+    status: 'pipeline',
+    phase: 'Lead Long List',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Laura', nachname: 'Hoffmann', titel: '—',
+      email: 'l.hoffmann@gmx.de', telefon: '+49 157 223 4488',
+      geburtsdatum: '14.06.1995', geschlecht: 'Weiblich',
+      adresse: 'Neumarkt 5, 50667 Köln', land: 'Deutschland',
+      versicherung: 'GKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Website',
+      weiterer_hintergrund: 'Interesse an Prevention & Longevity',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SK – Sebastian Koch',
+      arzt: '—',
+      versorgt_bis: '—',
+      ziele: 'Prevention & Longevity',
+      notizen: 'Erstkontakt ausstehend.'
+    },
+    diagnostik: null,
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Nachgehen – Erstkontakt herstellen', done: false },
+      ],
+      letzteMeldung: { date: '14. Juni 2026', text: 'Website-Anfrage eingegangen. Noch kein Kontakt.' },
+      zusatzinfos: '',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Website-Anfrage eingegangen', date: '14. Juni 2026', state: 'done' },
+      { title: 'Erstkontakt herstellen', date: 'Offen', state: 'active' },
+    ],
+    files: [],
+    emails_sent: [],
+    notif: 'email'
+  },
+
+  tobias: {
+    name: 'Tobias Lang',
+    kdnr: 'Kd-012',
+    status: 'aktiv',
+    phase: 'On-Boarding',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Tobias', nachname: 'Lang', titel: '—',
+      email: 't.lang@icloud.com', telefon: '+49 178 112 3344',
+      geburtsdatum: '29.01.1987', geschlecht: 'Männlich',
+      adresse: 'Apostelnstraße 14, 50667 Köln', land: 'Deutschland',
+      versicherung: 'PKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Weiterempfehlung',
+      weiterer_hintergrund: 'Paket zugestellt. On-Boarding läuft.',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SW – Sebastian Wirtz',
+      arzt: 'SF – Dr. Friedsam',
+      versorgt_bis: '21. September 2026',
+      ziele: 'Resilienz & Wohlbefinden',
+      notizen: 'Paket DHL zugestellt am 21. Juni. Kontaktperson meldet sich.'
+    },
+    diagnostik: {
+      blutabnahme: '1. Juni 2026',
+      befunde: '8. Juni 2026',
+      entnahmestelle: 'Performula Köln',
+      status: 'Befund ausgewertet'
+    },
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Kontaktperson meldet sich beim Kunden nach Paketerhalt', done: false },
+      ],
+      letzteMeldung: { date: '21. Juni 2026', text: 'DHL: "Zugestellt". Kontaktperson informiert.' },
+      zusatzinfos: 'Paket zugestellt am 21. Juni 2026.',
+    },
+    produktion: {
+      charge: '26-00089-TL',
+      auftrag_am: '12. Juni 2026',
+      abfuellung: '18. Juni 2026',
+      haltbarkeit: '18. Juni 2027',
+      tracking_versand: '00340434737697601744',
+      tracking_probenset: '00340434737697501633',
+      menge_kunde: 90,
+      menge_rueckstell: 10,
+      batch_nr: 1
+    },
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '26. Mai 2026', auswertung: 'SF', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: 'Fällig: 1. Juli 2026', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Weiterempfehlung', date: '22. Mai 2026', state: 'done' },
+      { title: 'Anamnese versendet & eingegangen', date: '26. Mai 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '1. Juni 2026', state: 'done' },
+      { title: 'Befunde & Arztgespräch', date: '8. Juni 2026', state: 'done' },
+      { title: 'Produktion abgeschlossen', date: '18. Juni 2026', state: 'done' },
+      { title: 'Versand (DHL)', date: '20. Juni 2026', state: 'done' },
+      { title: 'Paket zugestellt', date: '21. Juni 2026', state: 'done' },
+      { title: 'Kontaktperson meldet sich', date: 'Fällig: 23. Juni 2026', state: 'active' },
+      { title: 'Check-in · 7 Tage', date: 'Fällig: 1. Juli 2026', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 22. Mai', 'A7 Versandbestätigung · 20. Juni'],
+    notif: 'email'
+  },
+
+  petra: {
+    name: 'Petra Vogel',
+    kdnr: 'Kd-013',
+    status: 'verloren',
+    phase: 'Lead Long List',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Petra', nachname: 'Vogel', titel: '—',
+      email: 'p.vogel@web.de', telefon: '+49 164 778 9911',
+      geburtsdatum: '11.03.1972', geschlecht: 'Weiblich',
+      adresse: 'Friesenplatz 8, 50672 Köln', land: 'Deutschland',
+      versicherung: 'GKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Messe',
+      weiterer_hintergrund: 'Hat nach Preisfrage kein Interesse signalisiert.',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SW – Sebastian Wirtz',
+      arzt: '—',
+      versorgt_bis: '—',
+      ziele: '—',
+      notizen: 'Preis zu hoch laut Feedback. 90-Tage-Frist → Lost.'
+    },
+    diagnostik: null,
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Nachgehen', done: true },
+      ],
+      letzteMeldung: { date: '1. April 2026', text: 'Preis zu hoch. Kein weiteres Interesse.' },
+      zusatzinfos: 'Lost nach 90 Tagen.',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Messe', date: '5. Februar 2026', state: 'done' },
+      { title: 'Nachgehen (1. Versuch)', date: '15. Februar 2026', state: 'done' },
+      { title: 'Kein Interesse wegen Preis', date: '1. April 2026', state: 'done' },
+      { title: 'Lost-Tag gesetzt', date: '1. April 2026', state: 'done' },
+    ],
+    files: [],
+    emails_sent: ['A1 Angebot · 15. Februar'],
+    notif: 'email'
+  },
+
+  daniel: {
+    name: 'Daniel Krüger',
+    kdnr: 'Kd-014',
+    status: 'aktiv',
+    phase: 'Einnahme Zyklus',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Daniel', nachname: 'Krüger', titel: '—',
+      email: 'd.krueger@gmail.com', telefon: '+49 173 556 7788',
+      geburtsdatum: '06.06.1983', geschlecht: 'Männlich',
+      adresse: 'Agrippastraße 20, 50678 Köln', land: 'Deutschland',
+      versicherung: 'PKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Weiterempfehlung',
+      weiterer_hintergrund: 'Sportler, Performance-Fokus, läuft seit Batch 1',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'AW – Angi Wirtz',
+      arzt: 'JvH – Dr. Vonhoegen',
+      versorgt_bis: '5. Oktober 2026',
+      ziele: 'Performance',
+      notizen: ''
+    },
+    diagnostik: {
+      blutabnahme: '15. Februar 2026',
+      befunde: '22. Februar 2026',
+      entnahmestelle: 'Performula Köln',
+      status: 'Befund ausgewertet'
+    },
+    prozessInfo: {
+      aufgaben: [],
+      letzteMeldung: { date: '5. Juni 2026', text: 'Einnahme läuft gut. Kein Handlungsbedarf.' },
+      zusatzinfos: '',
+    },
+    produktion: {
+      charge: '26-00055-DK',
+      auftrag_am: '1. März 2026',
+      abfuellung: '8. März 2026',
+      haltbarkeit: '8. März 2027',
+      tracking_versand: '00340434737697701855',
+      tracking_probenset: '00340434737697601744',
+      menge_kunde: 90,
+      menge_rueckstell: 10,
+      batch_nr: 1
+    },
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '10. Februar 2026', auswertung: 'JvH', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'done', datum: '18. März 2026', auswertung: 'JvH', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'done', datum: '8. Mai 2026', auswertung: 'JvH', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Weiterempfehlung', date: '5. Februar 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '15. Februar 2026', state: 'done' },
+      { title: 'Befunde & Arztgespräch', date: '22. Februar 2026', state: 'done' },
+      { title: 'Produktion abgeschlossen', date: '8. März 2026', state: 'done' },
+      { title: 'Versand & Einnahmestart', date: '10. März 2026', state: 'done' },
+      { title: 'Check-in · 7 Tage', date: '18. März 2026', state: 'done' },
+      { title: 'Check-in · 60 Tage', date: '8. Mai 2026', state: 'done' },
+      { title: 'Verlängerung / neuer Zyklus', date: 'Offen', state: 'active' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 6. Februar', 'A7 Versandbestätigung · 10. März'],
+    notif: 'email'
+  },
+
+  christina: {
+    name: 'Christina Albrecht',
+    kdnr: 'Kd-015',
+    status: 'aktiv',
+    phase: 'Einnahme Zyklus',
+    kategorie: 'Privatperson',
+    betreuung: 'VIP',
+    profil: {
+      vorname: 'Christina', nachname: 'Albrecht', titel: '—',
+      email: 'c.albrecht@outlook.de', telefon: '+49 176 889 0011',
+      geburtsdatum: '19.08.1979', geschlecht: 'Weiblich',
+      adresse: 'Kaiser-Wilhelm-Ring 3, 50672 Köln', land: 'Deutschland',
+      versicherung: 'PKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Weiterempfehlung',
+      weiterer_hintergrund: 'VIP-Kundin, Fokus Prevention & Longevity',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SK – Sebastian Koch',
+      arzt: 'SF – Dr. Friedsam',
+      versorgt_bis: '12. August 2026',
+      ziele: 'Prevention & Longevity',
+      notizen: ''
+    },
+    diagnostik: {
+      blutabnahme: '20. März 2026',
+      befunde: '27. März 2026',
+      entnahmestelle: 'Hausarzt',
+      status: 'Befund ausgewertet'
+    },
+    prozessInfo: {
+      aufgaben: [],
+      letzteMeldung: { date: '12. Juni 2026', text: 'Sehr zufrieden. Möchte nach Zyklus zweites Arztgespräch.' },
+      zusatzinfos: 'VIP-Betreuung. Plant 2. Zyklus.',
+    },
+    produktion: {
+      charge: '26-00068-CA',
+      auftrag_am: '2. April 2026',
+      abfuellung: '8. April 2026',
+      haltbarkeit: '8. April 2027',
+      tracking_versand: '00340434737697801966',
+      tracking_probenset: '00340434737697701855',
+      menge_kunde: 90,
+      menge_rueckstell: 10,
+      batch_nr: 1
+    },
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '15. März 2026', auswertung: 'SF', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'done', datum: '18. April 2026', auswertung: 'SF', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'done', datum: '8. Juni 2026', auswertung: 'SF', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Weiterempfehlung', date: '10. März 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '20. März 2026', state: 'done' },
+      { title: 'Befunde & Arztgespräch', date: '27. März 2026', state: 'done' },
+      { title: 'Produktion abgeschlossen', date: '8. April 2026', state: 'done' },
+      { title: 'Versand & Einnahmestart', date: '12. April 2026', state: 'done' },
+      { title: 'Check-in · 7 Tage', date: '18. April 2026', state: 'done' },
+      { title: 'Check-in · 60 Tage', date: '8. Juni 2026', state: 'done' },
+      { title: '2. Zyklus planen', date: 'Offen', state: 'active' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 11. März', 'A7 Versandbestätigung · 12. April'],
+    notif: 'email'
+  },
+
+  felix: {
+    name: 'Felix Zimmermann',
+    kdnr: 'Kd-016',
+    status: 'pipeline',
+    phase: 'Diagnostik',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Felix', nachname: 'Zimmermann', titel: '—',
+      email: 'f.zimmermann@gmail.com', telefon: '+49 159 334 5566',
+      geburtsdatum: '02.10.1996', geschlecht: 'Männlich',
+      adresse: 'Hansaring 88, 50670 Köln', land: 'Deutschland',
+      versicherung: 'GKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Social Media',
+      weiterer_hintergrund: 'Junger Athlet, Fokus Performance',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'AW – Angi Wirtz',
+      arzt: '— noch nicht zugeteilt —',
+      versorgt_bis: '—',
+      ziele: 'Performance',
+      notizen: 'Anamnese noch nicht versendet.'
+    },
+    diagnostik: null,
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Anamnese-Fragebogen verschicken', done: false },
+        { text: 'Termin zur Blutabnahme besprechen', done: false },
+      ],
+      letzteMeldung: { date: '20. Juni 2026', text: 'Neu in der Pipeline. Anamnese ausstehend.' },
+      zusatzinfos: '',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Social Media', date: '20. Juni 2026', state: 'done' },
+      { title: 'Anamnese verschicken', date: 'Offen', state: 'active' },
+      { title: 'Blutabnahme', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: [],
+    notif: 'email'
+  },
+
+  nina: {
+    name: 'Nina Bauer',
+    kdnr: 'Kd-017',
+    status: 'aktiv',
+    phase: 'Einnahme Zyklus',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Nina', nachname: 'Bauer', titel: '—',
+      email: 'n.bauer@icloud.com', telefon: '+49 171 445 6677',
+      geburtsdatum: '23.02.1992', geschlecht: 'Weiblich',
+      adresse: 'Hahnenstraße 6, 50667 Köln', land: 'Deutschland',
+      versicherung: 'GKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Website',
+      weiterer_hintergrund: 'Fokus Resilienz, Mutter, wenig Zeit',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'AW – Angi Wirtz',
+      arzt: 'JK – Dr. Kostron',
+      versorgt_bis: '20. August 2026',
+      ziele: 'Resilienz & Wohlbefinden',
+      notizen: ''
+    },
+    diagnostik: {
+      blutabnahme: '5. April 2026',
+      befunde: '12. April 2026',
+      entnahmestelle: 'Hausarzt',
+      status: 'Befund ausgewertet'
+    },
+    prozessInfo: {
+      aufgaben: [],
+      letzteMeldung: { date: '8. Juni 2026', text: 'Kundin zufrieden, keine offenen Punkte.' },
+      zusatzinfos: '',
+    },
+    produktion: {
+      charge: '26-00072-NB',
+      auftrag_am: '16. April 2026',
+      abfuellung: '22. April 2026',
+      haltbarkeit: '22. April 2027',
+      tracking_versand: '00340434737697902077',
+      tracking_probenset: '—',
+      menge_kunde: 90,
+      menge_rueckstell: 10,
+      batch_nr: 1
+    },
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '1. April 2026', auswertung: 'JK', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'done', datum: '3. Mai 2026', auswertung: 'JK', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: 'Fällig: 22. Juni 2026', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Website', date: '28. März 2026', state: 'done' },
+      { title: 'Anamnese versendet & eingegangen', date: '1. April 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '5. April 2026', state: 'done' },
+      { title: 'Befunde & Arztgespräch', date: '12. April 2026', state: 'done' },
+      { title: 'Produktion abgeschlossen', date: '22. April 2026', state: 'done' },
+      { title: 'Versand & Einnahmestart', date: '24. April 2026', state: 'done' },
+      { title: 'Check-in · 7 Tage', date: '3. Mai 2026', state: 'done' },
+      { title: 'Check-in · 60 Tage', date: 'Fällig: 22. Juni 2026', state: 'active' },
+      { title: 'Verlängerung oder neuer Zyklus', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 28. März', 'A7 Versandbestätigung · 24. April'],
+    notif: 'email'
+  },
+
+  oliver: {
+    name: 'Oliver Hartmann',
+    kdnr: 'Kd-018',
+    status: 'pipeline',
+    phase: 'Arztgespräch',
+    kategorie: 'Privatperson',
+    betreuung: 'Standard',
+    profil: {
+      vorname: 'Oliver', nachname: 'Hartmann', titel: '—',
+      email: 'o.hartmann@web.de', telefon: '+49 174 667 8899',
+      geburtsdatum: '11.11.1980', geschlecht: 'Männlich',
+      adresse: 'Mauritiussteinweg 2, 50676 Köln', land: 'Deutschland',
+      versicherung: 'PKV',
+      firma: '—', branche: '—', linkedin: '—',
+      kommt_via: 'Messe',
+      weiterer_hintergrund: 'Unternehmer, Fokus Performance & Longevity',
+      kontaktpraeferenz: 'E-Mail',
+      md: 'SW – Sebastian Wirtz',
+      arzt: 'JvH – Dr. Vonhoegen',
+      versorgt_bis: '—',
+      ziele: 'Performance, Prevention & Longevity',
+      notizen: 'Blutbefunde ausgewertet. Arztgespräch für nächste Woche geplant.'
+    },
+    diagnostik: {
+      blutabnahme: '12. Juni 2026',
+      befunde: '19. Juni 2026',
+      entnahmestelle: 'Performula Köln',
+      status: 'Befund ausgewertet'
+    },
+    prozessInfo: {
+      aufgaben: [
+        { text: 'Customer Service weist Arzt zu', done: true },
+        { text: 'Arzt bekommt Notifikation für Kundengespräch', done: false },
+      ],
+      letzteMeldung: { date: '19. Juni 2026', text: 'Befunde liegen vor. Dr. Vonhoegen zugewiesen. Termin nächste Woche.' },
+      zusatzinfos: '',
+    },
+    produktion: null,
+    fragebögen: [
+      { name: 'Anamnese-Fragebogen', status: 'done', datum: '6. Juni 2026', auswertung: 'JvH', link: 'https://form.jotform.com/261323094836357' },
+      { name: 'Check-in · 7 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/261302990765360' },
+      { name: 'Check-in · 60 Tage', status: 'pending', datum: '—', auswertung: '—', link: 'https://form.jotform.com/260392593422357' },
+    ],
+    timeline: [
+      { title: 'Erstkontakt via Messe', date: '1. Juni 2026', state: 'done' },
+      { title: 'Anamnese versendet & eingegangen', date: '6. Juni 2026', state: 'done' },
+      { title: 'Blutabnahme', date: '12. Juni 2026', state: 'done' },
+      { title: 'Befunde vollständig', date: '19. Juni 2026', state: 'done' },
+      { title: 'Arztgespräch (Termin: nächste Woche)', date: 'Geplant: 26. Juni 2026', state: 'active' },
+      { title: 'Formulierung & Produktion', date: 'Offen', state: 'pending' },
+      { title: 'Versand & Einnahmestart', date: 'Offen', state: 'pending' },
+    ],
+    files: [],
+    emails_sent: ['A2.1 Welcome · 1. Juni', 'A5 Befunde liegen vor · 19. Juni'],
+    notif: 'email'
   }
 };
 
@@ -1546,6 +2746,223 @@ const emailTemplates = [
   { code: 'A7', name: 'Versandbestätigung', desc: 'Paket ist unterwegs — mit DHL-Tracking' },
   { code: 'A8', name: 'Re-check', desc: 'Einige Wochen nach Lieferung — informelle Nachfrage' },
 ];
+
+/* ===== MEINE AUFGABEN ===== */
+const meineAufgaben = {
+  aktuell: [
+    { kunde: 'Jonas Becker',   kdnr: 'Kd-010', phase: 'Diagnostik',               task: 'Anamnese-Fragebogen verschicken',                     seit: 'Heute',         prio: 'hoch' },
+    { kunde: 'Anna Schmidt',   kdnr: 'Kd-005', phase: 'Diagnostik',               task: 'Termin zur Blutabnahme mit Kunde besprechen',          seit: 'Gestern',       prio: 'hoch' },
+    { kunde: 'Maria Fischer',  kdnr: 'Kd-007', phase: 'Formulierung & Produktion', task: 'Formulierung erstellen',                              seit: '18. Juni',      prio: 'mittel' },
+    { kunde: 'Sophie Wagner',  kdnr: 'Kd-009', phase: 'Lead Hot List',             task: 'Kunden gewinnen – Angebot nachfassen',                seit: '15. Juni',      prio: 'mittel' },
+    { kunde: 'Laura Hoffmann', kdnr: 'Kd-011', phase: 'Lead Long List',            task: 'Nachgehen – Erstkontakt herstellen',                  seit: '14. Juni',      prio: 'niedrig' },
+  ],
+  aufkommend: [
+    { kunde: 'Tobias Lang',      kdnr: 'Kd-012', phase: 'On-Boarding',    task: 'Kontaktperson meldet sich beim Kunden nach Paketerhalt', faellig: '23. Juni 2026', prio: 'hoch' },
+    { kunde: 'Peter Schulz',     kdnr: 'Kd-004', phase: 'Einnahme Zyklus', task: 'Check-in 60 Tage verfolgen',                           faellig: '24. Juni 2026', prio: 'mittel' },
+    { kunde: 'Felix Zimmermann', kdnr: 'Kd-016', phase: 'Diagnostik',      task: 'Anamnese-Fragebogen verschicken',                       faellig: '26. Juni 2026', prio: 'hoch' },
+  ],
+  abgeschlossen: [
+    { kunde: 'Jonas Becker',   kdnr: 'Kd-010', phase: 'Diagnostik',    task: 'Welcome-Mail + Anamnese-Link versendet',     erledigt: '18. Juni 2026' },
+    { kunde: 'Max Mustermann', kdnr: 'Kd-002', phase: 'Lead Long List', task: 'Erstgespräch geführt – Angebot angefragt',  erledigt: '16. Juni 2026' },
+    { kunde: 'Anna Schmidt',   kdnr: 'Kd-005', phase: 'Lead Hot List',  task: 'Angebot versendet (A1)',                    erledigt: '10. Juni 2026' },
+    { kunde: 'Sarah Braun',    kdnr: 'Kd-001', phase: 'Einnahme Zyklus', task: 'Check-in 7 Tage Fragebogen versendet',    erledigt: '29. April 2026' },
+  ],
+};
+
+let activeAufgabenTab = 'aktuell';
+
+function showAufgabenTab(tab, el) {
+  activeAufgabenTab = tab;
+  document.querySelectorAll('.aufg-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.aufg-section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById('aufg-' + tab);
+  if (sec) sec.classList.add('active');
+}
+
+function renderAufgaben() {
+  const PRIO_LABEL = { hoch: 'Hoch', mittel: 'Mittel', niedrig: 'Niedrig' };
+
+  function rowsAktuell(list) {
+    if (!list.length) return `<div class="aufg-empty">Keine aktuellen Aufgaben.</div>`;
+    return list.map(a => `
+      <div class="aufg-row">
+        <div class="aufg-prio ${a.prio}" title="${PRIO_LABEL[a.prio]}"></div>
+        <div class="aufg-main">
+          <div class="aufg-task-label">${a.task}</div>
+          <div class="aufg-meta">
+            <strong>${a.kunde}</strong>
+            <span>·</span>
+            <span class="aufg-phase-pill">${a.phase}</span>
+            <span>· Seit ${a.seit}</span>
+          </div>
+        </div>
+        <span style="font-size:10px;color:var(--muted)">${a.kdnr}</span>
+      </div>`).join('');
+  }
+
+  function rowsAufkommend(list) {
+    if (!list.length) return `<div class="aufg-empty">Keine aufkommenden Aufgaben.</div>`;
+    return list.map(a => `
+      <div class="aufg-row">
+        <div class="aufg-prio ${a.prio}" title="${PRIO_LABEL[a.prio]}"></div>
+        <div class="aufg-main">
+          <div class="aufg-task-label">${a.task}</div>
+          <div class="aufg-meta">
+            <strong>${a.kunde}</strong>
+            <span>·</span>
+            <span class="aufg-phase-pill">${a.phase}</span>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div class="aufg-date warn">📅 ${a.faellig}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">${a.kdnr}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  function rowsAbgeschlossen(list) {
+    if (!list.length) return `<div class="aufg-empty">Keine abgeschlossenen Aufgaben.</div>`;
+    return list.map(a => `
+      <div class="aufg-row done-row">
+        <div class="aufg-prio done-dot"></div>
+        <div class="aufg-main">
+          <div class="aufg-task-label strikethrough">${a.task}</div>
+          <div class="aufg-meta">
+            <strong>${a.kunde}</strong>
+            <span>·</span>
+            <span class="aufg-phase-pill">${a.phase}</span>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div class="aufg-date">✓ ${a.erledigt}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">${a.kdnr}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  document.getElementById('aufgaben-content').innerHTML = `
+    <div class="aufg-tabs">
+      <div class="aufg-tab ${activeAufgabenTab==='aktuell'?'active':''}" onclick="showAufgabenTab('aktuell', this)">
+        Aktuelle Aufgaben <span style="background:var(--red);color:#fff;border-radius:9px;padding:1px 7px;font-size:10px;margin-left:4px;">${meineAufgaben.aktuell.length}</span>
+      </div>
+      <div class="aufg-tab ${activeAufgabenTab==='aufkommend'?'active':''}" onclick="showAufgabenTab('aufkommend', this)">
+        Aufkommend <span style="background:var(--yellow);color:#fff;border-radius:9px;padding:1px 7px;font-size:10px;margin-left:4px;">${meineAufgaben.aufkommend.length}</span>
+      </div>
+      <div class="aufg-tab ${activeAufgabenTab==='abgeschlossen'?'active':''}" onclick="showAufgabenTab('abgeschlossen', this)">
+        Abgeschlossen
+      </div>
+    </div>
+    <div id="aufg-aktuell" class="aufg-section ${activeAufgabenTab==='aktuell'?'active':''}">${rowsAktuell(meineAufgaben.aktuell)}</div>
+    <div id="aufg-aufkommend" class="aufg-section ${activeAufgabenTab==='aufkommend'?'active':''}">${rowsAufkommend(meineAufgaben.aufkommend)}</div>
+    <div id="aufg-abgeschlossen" class="aufg-section ${activeAufgabenTab==='abgeschlossen'?'active':''}">${rowsAbgeschlossen(meineAufgaben.abgeschlossen)}</div>`;
+}
+
+/* ===== POSTEINGANG ===== */
+const inboxData = [
+  { id: 'sarah-1',  kunde: 'Sarah Braun',    kdnr: 'Kd-001', betreff: 'Willkommen bei PERFORMULA – deine nächsten Schritte', bearbeiter: 'AA', datum: '17. März 2026',  ungelesen: 0,
+    preview: 'Hallo Anton, vielen Dank für deine schnelle Rückmeldung! Den Fragebogen habe ich bereits...',
+    mails: [
+      { dir: 'out', von: 'Anton Altreuther', datum: '16. März 2026 · 10:24', text: 'Liebe Sarah,\n\nwir freuen uns sehr, dass du dich für das PERFORMULA Programm entschieden hast!\n\nIm Anhang findest du alle Infos zu den nächsten Schritten. Hier dein Anamnese-Fragebogen:\n→ https://form.jotform.com/261323094836357\n\nLiebe Grüße\nAnton Altreuther · PERFORMULA' },
+      { dir: 'in',  von: 'Sarah Braun',       datum: '17. März 2026 · 08:51', text: 'Hallo Anton,\n\nvielen Dank für deine schnelle Rückmeldung! Den Fragebogen habe ich bereits gestern Abend ausgefüllt.\n\nGibt es noch etwas, das ich vorbereiten soll?\n\nViele Grüße, Sarah' },
+      { dir: 'out', von: 'Anton Altreuther', datum: '17. März 2026 · 09:15', text: 'Liebe Sarah,\n\nsuper schnell, danke! Als nächstes erhältst du das Probenset per Post. Für die Blutentnahme melde ich mich noch separat.\n\nLiebe Grüße, Anton' },
+    ]
+  },
+  { id: 'max-1',    kunde: 'Max Mustermann',  kdnr: 'Kd-002', betreff: 'Dein PERFORMULA-Angebot für 5 Personen', bearbeiter: 'AA', datum: '16. Juni 2026', ungelesen: 1,
+    preview: 'Hallo Anton, vielen Dank für das Angebot! Ich werde es mit meinem Team besprechen...',
+    mails: [
+      { dir: 'out', von: 'Anton Altreuther', datum: '16. Juni 2026 · 11:00', text: 'Lieber Max,\n\nvielen Dank für das tolle Gespräch! Im Anhang findest du unser Angebot für dein 5-köpfiges Führungsteam.\n\nWir freuen uns sehr auf die Zusammenarbeit!\n\nLiebe Grüße\nAnton Altreuther · PERFORMULA' },
+      { dir: 'in',  von: 'Max Mustermann',   datum: '16. Juni 2026 · 14:22', text: 'Hallo Anton,\n\nvielen Dank für das Angebot! Ich werde es mit meinem Team besprechen und melde mich bis Ende Juni.\n\nViele Grüße, Max' },
+    ]
+  },
+  { id: 'anna-1',   kunde: 'Anna Schmidt',    kdnr: 'Kd-005', betreff: 'Termin Blutentnahme – 22. Juni 2026', bearbeiter: 'AW', datum: '19. Juni 2026', ungelesen: 0,
+    preview: 'Guten Morgen Anna, bitte komm nüchtern und bring die Versandtasche...',
+    mails: [
+      { dir: 'out', von: 'Angi Wirtz',        datum: '18. Juni 2026 · 09:30', text: 'Liebe Anna,\n\nhier die Bestätigung für deinen Blutentnahme-Termin am 22. Juni um 8:30 Uhr in der Performula Praxis Köln.\n\nLiebe Grüße, Angi Wirtz · PERFORMULA' },
+      { dir: 'in',  von: 'Anna Schmidt',      datum: '18. Juni 2026 · 10:15', text: 'Danke! Ich werde pünktlich da sein. Muss ich irgendetwas Bestimmtes mitbringen?' },
+      { dir: 'out', von: 'Angi Wirtz',        datum: '18. Juni 2026 · 10:42', text: 'Liebe Anna,\n\nbitte komm nüchtern und bring die Versandtasche für die Proben mit. Das war alles!\n\nBis Montag, Angi' },
+      { dir: 'in',  von: 'Anna Schmidt',      datum: '19. Juni 2026 · 11:00', text: 'Super, vielen Dank! Bis Montag dann 😊' },
+    ]
+  },
+  { id: 'jonas-1',  kunde: 'Jonas Becker',    kdnr: 'Kd-010', betreff: 'Willkommen bei PERFORMULA – deine nächsten Schritte', bearbeiter: 'AA', datum: '18. Juni 2026', ungelesen: 0,
+    preview: 'Lieber Jonas, wir freuen uns sehr, dass du am PERFORMULA Programm teilnimmst...',
+    mails: [
+      { dir: 'out', von: 'Anton Altreuther', datum: '18. Juni 2026 · 15:00', text: 'Lieber Jonas,\n\nwir freuen uns sehr, dass du am PERFORMULA Programm teilnimmst!\n\nHier dein Anamnese-Fragebogen:\n→ https://form.jotform.com/261323094836357\n\nLiebe Grüße\nAnton Altreuther · PERFORMULA' },
+    ]
+  },
+  { id: 'tobias-1', kunde: 'Tobias Lang',     kdnr: 'Kd-012', betreff: 'Deine PERFORMULA Mischung ist unterwegs!', bearbeiter: '⚙', datum: '18. Juni 2026', ungelesen: 0,
+    preview: 'Lieber Tobias, deine PERFORMULA Mikronährstoffmischung ist auf dem Weg...',
+    mails: [
+      { dir: 'out', von: '⚙ PERFORMULA System', datum: '18. Juni 2026 · 14:03', text: 'Lieber Tobias,\n\ndeine PERFORMULA Mikronährstoffmischung ist auf dem Weg!\n\nDHL-Trackinglink: 00340434737697302341\n\nDein PERFORMULA Team' },
+    ]
+  },
+  { id: 'peter-1',  kunde: 'Peter Schulz',    kdnr: 'Kd-004', betreff: 'A9 · Check-in 7 Tage', bearbeiter: '⚙', datum: '17. Juni 2026', ungelesen: 0,
+    preview: 'Lieber Peter, wie läuft es mit deinen Mikronährstoffen bisher...',
+    mails: [
+      { dir: 'out', von: '⚙ PERFORMULA System', datum: '17. Juni 2026 · 09:00', text: 'Lieber Peter,\n\ndeine PERFORMULA Mikronährstoffe sind nun seit einigen Tagen bei dir – wie läuft es bisher?\n\nKurzes Feedback (ca. 3 Min.):\n→ https://form.jotform.com/261302990765360\n\nVielen Dank!\nDein PERFORMULA Team' },
+    ]
+  },
+];
+
+let activeInboxItem = null;
+let inboxFilter = 'alle';
+
+function setInboxFilter(f, el) {
+  inboxFilter = f;
+  document.querySelectorAll('#inbox-filter-tabs .filter-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderPosteingang();
+}
+
+function renderPosteingang() {
+  const filtered = inboxFilter === 'alle' ? inboxData : inboxData.filter(i => i.bearbeiter === inboxFilter || i.bearbeiter === '⚙' && inboxFilter === 'alle');
+  const list = inboxData.filter(i => inboxFilter === 'alle' || i.bearbeiter === inboxFilter);
+
+  if (!activeInboxItem) activeInboxItem = list[0] || null;
+
+  const listHtml = list.map(item => `
+    <div class="inbox-item ${activeInboxItem && activeInboxItem.id === item.id ? 'active' : ''}" onclick="selectInboxItem('${item.id}')">
+      <div class="inbox-item-top">
+        <span class="inbox-kunde">${item.ungelesen ? `<strong>${item.kunde}</strong>` : item.kunde}${item.ungelesen ? ` <span class="inbox-unread-dot" style="display:inline-block;vertical-align:middle;margin-left:5px"></span>` : ''}</span>
+        <span class="inbox-time">${item.datum}</span>
+      </div>
+      <div class="inbox-betreff">${item.betreff}</div>
+      <div class="inbox-preview">${item.preview}</div>
+      <div class="inbox-meta"><span class="inbox-bearbeiter">${item.bearbeiter}</span><span style="font-size:10px;color:var(--muted)">${item.kdnr}</span></div>
+    </div>`).join('');
+
+  let convHtml = '';
+  if (activeInboxItem) {
+    const bubblesHtml = activeInboxItem.mails.map(m => `
+      <div class="conv-msg ${m.dir}">
+        <div class="conv-bubble">${m.text.replace(/\n/g,'<br>').replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" style="color:inherit;word-break:break-all;opacity:0.85">$1</a>')}</div>
+        <div class="conv-msg-meta">${m.von} · ${m.datum}</div>
+      </div>`).join('');
+    convHtml = `
+      <div class="conv-head">
+        <div class="conv-head-name">${activeInboxItem.kunde} <span style="font-size:11px;opacity:0.5;font-weight:400">${activeInboxItem.kdnr}</span></div>
+        <div class="conv-head-sub">${activeInboxItem.betreff} · Bearbeiter: ${activeInboxItem.bearbeiter}</div>
+      </div>
+      <div class="conv-body">${bubblesHtml}</div>
+      <div class="conv-footer">
+        <textarea class="conv-input" rows="2" placeholder="Antwort schreiben…"></textarea>
+        <button class="btn btn-primary" style="align-self:flex-end">Senden</button>
+      </div>`;
+  } else {
+    convHtml = `<div class="conv-empty">Wähle eine Konversation aus.</div>`;
+  }
+
+  document.getElementById('posteingang-content').innerHTML = `
+    <div class="inbox-layout">
+      <div class="inbox-list">${listHtml}</div>
+      <div class="conv-panel">${convHtml}</div>
+    </div>`;
+}
+
+function selectInboxItem(id) {
+  activeInboxItem = inboxData.find(i => i.id === id) || null;
+  renderPosteingang();
+}
 
 let currentCustomer = null;
 let currentTab = 'profil';
@@ -1570,7 +2987,10 @@ function showView(v, el) {
     if (v === 'kunden') renderKunden();
     if (v === 'emails') renderEmails();
     if (v === 'fragebogen') renderFrageboegen();
+    if (v === 'team') renderTeam();
     if (v === 'automationen') renderAutomationen();
+    if (v === 'aufgaben') renderAufgaben();
+    if (v === 'posteingang') renderPosteingang();
     const t = document.getElementById('view-' + v);
     if (t) t.classList.add('active');
   }
@@ -1590,7 +3010,7 @@ function openDetail(id) {
   currentCustomer = c;
 
   document.getElementById('dp-name').textContent = c.name;
-  document.getElementById('dp-kdnr').textContent = c.kdnr + ' · ' + c.kategorie + ' · ' + c.betreuung;
+  document.getElementById('dp-kdnr').textContent = c.kdnr + ' · ' + c.kategorie;
 
   const statusMap = { aktiv: ['badge-green','Aktiv'], pipeline: ['badge-blue','Pipeline'], verloren: ['badge-red','Verloren'] };
   const [sc, sl] = statusMap[c.status] || ['badge-muted','—'];
@@ -1634,8 +3054,17 @@ function renderTabContent(c, tab) {
       </div>
       <div class="ds">
         <div class="ds-title">Betreuung & Zuordnung</div>
+        <div class="field" style="margin-bottom:12px;">
+          <div class="field-label">Betreuung</div>
+          <div class="pref-toggle">
+            ${['SK','SW','AW','LV','JV'].map(md => `<div class="pref-btn ${p.md && p.md.startsWith(md) ? 'active' : ''}" onclick="setPref(this)">${md}</div>`).join('')}
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:12px;">
+          <div class="field-label">Hintergrundinfos</div>
+          <textarea class="field-input" style="min-height:56px;resize:vertical;">${p.weiterer_hintergrund !== '—' ? p.weiterer_hintergrund : ''}</textarea>
+        </div>
         <div class="field-grid">
-          <div class="field"><div class="field-label">Verantwortlicher MD</div><div class="field-value">${p.md}</div></div>
           <div class="field"><div class="field-label">Zugeteilter Arzt</div><div class="field-value">${p.arzt}</div></div>
           <div class="field"><div class="field-label">Versorgt bis</div><div class="field-value">${p.versorgt_bis}</div></div>
           <div class="field"><div class="field-label">Kommt via</div><div class="field-value">${p.kommt_via}</div></div>
@@ -1660,7 +3089,6 @@ function renderTabContent(c, tab) {
         <div class="ds-title">Ziele & Hintergrund</div>
         <div class="field-grid full">
           <div class="field"><div class="field-label">Persönliche Ziele</div><div class="field-value">${p.ziele}</div></div>
-          <div class="field"><div class="field-label">Weiterer Hintergrund</div><div class="field-value">${p.weiterer_hintergrund}</div></div>
           ${p.firma !== '—' ? `<div class="field"><div class="field-label">Firma</div><div class="field-value">${p.firma}</div></div>` : ''}
           ${p.branche !== '—' ? `<div class="field"><div class="field-label">Branche</div><div class="field-value">${p.branche}</div></div>` : ''}
         </div>
@@ -1831,9 +3259,23 @@ function renderTabContent(c, tab) {
   }
 
   else if (tab === 'emails') {
-    const sentHtml = c.emails_sent.length > 0
-      ? c.emails_sent.map(e => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--green)">✓</span> ${e}</div>`).join('')
-      : `<div style="color:var(--muted);font-size:12px;">Noch keine E-Mails versendet.</div>`;
+    // Konversationen aus inboxData für diesen Kunden zusammensuchen
+    const convs = inboxData.filter(i => i.kdnr === c.kdnr);
+    const convsHtml = convs.length ? convs.map(conv => {
+      const bubblesHtml = conv.mails.map(m => `
+        <div class="conv-msg ${m.dir}">
+          <div class="conv-bubble">${m.text.replace(/\n/g,'<br>').replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" style="color:inherit;opacity:0.85;word-break:break-all">$1</a>')}</div>
+          <div class="conv-msg-meta">${m.von} · ${m.datum}</div>
+        </div>`).join('');
+      return `
+        <div style="margin-bottom:20px;">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;padding:6px 10px;background:var(--white);border-radius:6px;border:1px solid var(--border);">
+            📧 ${conv.betreff} <span style="float:right;font-weight:400">${conv.datum}</span>
+          </div>
+          <div class="conv-body" style="background:var(--white);border:1px solid var(--border);border-radius:8px;max-height:none;">${bubblesHtml}</div>
+        </div>`;
+    }).join('') : `<div style="color:var(--muted);font-size:12px;padding:16px 0;">Noch keine E-Mail-Konversationen mit diesem Kunden.</div>`;
+
     const templateHtml = emailTemplates.map(t => `
       <div class="email-card">
         <div class="email-card-header">
@@ -1843,7 +3285,7 @@ function renderTabContent(c, tab) {
         <div class="email-card-desc">${t.desc}</div>
       </div>`).join('');
     div.innerHTML = `
-      <div class="ds"><div class="ds-title">Bereits versendet</div>${sentHtml}</div>
+      <div class="ds"><div class="ds-title">E-Mail-Verlauf</div>${convsHtml}</div>
       <div class="ds"><div class="ds-title">Vorlage versenden</div>${templateHtml}</div>`;
   }
 
@@ -1857,6 +3299,106 @@ function setPref(el) {
 }
 function openModal() { document.getElementById('modal').classList.add('open'); }
 function closeModal() { document.getElementById('modal').classList.remove('open'); }
+function openTeamModal(kuerzel) {
+  const p = teamData.find(t => t.kuerzel === kuerzel);
+  if (!p) return;
+  document.getElementById('tm-kuerzel').value = kuerzel;
+  document.getElementById('tm-kuerzel-display').value = kuerzel;
+  document.getElementById('tm-name').value = p.name !== '— noch nicht angelegt —' ? p.name : '';
+  document.getElementById('tm-rolle').value = p.rolle;
+  document.getElementById('tm-email').value = p.email !== '—' ? p.email : '';
+  document.getElementById('tm-telefon').value = p.telefon !== '—' ? p.telefon : '';
+  document.getElementById('team-modal').classList.add('open');
+}
+function closeTeamModal() { document.getElementById('team-modal').classList.remove('open'); }
+function saveTeamMember() {
+  const kuerzel = document.getElementById('tm-kuerzel').value;
+  const p = teamData.find(t => t.kuerzel === kuerzel);
+  if (!p) return;
+  const name = document.getElementById('tm-name').value.trim();
+  if (name) p.name = name;
+  const rolle = document.getElementById('tm-rolle').value.trim();
+  if (rolle) p.rolle = rolle;
+  p.email   = document.getElementById('tm-email').value.trim() || '—';
+  p.telefon = document.getElementById('tm-telefon').value.trim() || '—';
+  closeTeamModal();
+  renderTeam();
+}
+
+function createKunde() {
+  const vorname = document.getElementById('nk-vorname').value.trim();
+  const nachname = document.getElementById('nk-nachname').value.trim();
+  if (!vorname || !nachname) { alert('Bitte Vor- und Nachname eingeben.'); return; }
+
+  // Eindeutiger Key aus vorname_nachname
+  let base = (vorname + '_' + nachname).toLowerCase().replace(/[äöüß]/g, c => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[c])).replace(/[^a-z0-9_]/g, '');
+  let key = base; let n = 2;
+  while (customers[key]) { key = base + n; n++; }
+
+  // Nächste Kd-Nummer
+  const kdNr = 'Kd-' + String(Object.keys(customers).length + 1).padStart(3, '0');
+
+  const phase = document.getElementById('nk-phase').value;
+  const heute = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+  customers[key] = {
+    name: vorname + ' ' + nachname,
+    status: 'pipeline',
+    kdnr: kdNr,
+    kategorie: document.getElementById('nk-kategorie').value,
+    md: document.getElementById('nk-betreuung').value,
+    arzt: document.getElementById('nk-arzt').value,
+    weiterer_hintergrund: document.getElementById('nk-hintergrund').value.trim() || '—',
+    phase,
+    profil: {
+      vorname,
+      nachname,
+      titel: '—',
+      email: document.getElementById('nk-email').value.trim(),
+      telefon: document.getElementById('nk-telefon').value.trim() || '—',
+      geburtsdatum: document.getElementById('nk-geburtsdatum').value || '—',
+      geschlecht: document.getElementById('nk-geschlecht').value || '—',
+      adresse: '—',
+      land: 'Deutschland',
+      versicherung: '—',
+      kontaktpraeferenz: 'E-Mail',
+      firma: document.getElementById('nk-firma').value.trim() || '—',
+      branche: '—',
+      linkedin: '—',
+      kommt_via: document.getElementById('nk-via').value,
+      weiterer_hintergrund: document.getElementById('nk-hintergrund').value.trim() || '—',
+      md: document.getElementById('nk-betreuung').value,
+      arzt: document.getElementById('nk-arzt').value,
+      versorgt_bis: '—',
+      ziele: '—',
+      notizen: '—',
+    },
+    diagnostik: { anamnese: '—', blutabnahme: '—', labor: '—', probenset_versand: '—' },
+    prozessInfo: { kontaktpreferenz: '—', versicherung: '—', ziele: [] },
+    produktion: { chargennummer: '—', auftrag_datum: '—', abfuellung_datum: '—', haltbarkeitsdatum: '—', dhl_tracking: '—' },
+    fragebögen: { anamnese: null, checkin7: null, checkin60: null },
+    timeline: [{ datum: heute, typ: 'notiz', text: 'Kundenprofil angelegt.' }],
+    files: [],
+    emails_sent: [],
+    notif: { email: true, sms: false }
+  };
+
+  kundenliste.push({
+    kdnr: kdNr, vorname, nachname,
+    email: customers[key].profil.email,
+    kategorie: customers[key].kategorie,
+    status: 'pipeline',
+    phase,
+    versorgt: '',
+    md: customers[key].md,
+    arzt: customers[key].arzt,
+    detail: key
+  });
+
+  closeModal();
+  document.querySelectorAll('#modal input, #modal select, #modal textarea').forEach(el => { el.value = el.tagName === 'SELECT' ? el.options[0]?.value ?? '' : ''; });
+  setTimeout(() => openDetail(key), 150);
+}
 
 // Init
 document.getElementById('view-pipeline').style.display = 'none';
